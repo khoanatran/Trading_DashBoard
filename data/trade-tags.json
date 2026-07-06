@@ -1,0 +1,857 @@
+{
+  "trade_logs.txt::2025-12-11T06:52:34.173509": [
+    "Good TP",
+    "Normal Reverse Push"
+  ],
+  "trade_logs.txt::2025-12-15T06:58:42.338324": [
+    "Mistake",
+    "Rollover Week"
+  ],
+  "trade_logs.txt::2025-12-10T06:58:14.218184": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-12-10T06:57:27.872093": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-12-12T07:02:19.093429": [
+    "Good Re-entry",
+    "Normal Reverse Push"
+  ],
+  "trade_logs.txt::2025-12-05T06:55:55.616625": [
+    "News Event",
+    "Hard Case"
+  ],
+  "trade_logs.txt::2025-12-05T07:04:24.866592": [
+    "News Event",
+    "Good TP",
+    "A+ Setup",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-12-12T06:35:12.226221": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-12-12T07:02:09.414451": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-12-04T06:33:12.713579": [
+    "A+ Setup",
+    "Early Exit",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-11-26T06:40:16.043261": [
+    "Good BE"
+  ],
+  "trade_logs.txt::2025-11-25T06:48:00.719336": [
+    "Good TP",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-11-24T07:04:48.761249": [
+    "LVN",
+    "Hard Case",
+    "Good TP",
+    "Normal Reverse Push"
+  ],
+  "trade_logs.txt::2025-11-21T06:47:42.688118": [
+    "Choppy Market"
+  ],
+  "trade_logs.txt::2025-11-20T06:50:02.912334": [
+    "Choppy Market",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-11-18T06:43:50.641724": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-11-14T 09:34:45.586362": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-11-13T 09:39:33.012692": [
+    "Good TP",
+    "A+ Setup",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-11-12T 09:33:47.136293": [
+    "Suppose to Win"
+  ],
+  "trade_logs.txt::2025-11-12T 09:33:47.136255": [
+    "Suppose to Win"
+  ],
+  "trade_logs.txt::2025-11-12T 09:43:55.708005": [
+    "LVN",
+    "A+ Setup",
+    "Aggressive Reverse Push"
+  ],
+  "trade_logs.txt::2025-12-16T06:34:03.333200": [
+    "Good BE",
+    "Aggressive Reverse Push",
+    "Rollover Week",
+    "B setup"
+  ],
+  "trade_logs.txt::2025-12-16T06:40:14.265211": [
+    "Mistake",
+    "Aggressive Reverse Push",
+    "Rollover Week",
+    "Nuance"
+  ],
+  "trade_logs.txt::2025-11-06T 09:36:03.542512": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-06T 09:36:03.542559": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-05T 09:49:04.980171": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-05T 09:38:16.033649": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-04T 10:15:42.030274": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-04T 09:57:01.524849": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-04T 09:42:15.100561": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-04T 09:37:34.180410": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-11-04T 00:40:43.965505": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-21T 10:08:15.578374": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-21T 10:06:52.143893": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-17T 09:59:43.777509": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-17T 09:59:21.501134": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-16T 09:47:14.198201": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-15T 09:42:18.119012": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-15T 09:41:55.372108": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-03T 09:47:51.202528": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-03T 09:39:47.761973": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-02T 09:55:02.545294": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-02T 09:53:49.238913": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-02T 09:51:34.013043": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-01T 09:52:44.454098": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-01T 09:51:39.683753": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-10-01T 09:42:22.238741": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-30T 09:57:41.089942": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-30T 09:45:28.367142": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-29T 09:30:43.107334": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-26T 09:37:03.931748": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-25T 09:46:28.767232": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-25T 09:33:50.063922": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-24T 10:00:01.619491": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-24T 09:54:49.133746": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-24T 09:50:46.442346": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-24T 09:38:37.529178": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-23T 09:51:48.954698": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-23T 09:47:11.165146": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-23T 09:45:31.474263": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-23T 09:37:29.710838": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-22T 09:45:40.827387": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-22T 09:43:22.931850": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-22T 09:36:51.436668": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-19T 09:50:18.720797": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-19T 09:41:14.769355": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-18T 09:36:08.146469": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-18T 09:34:57.646014": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-18T 09:33:24.990390": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-17T 09:52:06.382671": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-17T 09:51:08.936699": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-17T 09:35:47.761206": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-16T 09:30:41.980883": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-15T 09:48:27.519395": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-15T 09:34:12.366926": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-12T 09:43:52.156823": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-12T 09:36:40.907332": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-11T 09:37:42.688560": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-11T 09:31:39.418232": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-10T 10:03:27.758265": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-09T 09:53:15.321603": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-08T 10:02:12.413792": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-08T 09:47:58.457955": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-08T 09:44:58.831922": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-05T 10:05:25.740993": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-05T 09:40:08.877671": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-04T 09:47:19.533072": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-04T 09:45:59.762155": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-04T 09:38:57.824059": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-03T 09:39:59.512587": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-03T 09:37:59.481787": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-03T 09:35:58.315982": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-02T 10:03:07.069931": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-02T 09:57:59.887372": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-02T 09:46:00.150543": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-09-02T 09:40:28.175616": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-29T 09:44:00.335444": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-28T 09:48:52.415880": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-28T 09:37:44.415831": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-28T 09:34:32.953038": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-27T 09:53:59.629246": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-26T 09:44:54.197355": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-26T 09:36:58.321936": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-22T 10:08:09.989540": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-22T 09:44:53.002591": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-21T 09:51:59.630668": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-21T 09:48:51.339697": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-20T 09:43:29.925492": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-20T 09:38:58.163681": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-19T 09:40:57.794035": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-19T 09:35:55.687391": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-18T 10:10:12.043078": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-18T 09:41:58.250369": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-18T 09:37:51.671309": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-18T 09:36:16.841888": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-15T 09:52:59.361982": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-15T 09:42:43.441845": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-15T 09:42:35.278470": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-15T 09:42:27.179181": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-08-14T 11:31:23.369346": [
+    "Old System"
+  ],
+  "trade_logs.txt::2025-12-18T06:41:03.799824": [
+    "Good BE",
+    "Early Exit",
+    "Rollover Week"
+  ],
+  "trade_logs.txt::2025-12-18T06:47:32.486111": [
+    "Good TP",
+    "Normal Reverse Push",
+    "Rollover Week"
+  ],
+  "trade_logs.txt::2025-12-19T06:34:19.244835": [
+    "Good BE",
+    "Nuance",
+    "Rollover Week"
+  ],
+  "trade_logs.txt::2025-12-22T06:57:18.636624": [
+    "Good BE",
+    "Choppy Market"
+  ],
+  "trade_logs.txt::2026-01-06T06:43:23.142567": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2026-01-06T06:42:19.767707": [
+    "Stat Loss"
+  ],
+  "trade_logs.txt::2026-01-09T06:40:44.424098": [
+    "Good TP"
+  ],
+  "trade_logs.txt::2026-01-08T06:32:33.158462": [
+    "A+ Setup"
+  ],
+  "trade_logs.txt::2026-01-15T06:52:38.769460": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2026-01-14T07:01:37.986563": [
+    "Mistake",
+    "Choppy Market"
+  ],
+  "trade_logs.txt::2026-01-13T07:07:15.931429": [
+    "B setup",
+    "News Event"
+  ],
+  "trade_logs.txt::2026-01-14T06:39:00.979520": [
+    "Choppy Market"
+  ],
+  "trade_logs.txt::2026-01-14T06:49:20.219916": [
+    "Choppy Market"
+  ],
+  "trade_logs.txt::2026-01-16T06:44:08.923087": [
+    "Good BE"
+  ],
+  "trade_logs.txt::2026-01-14T06:38:27.882834": [
+    "Mistake"
+  ],
+  "trade_logs.txt::2025-11-18T06:35:24.884801": [
+    "Stat Loss"
+  ],
+  "trade_logs.txt::2026-01-20T06:36:19.144258": [
+    "Stat Loss"
+  ],
+  "trade_logs.txt::2026-01-20T07:10:42.746134": [
+    "B setup",
+    "Stat Loss"
+  ],
+  "trade_logs.txt::2026-01-20T07:11:48.079073": [
+    "Stat Loss",
+    "B setup"
+  ],
+  "trade_logs.txt::2026-01-21T06:54:50.904784": [
+    "A+ Setup",
+    "Good TP",
+    "Mistake"
+  ],
+  "trade_logs.txt::2026-01-23T07:07:57.430244": [
+    "Choppy Market",
+    "B setup"
+  ],
+  "TradesList.txt::2026-01-26T09:31:02": [
+    "Early Exit"
+  ],
+  "TradesList.txt::2026-01-25T21:48:31": [
+    "Early Exit"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-01T09:50:43": [
+    "A setup",
+    "Good TP",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-01T09:30:53": [
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-01T09:36:37": [
+    "Stat Loss",
+    "Choppy Market"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-01T09:37:04": [
+    "Choppy Market"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-04T09:52:23": [
+    "A setup",
+    "Stat Loss",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T16:01:31": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T15:15:54": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T15:15:16": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T15:06:50": [
+    "A setup",
+    "Stat Loss",
+    "Mistake",
+    "Suppose to Win",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T10:03:22": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T15:43:31": [
+    "B setup",
+    "Suppose to Win",
+    "Hard Case"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T10:35:20": [
+    "B setup",
+    "Heatmap Only",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-04T09:44:44": [
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-05T10:55:15": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-04T10:10:04": [
+    "A setup",
+    "Stat Loss",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-04T10:31:30": [
+    "A setup",
+    "Stat Loss",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-04T09:55:00": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-02T09:30:50": [
+    "A setup",
+    "Nuance",
+    "Stat Loss",
+    "6H+ Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-02T09:46:01": [
+    "A setup",
+    "Stat Loss",
+    "6H+ Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-02T09:46:27": [
+    "A+ Setup",
+    "Good Re-entry",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-09T09:30:07": [
+    "B setup",
+    "Mistake"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-09T09:31:28": [
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-29T09:37:47": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-09T09:48:58": [
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-08T09:33:05": [
+    "A setup",
+    "Stat Loss",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-08T09:47:56": [
+    "Mistake"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-10T09:41:35": [
+    "A+ Setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-10T10:03:26": [
+    "A+ Setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:41:13": [
+    "Bad SL Placement",
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:41:46": [
+    "B setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:49:16": [
+    "Bad SL Placement",
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:50:15": [
+    "B setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:53:20": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T09:52:51": [
+    "Mistake",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T10:57:33": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T10:58:20": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T10:58:40": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:31:28": [
+    "Mistake",
+    "Bad Reentry"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:31:41": [
+    "Mistake"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:33:48": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:37:53": [
+    "Random",
+    "Stuck 2 LVN"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:38:05": [
+    "Random",
+    "Stuck 2 LVN"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:43:26": [
+    "Mistake",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:51:38": [
+    "Mistake",
+    "Stuck 2 LVN",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:55:08": [
+    "Mistake",
+    "Stuck 2 LVN",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T09:56:58": [
+    "B setup",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-12T10:04:02": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T11:01:25": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T11:01:50": [
+    "Revenge Trading",
+    "Random"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T11:03:57": [
+    "Random",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-11T11:08:09": [
+    "A+ Setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-16T09:31:01": [
+    "B setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-16T09:37:06": [
+    "A+ Setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-16T09:40:22": [
+    "A+ Setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-23T14:09:50": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-23T14:10:30": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-23T14:12:10": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-23T14:13:23": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-23T14:09:33": [
+    "Random"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-25T09:40:15": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T09:51:40": [
+    "Mistake",
+    "A+ Setup",
+    "Bad Reentry",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T09:52:29": [
+    "Mistake",
+    "Stuck 2 LVN"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T10:00:29": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T10:00:45": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T10:01:23": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T09:31:49": [
+    "A+ Setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T09:54:04": [
+    "Mistake",
+    "Stuck 2 LVN",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-26T10:01:59": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-22T10:15:13": [
+    "Random",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-22T10:17:27": [
+    "Random",
+    "Revenge Trading",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-22T10:19:47": [
+    "Random",
+    "Revenge Trading",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-22T10:45:56": [
+    "B setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-22T10:47:41": [
+    "Mistake",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-11T09:46:03": [
+    "Random",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-11T09:49:10": [
+    "Random",
+    "Revenge Trading",
+    "LVN Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-11T10:13:29": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-11T10:15:18": [
+    "Random",
+    "Revenge Trading"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-12T09:38:39": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-29T10:18:28": [
+    "A setup",
+    "Stat Loss",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-29T10:19:34": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-04-30T09:40:17": [
+    "A setup",
+    "Choppy Market"
+  ],
+  "ReportHistory-600061014.xlsx::2026-04-30T09:45:19": [
+    "Mistake",
+    "B setup",
+    "Stuck 2 LVN"
+  ],
+  "ReportHistory-600061014.xlsx::2026-04-30T09:47:20": [
+    "Random",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600061014.xlsx::2026-04-30T09:47:56": [
+    "Random"
+  ],
+  "ReportHistory-600061014.xlsx::2026-04-30T10:04:14": [
+    "Random",
+    "Heatmap Only",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-01T09:30:30": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-05T09:31:12": [
+    "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-05-07T09:46:10": [
+    "Random"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-30T09:39:38": [
+    "Mistake"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-30T09:41:22": [
+    "Mistake",
+    "Stuck 2 LVN"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-30T09:42:29": [
+    "Mistake",
+    "Choppy Market"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-30T09:44:06": [
+    "A setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-06-30T09:52:16": [
+    "B setup"
+  ],
+  "ReportHistory-600061014.xlsx::2026-07-02T09:31:37": [
+    "Mistake",
+    "Stuck 2 LVN"
+  ]
+}

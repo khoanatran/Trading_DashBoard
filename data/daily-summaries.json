@@ -1,0 +1,34 @@
+{
+  "2026-06-01": {
+    "note": "(1) Multiple grey LVN - LVN keep getting outdated\n\n(2) 1m PA kept doing Cau Truc-type movement, making SL easily targeted",
+    "updatedAt": "2026-06-05T01:37:17.025Z"
+  },
+  "2026-06-09": {
+    "note": "- Heatmap crashed, no data on big trade on live",
+    "updatedAt": "2026-06-10T03:58:56.843Z"
+  },
+  "2026-06-08": {
+    "note": "- Missed a winning trade right at market open \n\n- Took a stat loss that at the level that produced 4R+ right after the loss\n\n- Tilted and doing stupid tradings",
+    "updatedAt": "2026-06-10T04:16:50.986Z"
+  },
+  "2026-06-12": {
+    "note": "- Made mistakes very early on (3 losses right at open), recouped those but with premature exit\n- Started forcing trades (no LVN; Stuck in 2 LVNs; etc.) and started digging holes.\n- Did not forgive myself for making stupid mistakes >> spiral into emotional trading",
+    "updatedAt": "2026-06-14T18:53:11.860Z"
+  },
+  "2026-06-22": {
+    "note": "- Ngủ quên, miss out on first half hour\n\n- Missed a setup. Chì chiết on ngủ quên mistake\n\n- Then forced trades",
+    "updatedAt": "2026-06-28T18:29:40.976Z"
+  },
+  "2026-05-11": {
+    "note": "- Missed out on a good trade at open (realized upon backtesting)\n\n- Hence all trades are to be skipped",
+    "updatedAt": "2026-06-29T01:16:08.965Z"
+  },
+  "2026-04-30": {
+    "note": "- Super Choppy Day: Multiple (1) LVN stacking with (2) Heatmap Level stacking (equally spacing)\n\n- No recent Heatmap level until 09:37am. Even then price still do not respect these level",
+    "updatedAt": "2026-06-29T22:37:43.520Z"
+  },
+  "2026-06-30": {
+    "note": "- Main problem were (1) entry while price bouncing between LVNs and (2) long when price is in downtrend.",
+    "updatedAt": "2026-06-30T20:21:39.029Z"
+  }
+}

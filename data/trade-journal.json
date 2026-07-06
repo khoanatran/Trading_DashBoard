@@ -1,0 +1,778 @@
+{
+  "ReportHistory-600061014.xlsx::2026-05-29T09:37:47": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-09T23:46:36.808Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-01T09:50:43": {
+    "note": "- Trade taken at later part of the first 30 min (2nd good week)\n\n- Small size (10 vs 35) due to reaching maximum losses",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-01T14:18:28.392Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-04T09:44:44": {
+    "note": "- LVN formed suddenly (1 minutes before trade occurs)\n- Based mainly off LVN. Heatmap looks rather random",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T12:55:28.827Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-04T09:52:23": {
+    "note": "- Legit LVN and Trap and Retest\n- Failed due to unexpected large sell market hitting right after entry",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-05T13:15:12.259Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T16:01:31": {
+    "note": "- Traded off an LVN that produced a winning trade prior\n\n- TP at least 5R (70 points) but missed out on at least 100 more points",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-05T21:07:18.070Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T15:43:31": {
+    "note": "- Upon reviewed, I found MISMATCHING LVN and Heatmap - 2 close but different levels\n\n- Got shaken out way due to moving BE early\n\n- Missed out on 100 points rally",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T21:07:22.723Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T15:15:16": {
+    "note": "- Was very emotional due to losing on a 4R+ trade for bad SL \n\n- Random dip buy",
+    "setupTags": [],
+    "rating": 0.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T21:07:26.562Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T15:15:54": {
+    "note": "- Was very emotional due to losing on a 4R+ trade for bad SL \n\n- Random dip buy",
+    "setupTags": [],
+    "rating": 0.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T21:07:25.001Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T15:06:50": {
+    "note": "- Bad SL placement in MT5. \n\n- Price has not SL in NQ chart and MT5 chart\n\n- Missed out on 100 points+ move",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T21:07:52.780Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T10:03:22": {
+    "note": "- Random Heatmap limit block\n\n- Trade was taken based off (LVN) and trap",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-10T00:17:26.906Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T10:35:20": {
+    "note": "- Poor LVN (see Entry)\n\n- Normally would not consider this a legit LVN\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-05T22:15:48.465Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-05T10:55:15": {
+    "note": "- LVN only, no heatmap confirmation",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-05T22:32:47.257Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-04T10:10:04": {
+    "note": "- Stat loss",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-07T21:34:35.907Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-04T10:31:30": {
+    "note": "- Heatmap limit block is temporary in LTF, but HTF looks decently good (although 40'+)\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps",
+      "Heatmap Limit Order"
+    ],
+    "rating": 3,
+    "ratingManual": true,
+    "updatedAt": "2026-06-29T23:22:46.582Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-04T09:55:00": {
+    "note": "- Random trade, only LVN \n- Heatmap Limit Block, no Trap",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-07T22:13:32.336Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-02T09:30:50": {
+    "note": "- Stuck between 2 LVN levels",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-07T23:15:48.910Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-02T09:46:01": {
+    "note": "- Good reentry after price final-retested",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "LVN"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-07T23:30:53.354Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-02T09:46:27": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Candle PA"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-07T23:26:18.934Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-09T09:30:07": {
+    "note": "- Heatmap Large Order Crashed so cant see Traps\n\n- Must have moved BE in this case\n\n- LVN invalidated right before entry\n\n- No Real Heatmap Limit Block",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "ratingManual": false,
+    "updatedAt": "2026-06-16T20:51:46.197Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-09T09:31:28": {
+    "note": "- Re-entry\n\n- Trade is already invalid due to lack of heatmap limit",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-09T23:04:55.207Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-09T09:48:58": {
+    "note": "- FS + Custom levels are one\n\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order"
+    ],
+    "rating": 1.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-10T03:58:12.467Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-08T09:33:05": {
+    "note": "- Stat loss on a 3 stars\n\n- Price broke this level and retest, created a winning trade later right next to this",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-10T04:14:52.168Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-08T09:47:56": {
+    "note": "- Enter a trade on a BE comeback\n\n- Price then SL after BE",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-14T19:29:27.503Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-10T09:41:35": {
+    "note": "- 3 stars + 5s delta candle PA final retest\n\n- Small size due to inside bar + only using FS LVN",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Candle PA",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 5,
+    "updatedAt": "2026-06-15T00:39:57.459Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-10T10:03:26": {
+    "note": "- Recent Heatmap Trigger\n\n- 3 star setup + 5s Delta confirmation = A+\n\n- Small size due to range + already 1 win",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps",
+      "Heatmap Limit Order",
+      "Candle PA"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-29T22:59:38.755Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:41:13": {
+    "note": "- B setup due to (using LVN FS only while its 2nd ISB day",
+    "setupTags": [
+      "Heatmap Traps",
+      "Heatmap Limit Order",
+      "LVN"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-12T01:07:21.760Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:41:46": {
+    "note": "- B setup due to (using LVN FS only while its 2nd ISB day\n\n- FS LVN even disappeared",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "LVN"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-12T01:19:29.495Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:49:16": {
+    "note": "- Only legit reason is Custom LVN align with FS LVN",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-15T00:38:38.219Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:50:15": {
+    "note": "- Trade was in favor but 1s rushed above BE to create loss\n\n- 1s rushed so fast indicator even messed up exit (see Entry) from 13.6 points actual loss to 29 points",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-12T01:25:03.493Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:52:51": {
+    "note": "- No LVN",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-14T19:29:56.785Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T09:53:20": {
+    "note": "- True random, emotional trade",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-12T01:32:06.374Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T10:57:33": {
+    "note": "- Wrong heatmap limit order\n\n- Mid LVN\n\n",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "ratingManual": true,
+    "updatedAt": "2026-06-12T04:47:55.006Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T10:58:20": {
+    "note": "- Wrong Heatmap level causing 2 random trades",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-12T04:44:33.451Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T10:58:40": {
+    "note": "- Random emotional trade\n\n- LVN is not even good, no FS LVN",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-12T04:50:17.056Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:31:28": {
+    "note": "- Bad entry - rushed/forced\n\n- No real final retest so entry and SL is messed up\n\n- Could have avoided this if wait for price to try to retest",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-14T19:31:03.629Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:31:41": {
+    "note": "- Bad entry - rushed/forced\n\n- No retest.  Entry & SL are messed up",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-14T19:31:11.133Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:32:08": {
+    "note": "- Rushed entry \n\n- poor confirmed change of direction\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-14T18:12:21.888Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:33:48": {
+    "note": "- Recent Heatmap\n\n- Early TP ~ 3R",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 3.5,
+    "updatedAt": "2026-06-29T22:58:49.647Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:37:53": {
+    "note": "- Stuck between 2 LVNs",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-14T18:45:12.886Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:38:05": {
+    "note": "- Took a long trade while price is stuck (bouncing back and forth) between 2 LVNs",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-14T18:51:14.796Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:43:26": {
+    "note": "- No LVN",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-14T18:49:10.299Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:51:38": {
+    "note": "- No final retest\n\n- Forced trade. No Custom LVN (4th ISB day)\n\n- Price stuck in multiple FS LVNs \n\n- Used FS LVN for trade\n",
+    "setupTags": [
+      "Heatmap Traps"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-14T19:11:13.762Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:55:08": {
+    "note": "- No final retest\n\n- No Custom LVN (4th ISB day)\n\n- Stuck in multiple FS LVN\n\n- Entry right when price hit an overhead LVN\n\n",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-14T19:11:06.165Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T09:56:58": {
+    "note": "- Used expired daily LVN\n\n- Exit prematurely",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-14T19:14:04.336Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-12T10:04:02": {
+    "note": "- Recent Heatmap",
+    "setupTags": [
+      "Final Retest at Recent Level",
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3.5,
+    "updatedAt": "2026-06-29T22:58:02.580Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T11:03:57": {
+    "note": "- straight up betting price will do a reversal, and it did\n\n- pure random trade",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-15T00:05:22.786Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T11:01:25": {
+    "note": "- Stat Loss",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Final Retest at Recent Level",
+      "LVN"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-14T23:54:24.307Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T11:01:50": {
+    "note": "- No real retest, could have been a loss twice as big",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-15T00:01:27.887Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-11T11:08:09": {
+    "note": "- Recent Heatmap\n\n- 4.5* instead of 5* due to Recent level W/O RETEST and PREMATURE EXIT\n\n- Missed out on 84 points\n",
+    "setupTags": [
+      "Final Retest at Recent Level",
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Candle PA"
+    ],
+    "rating": 4.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-29T22:59:11.076Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-16T09:31:01": {
+    "note": "- No trap upon review\n\n- B setup instead of A upon review",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-16T19:12:09.869Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-16T09:37:06": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-16T19:31:14.547Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-16T09:40:22": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Final Retest at Recent Level"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-16T20:00:07.754Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-25T09:40:15": {
+    "note": "- Exit prematurely (40p uncaptured)\n\n- Wouldn't have seen the level if it had not been for the indicator developed yesterday\n\n- Flagged for Heatmap development (nuance)\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T22:56:45.664Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T09:51:40": {
+    "note": "- Fat finger mistake. Entered short instead of Long\n\n- Supposed to win or at worst BE but took a loss and tilt",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Candle PA"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-28T05:30:58.198Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T09:52:29": {
+    "note": "- 5m ISB with 4+ candles > Avoidable\n\n- Entered on a BE test\n\n- Price in downtrend. Must have waited until uptrend \n\n",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:49:03.515Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T09:31:49": {
+    "note": "- Recent Heatmap\n\n- LVN = OHLC\n\n- Beautiful trade. Good TP",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "Candle PA"
+    ],
+    "rating": 4,
+    "updatedAt": "2026-06-29T22:56:21.798Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T09:54:04": {
+    "note": "- Entry right at 2nd LVN \n\n- 5m ISB with 4+ candles > Avoidable",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:48:37.628Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T10:01:59": {
+    "note": "",
+    "setupTags": [
+      "Heatmap Traps",
+      "Heatmap Limit Order"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:54:01.063Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T10:01:23": {
+    "note": "",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:54:02.720Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T10:00:45": {
+    "note": "",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:54:04.304Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-26T10:00:29": {
+    "note": "",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T05:54:06.015Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-22T10:15:13": {
+    "note": "- 1x 4R already delivered. Missed to to overslept",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-28T20:20:36.409Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-22T10:17:27": {
+    "note": "- 1x 4R already delivered. Missed to to overslept",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-28T20:20:40.059Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-22T10:19:47": {
+    "note": "",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-28T20:33:27.702Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-22T10:45:56": {
+    "note": "- Slipped SL\n\n- Used OHLC instead of LVN but NQ already provided a 4R+ trade earlier using LVN",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T21:13:11.933Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-22T10:47:41": {
+    "note": "- Random entry\n\n- Price then created a legit trade but entry made it a level of high loss probability\n\n- Worst case here was BE if traded correctly",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-28T21:15:55.856Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-11T09:46:03": {
+    "note": "- Heatmap Line + Trap only\n\n- Trade taken when 1x 4R already delivered at market open",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-29T01:20:51.299Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-11T09:49:10": {
+    "note": "- Purely random off LVN",
+    "setupTags": [
+      "LVN"
+    ],
+    "rating": 1,
+    "updatedAt": "2026-06-29T01:23:50.922Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-12T09:38:39": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T02:00:10.367Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-29T10:18:28": {
+    "note": "- Recent Heatmap Trigger",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T22:59:58.382Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-29T10:19:34": {
+    "note": "- Recent heatmap trigger",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T22:59:52.057Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-04-30T09:40:17": {
+    "note": "- Stacked (1) LVN and (2) Heatmap at the same time",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T21:45:53.244Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-04-30T09:45:19": {
+    "note": "- Worst is BE after price reached another LVN + Heatmap\n\n- Held too long",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-29T21:56:48.876Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-04-30T09:47:20": {
+    "note": "- No LVN\n\n",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-29T22:22:41.012Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-04-30T10:04:14": {
+    "note": "- Heatmap level is recent but no real setup here",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-06-29T22:50:26.295Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-01T09:30:30": {
+    "note": "- OHLC level\n\n- TP at 2R 30p+\n",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-30T00:14:03.811Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-05T09:31:12": {
+    "note": "- Early Entry",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-30T00:37:39.087Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-05-07T09:46:10": {
+    "note": "-Pure random trade",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-30T04:50:21.138Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-30T09:39:38": {
+    "note": "- Upon review saw that price was in a downtrend and I took a long.\n\n- Heatmap and LVN appeared suddenly catching me by surprise\n\n- Was a little hesitant but took the trade anyway due to meeting all requirements\n\n\n\n",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-30T20:22:07.525Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-30T09:41:22": {
+    "note": "- Price Bouncing in 2 LVN",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-30T19:59:00.716Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-30T09:42:29": {
+    "note": "- Main problem was not moving BE as price breaking down thru upper LVN creating downtrend\n\n- Was not patient enough\n\n- Entry is a little rush but acceptable\n\n",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-06-30T20:03:11.036Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-30T09:44:06": {
+    "note": "- Stat Loss. Choppy Market",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-06-30T20:08:40.231Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-06-30T09:52:16": {
+    "note": "- TP at 2R due to entry-risk over 30 points (34p)\n\n- 2.5 star due to LVN expired just before the entry",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-06-30T20:20:48.634Z"
+  }
+}

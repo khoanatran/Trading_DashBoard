@@ -1,0 +1,31 @@
+QUICK START GUIDE
+=================
+
+1. Open a terminal/command prompt in this directory
+
+2. Install dependencies:
+   npm install
+
+3. Start the development server:
+   npm run dev
+
+   OR double-click START.bat (Windows)
+
+4. Open your browser to: http://localhost:3000
+
+5. Click "Upload trade_logs.txt" and select your trade_logs.txt file
+
+6. Explore your trading performance!
+
+FEATURES:
+- Daily, Weekly, Monthly, Yearly breakdowns
+- Win/Loss charts and statistics
+- Average R:R ratio tracking
+- Entry/Exit price visualization
+- Average risk analysis
+- Equity curve
+- Profit factor, Sharpe ratio, Max drawdown
+- Detailed trade-by-trade table
+
+The app uses Next.js 15 with hot reload - any code changes will automatically refresh!
+
