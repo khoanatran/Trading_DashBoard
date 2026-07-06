@@ -7,7 +7,7 @@ const execFileAsync = promisify(execFile)
 
 const REPO_ROOT = process.cwd()
 const REMOTE_URL =
-  process.env.GITHUB_BACKUP_REMOTE ?? 'https://github.com/khoanatran/Trading.git'
+  process.env.GITHUB_BACKUP_REMOTE ?? 'https://github.com/khoanatran/Trading_DashBoard.git'
 const BRANCH = process.env.GITHUB_BACKUP_BRANCH ?? 'main'
 const ENABLED = process.env.GITHUB_BACKUP_ENABLED !== 'false'
 const DEBOUNCE_MS = Number(process.env.GITHUB_BACKUP_DEBOUNCE_MS ?? 8000)

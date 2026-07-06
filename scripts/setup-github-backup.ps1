@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
   One-time setup: initialize git repo and push full dashboard backup to GitHub.
-  Repo: https://github.com/khoanatran/Trading
+  Repo: https://github.com/khoanatran/Trading_DashBoard
 
   Prerequisites:
   1. Git for Windows — https://git-scm.com/download/win
@@ -39,7 +39,7 @@ if (-not $git) {
   exit 1
 }
 
-$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading.git' }
+$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading_DashBoard.git' }
 $branch = if ($env:GITHUB_BACKUP_BRANCH) { $env:GITHUB_BACKUP_BRANCH } else { 'main' }
 
 Write-Host "Using git: $git"

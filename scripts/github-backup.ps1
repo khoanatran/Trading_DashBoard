@@ -26,7 +26,7 @@ if (-not $git) {
   Write-Error 'Git not found. Install Git for Windows or set GIT_PATH.'
 }
 
-$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading.git' }
+$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading_DashBoard.git' }
 $branch = if ($env:GITHUB_BACKUP_BRANCH) { $env:GITHUB_BACKUP_BRANCH } else { 'main' }
 
 if (-not (Test-Path '.git')) {
