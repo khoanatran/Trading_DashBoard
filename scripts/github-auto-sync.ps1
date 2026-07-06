@@ -16,22 +16,32 @@ $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Pa
 $DataDir = Join-Path $ProjectRoot 'data'
 $BackupScript = Join-Path $ProjectRoot 'scripts\github-backup.ps1'
 $LogFile = Join-Path $ProjectRoot 'github-auto-sync.log'
+$PollSeconds = 5
 $DebounceMs = 8000
 
 function Write-Log {
   param([string]$Message)
-  $line = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $Message"
+  $line = '[' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') + '] ' + $Message
   Add-Content -Path $LogFile -Value $line -Encoding utf8
   Write-Host $line
 }
 
+function Get-DataFingerprint {
+  if (-not (Test-Path $DataDir)) { return '' }
+  $parts = Get-ChildItem -Path $DataDir -Recurse -File -ErrorAction SilentlyContinue |
+    Sort-Object FullName |
+    ForEach-Object { $_.FullName + ':' + $_.LastWriteTimeUtc.Ticks + ':' + $_.Length }
+  return ($parts -join '|')
+}
+
 function Invoke-Backup {
   param([string]$Reason)
-  Write-Log "Change detected ($Reason) — running backup..."
+  Write-Log ('Change detected (' + $Reason + ') - running backup...')
   try {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $BackupScript 2>&1 | ForEach-Object { Write-Log $_ }
+    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $BackupScript 2>&1
+    foreach ($line in $output) { Write-Log ($line.ToString()) }
   } catch {
-    Write-Log "Backup error: $_"
+    Write-Log ('Backup error: ' + $_.Exception.Message)
   }
 }
 
@@ -39,56 +49,32 @@ if (-not (Test-Path $DataDir)) {
   New-Item -ItemType Directory -Path $DataDir -Force | Out-Null
 }
 
-Write-Log "GitHub auto-sync started for $ProjectRoot"
-Write-Log "Watching: $DataDir"
+Write-Log ('GitHub auto-sync started for ' + $ProjectRoot)
+Write-Log ('Watching: ' + $DataDir)
 
-$timer = $null
+$lastFingerprint = Get-DataFingerprint
+$pendingAt = $null
 $pendingReason = 'data change'
 
-function Schedule-Backup {
-  param([string]$Reason)
-  $script:pendingReason = $Reason
-  if ($script:timer) {
-    $script:timer.Stop()
-    $script:timer.Dispose()
-  }
-  $script:timer = New-Object System.Timers.Timer
-  $script:timer.Interval = $DebounceMs
-  $script:timer.AutoReset = $false
-  Register-ObjectEvent -InputObject $script:timer -EventName Elapsed -Action {
-    Invoke-Backup -Reason $using:pendingReason
-  } | Out-Null
-  $script:timer.Start()
-}
-
-$watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = $DataDir
-$watcher.IncludeSubdirectories = $true
-$watcher.EnableRaisingEvents = $true
-$watcher.NotifyFilter = [IO.NotifyFilters]'FileName, LastWrite, Size, CreationTime'
-
-Register-ObjectEvent -InputObject $watcher -EventName Changed -Action {
-  Schedule-Backup -Reason $Event.SourceEventArgs.Name
-} | Out-Null
-
-Register-ObjectEvent -InputObject $watcher -EventName Created -Action {
-  Schedule-Backup -Reason $Event.SourceEventArgs.Name
-} | Out-Null
-
-Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action {
-  Schedule-Backup -Reason $Event.SourceEventArgs.Name
-} | Out-Null
-
-Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action {
-  Schedule-Backup -Reason $Event.SourceEventArgs.Name
-} | Out-Null
-
-Write-Log "Watcher active (debounce ${DebounceMs}ms). Press Ctrl+C to stop."
+Write-Log ('Watcher active (poll ' + $PollSeconds + 's, debounce ' + $DebounceMs + 'ms). Press Ctrl+C to stop.')
 
 try {
-  while ($true) { Start-Sleep -Seconds 3600 }
+  while ($true) {
+    Start-Sleep -Seconds $PollSeconds
+    $currentFingerprint = Get-DataFingerprint
+    if ($currentFingerprint -ne $lastFingerprint) {
+      $lastFingerprint = $currentFingerprint
+      $pendingAt = Get-Date
+      $pendingReason = 'data change'
+      Write-Log 'Pending backup scheduled...'
+    }
+
+    if ($pendingAt -and (((Get-Date) - $pendingAt).TotalMilliseconds -ge $DebounceMs)) {
+      Invoke-Backup -Reason $pendingReason
+      $pendingAt = $null
+      $lastFingerprint = Get-DataFingerprint
+    }
+  }
 } finally {
-  $watcher.EnableRaisingEvents = $false
-  $watcher.Dispose()
   Write-Log 'GitHub auto-sync stopped.'
 }
