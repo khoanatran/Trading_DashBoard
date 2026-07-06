@@ -42,7 +42,7 @@ import { fetchFlags, setDayFlag, setTradeFlag } from '@/lib/trade-flags'
 import { syncTradeExportToDisk } from '@/lib/sync-trade-export'
 import { getTradeExportFilePath } from '@/lib/trade-export-path'
 import { remigrateTradeMetadataOnServer } from '@/lib/sync-trade-metadata'
-import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
+import { fetchTradesSnapshotFromServer, syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
 import { clearAllCaches } from '@/utils/mediaCache'
 
 type DateRange = { from?: Date; to?: Date }
@@ -80,17 +80,37 @@ export default function Home() {
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
 
-  // Restore saved trades from local storage on launch
+  // Restore trades: browser localStorage first, then server snapshot (Git-synced data/)
   useEffect(() => {
-    const stored = loadStoredTrades()
-    if (stored && stored.trades.length > 0) {
-      setTrades(stored.trades)
-      if (stored.lastImportedFile) {
-        setFileName(stored.lastImportedFile)
+    let cancelled = false
+
+    const restoreTrades = async () => {
+      const stored = loadStoredTrades()
+      if (stored && stored.trades.length > 0) {
+        if (!cancelled) {
+          setTrades(stored.trades)
+          if (stored.lastImportedFile) {
+            setFileName(stored.lastImportedFile)
+          }
+          setViewMode('overview')
+        }
+        if (!cancelled) setPersistReady(true)
+        return
       }
-      setViewMode('overview')
+
+      const snapshot = await fetchTradesSnapshotFromServer()
+      if (!cancelled && snapshot.ok && snapshot.trades.length > 0) {
+        setTrades(snapshot.trades)
+        setFileName('Synced from GitHub')
+        setViewMode('overview')
+      }
+      if (!cancelled) setPersistReady(true)
     }
-    setPersistReady(true)
+
+    void restoreTrades()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   // Load saved trade tags for classification rules (e.g. Random / Bad SL Placement → Loss)
