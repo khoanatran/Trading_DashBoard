@@ -30,5 +30,9 @@
   "2026-06-30": {
     "note": "- Main problem were (1) entry while price bouncing between LVNs and (2) long when price is in downtrend.",
     "updatedAt": "2026-06-30T20:21:39.029Z"
+  },
+  "2026-06-23": {
+    "note": "- Setting up copier between 100K and 200K acct",
+    "updatedAt": "2026-07-06T17:13:40.132Z"
   }
 }
