@@ -42,8 +42,13 @@ import { fetchFlags, setDayFlag, setTradeFlag } from '@/lib/trade-flags'
 import { syncTradeExportToDisk } from '@/lib/sync-trade-export'
 import { getTradeExportFilePath } from '@/lib/trade-export-path'
 import { remigrateTradeMetadataOnServer } from '@/lib/sync-trade-metadata'
+<<<<<<< Updated upstream
 import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
 import { restoreDashboardFromServer } from '@/lib/restore-from-server'
+=======
+import { fetchTradesSnapshotFromServer, syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
+import { pullFromGitHub } from '@/lib/sync-from-github'
+>>>>>>> Stashed changes
 import { clearAllCaches } from '@/utils/mediaCache'
 
 type DateRange = { from?: Date; to?: Date }
@@ -81,6 +86,7 @@ export default function Home() {
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
 
+<<<<<<< Updated upstream
   // Restore trades + journal from server snapshot (after GitHub pull on other machines)
   useEffect(() => {
     let cancelled = false
@@ -110,6 +116,69 @@ export default function Home() {
         setViewMode('overview')
       }
       setPersistReady(true)
+=======
+  // On launch: pull from GitHub, merge trades, refresh metadata
+  useEffect(() => {
+    let cancelled = false
+
+    const restoreTrades = async () => {
+      const pull = await pullFromGitHub()
+      if (!cancelled && pull.dataChanged) {
+        clearAllCaches()
+        setMediaRefreshKey(key => key + 1)
+        console.log('GitHub sync: updated data files', pull.changedFiles)
+      } else if (!cancelled && pull.pulled) {
+        console.log('GitHub sync:', pull.message)
+      }
+
+      const stored = loadStoredTrades()
+      const snapshot = await fetchTradesSnapshotFromServer()
+
+      let finalTrades: Trade[] = []
+      let sourceName = ''
+
+      if (stored && stored.trades.length > 0 && snapshot.ok && snapshot.trades.length > 0) {
+        const { merged, added } = mergeImportedTrades(snapshot.trades, stored.trades)
+        finalTrades = merged
+        if (added > 0 || snapshot.trades.length > stored.trades.length) {
+          sourceName = 'Synced from GitHub'
+        } else {
+          sourceName = stored.lastImportedFile ?? 'Synced from GitHub'
+        }
+      } else if (stored && stored.trades.length > 0) {
+        finalTrades = stored.trades
+        sourceName = stored.lastImportedFile ?? ''
+      } else if (snapshot.ok && snapshot.trades.length > 0) {
+        finalTrades = snapshot.trades
+        sourceName = 'Synced from GitHub'
+      }
+
+      if (!cancelled && finalTrades.length > 0) {
+        setTrades(finalTrades)
+        setFileName(sourceName)
+        setViewMode('overview')
+      }
+
+      if (!cancelled) {
+        try {
+          const [tagsRes, flagsRes] = await Promise.all([fetch('/api/trade-tags'), fetch('/api/flags')])
+          if (tagsRes.ok) {
+            const data = await tagsRes.json()
+            if (data.mapping && typeof data.mapping === 'object') {
+              setTradeTagsFromJournal(data.mapping)
+            }
+          }
+          if (flagsRes.ok) {
+            const data = await flagsRes.json()
+            setFlaggedDays(data.days ?? {})
+            setFlaggedTrades(data.trades ?? {})
+          }
+        } catch {
+          // Metadata refresh is optional on startup
+        }
+        setPersistReady(true)
+      }
+>>>>>>> Stashed changes
     }
 
     void initFromServer()
