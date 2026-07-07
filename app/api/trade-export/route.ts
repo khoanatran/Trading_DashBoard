@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeTradeExportFile } from '@/lib/trade-export-server'
+import { saveTradesSnapshot } from '@/lib/trades-snapshot-server'
 import type { Trade } from '@/utils/logParser'
 
-/** POST /api/trade-export — write all trades to C:\SierraChart\Trade History for SC\trade-export-ET.txt */
+/** POST /api/trade-export — write trades to Sierra Chart export + sync snapshot to GitHub */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -13,11 +14,14 @@ export async function POST(request: NextRequest) {
     }
 
     const { filePath, tradeCount } = await writeTradeExportFile(trades)
+    const { updatedAt } = await saveTradesSnapshot(trades)
 
     return NextResponse.json({
       success: true,
       path: filePath,
       tradeCount,
+      syncedToGitHub: true,
+      updatedAt,
     })
   } catch (error) {
     console.error('Failed to write trade export:', error)

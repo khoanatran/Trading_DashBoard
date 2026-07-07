@@ -31,17 +31,22 @@ function Test-RebaseInProgress {
   return (Test-Path $rebaseMerge) -or (Test-Path $rebaseApply)
 }
 
+function Get-DefaultRemote {
+  if ($env:GITHUB_BACKUP_REMOTE) { return $env:GITHUB_BACKUP_REMOTE }
+  return 'https://github.com/khoanatran/Trading_DashBoard.git'
+}
+
 $git = Find-Git
 if (-not $git) {
-  Write-Host 'Git not found — skipping pull. Install Git for Windows to enable sync.' -ForegroundColor Yellow
+  Write-Host 'Git not found - skipping pull. Install Git for Windows to enable sync.' -ForegroundColor Yellow
   exit 0
 }
 
-$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading.git' }
+$remote = Get-DefaultRemote
 $branch = if ($env:GITHUB_BACKUP_BRANCH) { $env:GITHUB_BACKUP_BRANCH } else { 'main' }
 
 if (-not (Test-Path '.git')) {
-  Write-Host 'No git repo — run npm run github:setup first.' -ForegroundColor Yellow
+  Write-Host 'No git repo - run npm run github:setup first.' -ForegroundColor Yellow
   exit 0
 }
 
@@ -58,44 +63,51 @@ $gitEmail = if ($env:GITHUB_BACKUP_USER_EMAIL) { $env:GITHUB_BACKUP_USER_EMAIL }
 $remotes = & $git remote 2>$null
 if ($remotes -notcontains 'origin') {
   & $git remote add origin $remote
-} else {
-  & $git remote set-url origin $remote
 }
 
-Write-Host "Fetching dashboard data from $remote ($branch)..." -ForegroundColor Cyan
+Write-Host "Fetching dashboard data from origin ($branch)..." -ForegroundColor Cyan
 & $git fetch origin $branch 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
-  Write-Host 'Fetch failed — continuing with local data.' -ForegroundColor Yellow
+  Write-Host 'Fetch failed - continuing with local data.' -ForegroundColor Yellow
   exit 0
 }
 
 $remoteRef = "origin/$branch"
 
-# Commit any local data changes first so they are not lost
+$behindRaw = & $git rev-list --count "HEAD..$remoteRef" 2>$null
+$behind = 0
+if ($behindRaw) { [void][int]::TryParse($behindRaw.Trim(), [ref]$behind) }
+
+if ($behind -gt 0) {
+  Write-Host "Behind $behind commit(s) - updating data/ from GitHub..." -ForegroundColor Cyan
+  & $git checkout $remoteRef -- data/ 2>&1 | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host 'Data checkout failed - continuing with local data.' -ForegroundColor Yellow
+    exit 0
+  }
+  & $git add data/ 2>$null
+  Write-Host 'Dashboard data updated from GitHub.' -ForegroundColor Green
+  exit 0
+}
+
+$changedFiles = & $git diff --name-only HEAD $remoteRef -- data/ 2>$null
+$fileList = @($changedFiles | Where-Object { $_.Trim() })
+if ($fileList.Count -gt 0) {
+  Write-Host "Updating $($fileList.Count) data file(s) from GitHub..." -ForegroundColor Cyan
+  & $git checkout $remoteRef -- data/ 2>&1 | Out-Null
+  if ($LASTEXITCODE -eq 0) {
+    & $git add data/ 2>$null
+    Write-Host 'Dashboard data updated from GitHub.' -ForegroundColor Green
+    exit 0
+  }
+}
+
 $dataStatus = & $git status --porcelain -- data/ 2>$null
 if ($dataStatus) {
   $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-  Write-Host 'Saving local dashboard data before pull...' -ForegroundColor Yellow
+  Write-Host 'Saving local dashboard data...' -ForegroundColor Yellow
   & $git add data/ 2>$null
-  & $git commit -m "Dashboard data before pull ($stamp)" 2>$null
+  & $git commit -m "Dashboard data ($stamp)" 2>$null
 }
 
-# Pull only data/ from remote — avoids source-code merge conflicts on launch
-$changedFiles = & $git diff --name-only HEAD $remoteRef -- data/ 2>$null
-$fileList = @($changedFiles | Where-Object { $_.Trim() })
-if ($fileList.Count -eq 0) {
-  Write-Host 'Dashboard data already up to date.' -ForegroundColor Green
-  exit 0
-}
-
-Write-Host "Updating $($fileList.Count) data file(s) from GitHub..." -ForegroundColor Cyan
-& $git checkout $remoteRef -- data/ 2>&1 | Out-Null
-if ($LASTEXITCODE -ne 0) {
-  Write-Host 'Data checkout failed — continuing with local data.' -ForegroundColor Yellow
-  exit 0
-}
-
-# Stage updated data so the next auto-backup can push if needed
-& $git add data/ 2>$null
-
-Write-Host 'Dashboard data updated from GitHub.' -ForegroundColor Green
+Write-Host 'Dashboard data already up to date.' -ForegroundColor Green

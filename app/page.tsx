@@ -200,7 +200,7 @@ export default function Home() {
     const result = await syncTradeExportToDisk(trades)
     if (result.ok) {
       alert(
-        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}`
+        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}\n\nAlso synced to GitHub for your other computers.`
       )
     } else {
       alert('Failed to write trade export file. Check the server console for details.')
@@ -256,8 +256,25 @@ export default function Home() {
     if (!persistReady || trades.length === 0) return
     const timer = setTimeout(() => {
       void syncTradesSnapshotToServer(trades)
-    }, 2000)
+    }, 500)
     return () => clearTimeout(timer)
+  }, [trades, persistReady])
+
+  // Flush trades to server snapshot when closing the browser tab
+  useEffect(() => {
+    if (!persistReady || trades.length === 0) return
+
+    const flushSnapshot = () => {
+      void fetch('/api/trades-snapshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trades }),
+        keepalive: true,
+      })
+    }
+
+    window.addEventListener('beforeunload', flushSnapshot)
+    return () => window.removeEventListener('beforeunload', flushSnapshot)
   }, [trades, persistReady])
 
   // Dynamic greeting based on time of day (client-side only to avoid hydration mismatch)
@@ -321,6 +338,7 @@ export default function Home() {
       )
 
       void syncTradeMetadata(merged)
+      void syncTradesSnapshotToServer(merged)
       void syncTradeExportToDisk(merged).then(result => {
         if (result.ok) {
           console.log(

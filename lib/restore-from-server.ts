@@ -3,7 +3,7 @@ import {
   saveStoredTrades,
   mergeImportedTrades,
 } from '@/lib/trade-storage'
-import type { Trade } from '@/utils/logParser'
+import { fetchTradesSnapshotFromServer } from '@/lib/sync-trades-snapshot'
 
 export interface RestoreTradesResult {
   ok: boolean
@@ -17,21 +17,22 @@ export interface RestoreJournalResult {
   entryCount: number
 }
 
-async function fetchTradesSnapshotFromServer(): Promise<Trade[] | null> {
-  try {
-    const res = await fetch('/api/trades-snapshot')
-    if (!res.ok) return null
-    const data = await res.json()
-    return Array.isArray(data.trades) ? data.trades : null
-  } catch {
-    return null
+function isServerSnapshotNewer(
+  serverUpdatedAt: string | null,
+  localUpdatedAt: string | null,
+  serverCount: number,
+  localCount: number
+): boolean {
+  if (serverUpdatedAt && localUpdatedAt) {
+    return serverUpdatedAt > localUpdatedAt
   }
+  return serverCount > localCount
 }
 
 /** Merge server trades snapshot into browser localStorage (for multi-computer sync). */
 export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesResult> {
-  const serverTrades = await fetchTradesSnapshotFromServer()
-  if (!serverTrades || serverTrades.length === 0) {
+  const snapshot = await fetchTradesSnapshotFromServer()
+  if (!snapshot.ok || snapshot.trades.length === 0) {
     const stored = loadStoredTrades()
     return {
       ok: true,
@@ -43,6 +44,7 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
 
   const stored = loadStoredTrades()
   const localTrades = stored?.trades ?? []
+  const serverTrades = snapshot.trades
 
   if (localTrades.length === 0) {
     saveStoredTrades(serverTrades, stored?.lastImportedFile ?? null)
@@ -55,13 +57,22 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
   }
 
   const { merged, added } = mergeImportedTrades(localTrades, serverTrades)
-  if (added > 0) {
+  const serverIsNewer = isServerSnapshotNewer(
+    snapshot.updatedAt,
+    stored?.updatedAt ?? null,
+    serverTrades.length,
+    localTrades.length
+  )
+  const shouldUpdate =
+    added > 0 || merged.length > localTrades.length || serverIsNewer
+
+  if (shouldUpdate) {
     saveStoredTrades(merged, stored?.lastImportedFile ?? null)
     return {
       ok: true,
       restored: true,
       tradeCount: merged.length,
-      added,
+      added: Math.max(added, merged.length - localTrades.length),
     }
   }
 
