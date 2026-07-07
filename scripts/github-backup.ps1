@@ -58,5 +58,15 @@ if (-not $status -and $ahead -eq 0) {
   exit 0
 }
 
+& $git fetch origin $branch 2>$null
+$behindRaw = & $git rev-list --count "HEAD..origin/$branch" 2>$null
+$behind = 0
+if ($behindRaw) { [void][int]::TryParse($behindRaw.Trim(), [ref]$behind) }
+if ($behind -gt 0) {
+  Write-Host "Merging $behind remote commit(s) before push..."
+  & $git merge "origin/$branch" -m "Dashboard sync merge (auto)" -X ours 2>$null
+  if ($LASTEXITCODE -ne 0) { & $git merge --abort 2>$null }
+}
+
 & $git push -u origin $branch
 Write-Host 'Pushed to GitHub.'

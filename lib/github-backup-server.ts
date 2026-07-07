@@ -254,6 +254,34 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
     }
 
     try {
+      await runGit(git, ['fetch', 'origin', BRANCH])
+    } catch {
+      // push may still succeed if fetch fails transiently
+    }
+
+    const behindStatus = await runGit(
+      git,
+      ['rev-list', '--count', `HEAD..origin/${BRANCH}`],
+      { allowFailure: true }
+    )
+    const behind = Number.parseInt(behindStatus.stdout.trim(), 10) || 0
+
+    if (behind > 0) {
+      try {
+        await runGit(git, [
+          'merge',
+          `origin/${BRANCH}`,
+          '-m',
+          'Dashboard sync merge (auto)',
+          '-X',
+          'ours',
+        ])
+      } catch {
+        await runGit(git, ['merge', '--abort'], { allowFailure: true })
+      }
+    }
+
+    try {
       await runGit(git, ['push', '-u', 'origin', BRANCH])
     } catch (pushError) {
       const message =
