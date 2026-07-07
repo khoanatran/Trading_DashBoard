@@ -146,8 +146,6 @@ async function ensureRepository(git: string): Promise<void> {
   const remotes = await runGit(git, ['remote'], { allowFailure: true })
   if (!remotes.stdout.split('\n').map(line => line.trim()).includes('origin')) {
     await runGit(git, ['remote', 'add', 'origin', REMOTE_URL])
-  } else {
-    await runGit(git, ['remote', 'set-url', 'origin', REMOTE_URL])
   }
 }
 
@@ -227,10 +225,26 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
     await runGit(git, ['add', '-A'])
 
     const status = await runGit(git, ['status', '--porcelain'])
-    if (!status.stdout.trim()) {
+    let committed = false
+
+    if (status.stdout.trim()) {
+      const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
+      const commitMessage = `Dashboard backup: ${reason ?? 'sync'} (${stamp})`
+      await runGit(git, ['commit', '-m', commitMessage])
+      committed = true
+    }
+
+    const aheadStatus = await runGit(
+      git,
+      ['rev-list', '--count', `origin/${BRANCH}..HEAD`],
+      { allowFailure: true }
+    )
+    const ahead = Number.parseInt(aheadStatus.stdout.trim(), 10) || 0
+
+    if (!committed && ahead === 0) {
       const result: GitHubBackupResult = {
         ok: true,
-        message: 'Nothing to commit',
+        message: 'Nothing to commit or push',
         at,
         committed: false,
         pushed: false,
@@ -239,9 +253,33 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
       return result
     }
 
-    const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
-    const commitMessage = `Dashboard backup: ${reason ?? 'sync'} (${stamp})`
-    await runGit(git, ['commit', '-m', commitMessage])
+    try {
+      await runGit(git, ['fetch', 'origin', BRANCH])
+    } catch {
+      // push may still succeed if fetch fails transiently
+    }
+
+    const behindStatus = await runGit(
+      git,
+      ['rev-list', '--count', `HEAD..origin/${BRANCH}`],
+      { allowFailure: true }
+    )
+    const behind = Number.parseInt(behindStatus.stdout.trim(), 10) || 0
+
+    if (behind > 0) {
+      try {
+        await runGit(git, [
+          'merge',
+          `origin/${BRANCH}`,
+          '-m',
+          'Dashboard sync merge (auto)',
+          '-X',
+          'ours',
+        ])
+      } catch {
+        await runGit(git, ['merge', '--abort'], { allowFailure: true })
+      }
+    }
 
     try {
       await runGit(git, ['push', '-u', 'origin', BRANCH])
@@ -252,7 +290,7 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
         ok: false,
         message: `Committed locally but push failed: ${message}`,
         at,
-        committed: true,
+        committed: committed || ahead > 0,
         pushed: false,
       }
       lastResult = result
@@ -263,7 +301,7 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
       ok: true,
       message: `Pushed to ${REMOTE_URL} (${BRANCH})`,
       at,
-      committed: true,
+      committed,
       pushed: true,
     }
     lastResult = result
@@ -351,17 +389,32 @@ export async function runGitHubPull(): Promise<GitHubPullResult> {
     )
     const behind = Number.parseInt(behindStatus.stdout.trim(), 10) || 0
 
-    const dataStatus = await runGit(
-      git,
-      ['status', '--porcelain', '--', 'data/'],
-      { allowFailure: true }
-    )
-    if (dataStatus.stdout.trim()) {
-      const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
-      await runGit(git, ['add', 'data/'])
-      await runGit(git, ['commit', '-m', `Dashboard data before pull (${stamp})`], {
-        allowFailure: true,
-      })
+    if (behind > 0) {
+      try {
+        await runGit(git, ['checkout', `origin/${BRANCH}`, '--', 'data/'])
+        await runGit(git, ['add', 'data/'])
+      } catch (pullError) {
+        const message = pullError instanceof Error ? pullError.message : String(pullError)
+        const result: GitHubPullResult = {
+          ok: false,
+          message: `Data pull failed: ${message}`,
+          at,
+          pulled: false,
+          behind,
+        }
+        lastPullResult = result
+        return result
+      }
+
+      const result: GitHubPullResult = {
+        ok: true,
+        message: `Updated data/ from ${REMOTE_URL} (${BRANCH}) — ${behind} commit(s) behind`,
+        at,
+        pulled: true,
+        behind,
+      }
+      lastPullResult = result
+      return result
     }
 
     const changedFiles = await runGit(

@@ -1,17 +1,24 @@
 import type { Trade } from '@/utils/logParser'
 
-export async function fetchTradesSnapshotFromServer(): Promise<{
+export interface TradesSnapshotResponse {
   ok: boolean
   trades: Trade[]
-}> {
+  updatedAt: string | null
+}
+
+export async function fetchTradesSnapshotFromServer(): Promise<TradesSnapshotResponse> {
   try {
     const res = await fetch('/api/trades-snapshot')
-    if (!res.ok) return { ok: false, trades: [] }
+    if (!res.ok) return { ok: false, trades: [], updatedAt: null }
     const data = await res.json()
-    if (!Array.isArray(data.trades)) return { ok: false, trades: [] }
-    return { ok: true, trades: data.trades as Trade[] }
+    if (!Array.isArray(data.trades)) return { ok: false, trades: [], updatedAt: null }
+    return {
+      ok: true,
+      trades: data.trades as Trade[],
+      updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : null,
+    }
   } catch {
-    return { ok: false, trades: [] }
+    return { ok: false, trades: [], updatedAt: null }
   }
 }
 
