@@ -776,6 +776,16 @@
     "updatedAt": "2026-06-30T20:20:48.634Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-07T09:48:08": {
+    "note": "- Stat loss, good sizing",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-07T17:20:39.798Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-07T09:48:47": {
     "note": "",
     "setupTags": [
       "LVN",
@@ -783,6 +793,6 @@
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-07T17:16:36.151Z"
+    "updatedAt": "2026-07-07T17:20:28.592Z"
   }
 }
