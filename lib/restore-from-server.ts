@@ -4,6 +4,7 @@ import {
   mergeImportedTrades,
 } from '@/lib/trade-storage'
 import { fetchTradesSnapshotFromServer } from '@/lib/sync-trades-snapshot'
+import type { Trade } from '@/utils/logParser'
 
 export interface RestoreTradesResult {
   ok: boolean
@@ -35,6 +36,7 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
   const snapshot = await fetchTradesSnapshotFromServer()
   if (!snapshot.ok || snapshot.trades.length === 0) {
     const stored = loadStoredTrades()
+    const localTrades = stored?.trades ?? []
     return {
       ok: true,
       restored: false,
@@ -76,6 +78,7 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
       restored: true,
       tradeCount: merged.length,
       added: Math.max(added, merged.length - localTrades.length),
+      trades: merged,
     }
   }
 
