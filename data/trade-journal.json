@@ -815,8 +815,12 @@
   },
   "ReportHistory-600061014.xlsx::2026-07-02T09:32:02": {
     "note": "- Sudden LVN (few seconds), no previous interaction\n\n- Loss right away",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-07T20:04:26.698Z"
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps",
+      "LVN"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-07T20:22:32.274Z"
   }
 }
