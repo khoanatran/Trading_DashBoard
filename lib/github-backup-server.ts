@@ -363,16 +363,21 @@ export async function runGitHubPull(): Promise<GitHubPullResult> {
       return result
     }
 
-    const dirtyStatus = await runGit(git, ['status', '--porcelain'], { allowFailure: true })
-    if (dirtyStatus.stdout.trim()) {
+    const dataStatus = await runGit(
+      git,
+      ['status', '--porcelain', '--', 'data/', 'ReportHistory-*.xlsx'],
+      { allowFailure: true }
+    )
+    if (dataStatus.stdout.trim()) {
       const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
-      await runGit(git, ['add', '-A'])
-      await runGit(git, ['commit', '-m', `Dashboard local changes before pull (${stamp})`])
+      await runGit(git, ['add', 'data/', 'ReportHistory-*.xlsx'])
+      await runGit(git, ['commit', '-m', `Dashboard data before pull (${stamp})`])
     }
 
     try {
       await runGit(git, ['pull', '--rebase', 'origin', BRANCH])
     } catch (pullError) {
+      await runGit(git, ['rebase', '--abort'], { allowFailure: true })
       const message = pullError instanceof Error ? pullError.message : String(pullError)
       const result: GitHubPullResult = {
         ok: false,
