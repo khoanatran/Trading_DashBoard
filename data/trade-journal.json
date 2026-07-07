@@ -812,5 +812,11 @@
     ],
     "rating": 2,
     "updatedAt": "2026-07-07T20:00:30.492Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-02T09:32:02": {
+    "note": "- Sudden LVN (few seconds), no previous interaction\n\n- Loss right away",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-07T20:04:26.698Z"
   }
 }
