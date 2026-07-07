@@ -125,7 +125,10 @@ export function getGitHubPullStatus(): {
   }
 }
 
-/** Pull latest dashboard data (trades, media, tags, notes) from GitHub. */
+/**
+ * Pull only data/ from GitHub (matches scripts/github-pull.ps1).
+ * Avoids full-repo pull + stash/pop, which could revert freshly synced trades.
+ */
 export async function runGitHubPull(): Promise<GitHubPullResult> {
   const at = new Date().toISOString()
 
@@ -177,59 +180,65 @@ export async function runGitHubPull(): Promise<GitHubPullResult> {
   try {
     await ensureRepository(git)
 
-    const status = await runGit(git, ['status', '--porcelain'])
-    const hasLocalChanges = Boolean(status.stdout.trim())
-    let stashed = false
-
-    if (hasLocalChanges) {
-      await runGit(git, ['stash', 'push', '-u', '-m', 'dashboard-auto-stash-before-pull'])
-      stashed = true
+    const rebaseMerge = path.join(REPO_ROOT, '.git', 'rebase-merge')
+    const rebaseApply = path.join(REPO_ROOT, '.git', 'rebase-apply')
+    if (fs.existsSync(rebaseMerge) || fs.existsSync(rebaseApply)) {
+      await runGit(git, ['rebase', '--abort'], { allowFailure: true })
     }
 
-    try {
-      await runGit(git, ['fetch', 'origin', BRANCH])
+    await runGit(git, ['fetch', 'origin', BRANCH])
 
-      const behind = await runGit(git, ['rev-list', '--count', `HEAD..origin/${BRANCH}`], {
+    const remoteRef = `origin/${BRANCH}`
+
+    const dataStatus = await runGit(git, ['status', '--porcelain', '--', 'data/'], {
+      allowFailure: true,
+    })
+    if (dataStatus.stdout.trim()) {
+      const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
+      await runGit(git, ['add', 'data/'])
+      await runGit(git, ['commit', '-m', `Dashboard data before pull (${stamp})`], {
         allowFailure: true,
       })
-      const behindCount = Number.parseInt(behind.stdout.trim() || '0', 10) || 0
+    }
 
-      if (behindCount === 0) {
-        const result: GitHubPullResult = {
-          ok: true,
-          message: 'Already up to date',
-          at,
-          pulled: false,
-          behindCount: 0,
-          changedFiles: [],
-          dataChanged: false,
-        }
-        lastPullResult = result
-        return result
-      }
+    const diff = await runGit(git, ['diff', '--name-only', 'HEAD', remoteRef, '--', 'data/'], {
+      allowFailure: true,
+    })
+    const changedFiles = parseChangedFiles(diff.stdout)
 
-      const diff = await runGit(git, ['diff', '--name-only', 'HEAD', `origin/${BRANCH}`])
-      const changedFiles = parseChangedFiles(diff.stdout)
-      const dataChanged = hasDataChanges(changedFiles)
-
-      await runGit(git, ['pull', '--ff-only', 'origin', BRANCH])
-
+    if (changedFiles.length === 0) {
       const result: GitHubPullResult = {
         ok: true,
-        message: `Pulled ${behindCount} commit(s) from GitHub`,
+        message: 'Dashboard data already up to date',
         at,
-        pulled: true,
-        behindCount,
-        changedFiles,
-        dataChanged,
+        pulled: false,
+        behindCount: 0,
+        changedFiles: [],
+        dataChanged: false,
       }
       lastPullResult = result
       return result
-    } finally {
-      if (stashed) {
-        await runGit(git, ['stash', 'pop'], { allowFailure: true })
-      }
     }
+
+    await runGit(git, ['checkout', remoteRef, '--', 'data/'])
+    await runGit(git, ['add', 'data/'])
+
+    const behind = await runGit(git, ['rev-list', '--count', `HEAD..${remoteRef}`], {
+      allowFailure: true,
+    })
+    const behindCount = Number.parseInt(behind.stdout.trim() || '0', 10) || 0
+
+    const result: GitHubPullResult = {
+      ok: true,
+      message: `Updated ${changedFiles.length} data file(s) from GitHub`,
+      at,
+      pulled: true,
+      behindCount,
+      changedFiles,
+      dataChanged: hasDataChanges(changedFiles),
+    }
+    lastPullResult = result
+    return result
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     const result: GitHubPullResult = {

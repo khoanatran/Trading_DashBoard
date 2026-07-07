@@ -81,17 +81,22 @@ export default function Home() {
   const [mediaRefreshKey, setMediaRefreshKey] = useState(0)
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
+  const restoreCompleteRef = useRef(false)
 
   // On launch: pull from GitHub, restore trades/journal from server, refresh metadata
   useEffect(() => {
     let cancelled = false
 
     async function initFromServer() {
+      restoreCompleteRef.current = false
+
       const pull = await pullFromGitHub()
       if (!cancelled && pull.dataChanged) {
         clearAllCaches()
         setMediaRefreshKey(key => key + 1)
         console.log('GitHub sync: updated data files', pull.changedFiles)
+      } else if (!cancelled && pull.pulled) {
+        console.log('GitHub sync:', pull.message)
       }
 
       const restore = await restoreDashboardFromServer()
@@ -107,19 +112,22 @@ export default function Home() {
         console.log(`Restored ${restore.journal.entryCount} journal entries from server`)
       }
 
-      const stored = loadStoredTrades()
-      if (stored && stored.trades.length > 0) {
-        setTrades(stored.trades)
-        if (stored.lastImportedFile) {
+      if (restore.trades.trades.length > 0) {
+        setTrades(restore.trades.trades)
+        const stored = loadStoredTrades()
+        if (stored?.lastImportedFile) {
           setFileName(stored.lastImportedFile)
-        } else if (restore.trades.restored) {
+        } else if (restore.trades.restored || pull.pulled) {
           setFileName('Synced from GitHub')
         }
         setViewMode('overview')
       }
 
       try {
-        const [tagsRes, flagsRes] = await Promise.all([fetch('/api/trade-tags'), fetch('/api/flags')])
+        const [tagsRes, flagsRes] = await Promise.all([
+          fetch(`/api/trade-tags?t=${Date.now()}`, { cache: 'no-store' }),
+          fetch(`/api/flags?t=${Date.now()}`, { cache: 'no-store' }),
+        ])
         if (tagsRes.ok) {
           const data = await tagsRes.json()
           if (data.mapping && typeof data.mapping === 'object') {
@@ -135,7 +143,10 @@ export default function Home() {
         // Metadata refresh is optional on startup
       }
 
-      if (!cancelled) setPersistReady(true)
+      if (!cancelled) {
+        restoreCompleteRef.current = true
+        setPersistReady(true)
+      }
     }
 
     void initFromServer()
@@ -277,9 +288,9 @@ export default function Home() {
     saveStoredTrades(trades, fileName || null)
   }, [trades, fileName, persistReady])
 
-  // Persist trades to server snapshot + GitHub backup (debounced)
+  // Persist trades to server snapshot + GitHub backup (debounced; skip until restore finishes)
   useEffect(() => {
-    if (!persistReady || trades.length === 0) return
+    if (!persistReady || trades.length === 0 || !restoreCompleteRef.current) return
     const timer = setTimeout(() => {
       void syncTradesSnapshotToServer(trades)
     }, 2000)

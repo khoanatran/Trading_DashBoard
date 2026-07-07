@@ -6,7 +6,10 @@ import type { Trade } from '@/utils/logParser'
 export async function GET() {
   try {
     const trades = await loadTradesSnapshot()
-    return NextResponse.json({ trades, tradeCount: trades.length })
+    return NextResponse.json(
+      { trades, tradeCount: trades.length },
+      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+    )
   } catch (error) {
     console.error('Failed to load trades snapshot:', error)
     return NextResponse.json({ error: 'Failed to load trades snapshot' }, { status: 500 })
