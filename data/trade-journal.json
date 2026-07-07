@@ -774,5 +774,34 @@
     "rating": 2.5,
     "ratingManual": true,
     "updatedAt": "2026-06-30T20:20:48.634Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-07T09:48:08": {
+    "note": "- Stat loss, good sizing",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-07T17:20:39.798Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-07T09:48:47": {
+    "note": "- B setup due to how LVNs evenly space out",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-07T17:21:09.675Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-07T10:26:53": {
+    "note": "- Price moved similar to how it moved at early hours (1) expired LVN + (2) failed long retest + (3) short retest > Run\n\n\n- Took risk as B setup due to expired LVN",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-07-07T17:43:10.487Z"
   }
 }
