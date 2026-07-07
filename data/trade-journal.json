@@ -824,9 +824,13 @@
     "updatedAt": "2026-07-07T20:22:32.274Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-02T09:33:16": {
-    "note": "- Stat loss. Could also count for sudden LVN",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-07T20:33:00.376Z"
+    "note": "- Stat loss",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-07T20:37:45.708Z"
   }
 }
