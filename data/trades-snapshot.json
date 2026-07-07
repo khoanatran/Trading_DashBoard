@@ -5521,5 +5521,26 @@
     "sourceFile": "ReportHistory-600061014.xlsx",
     "symbol": "US100.sim",
     "commission": 0
+  },
+  {
+    "timestamp": "2026-07-06T09:29:33",
+    "direction": "short",
+    "riskAmount": 500,
+    "estDollarRisked": 500,
+    "slPoints": 0.2999999999992724,
+    "tpPoints": null,
+    "orderQty": 25,
+    "entryPrice": 29634.3,
+    "exitPrice": 29634.8,
+    "reward": -0.5,
+    "rrRatio": 0,
+    "pnl": -12.5,
+    "isClosed": true,
+    "entryTime": "2026-07-06T09:28:27",
+    "exitTime": "2026-07-06T09:29:33",
+    "partialExits": [],
+    "sourceFile": "ReportHistory-600061014.xlsx",
+    "symbol": "US100.sim",
+    "commission": 0
   }
 ]
