@@ -203,10 +203,10 @@ function Sync-FromGitHub {
     return
   }
 
-  Write-Host 'Syncing dashboard data from GitHub...' -ForegroundColor Cyan
+  Write-Host 'Checking GitHub for updates...' -ForegroundColor Cyan
   Write-Log 'Running github-pull.ps1'
   try {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
       Write-Log "pull: $_"
       Write-Host $_
     }
@@ -216,11 +216,32 @@ function Sync-FromGitHub {
   }
 }
 
+function Import-Mt5Reports {
+  $importScript = Join-Path $ProjectRoot 'scripts\import-mt5-reports.ps1'
+  if (-not (Test-Path $importScript)) {
+    Write-Log 'import-mt5-reports.ps1 not found — skipping MT5 import'
+    return
+  }
+
+  Write-Host 'Checking MT5 ReportHistory for new trades...' -ForegroundColor Cyan
+  Write-Log 'Running import-mt5-reports.ps1'
+  try {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $importScript 2>&1 | ForEach-Object {
+      Write-Log "mt5: $_"
+      Write-Host $_
+    }
+  } catch {
+    Write-Log "MT5 import warning: $_"
+    Write-Host "MT5 import warning: $_" -ForegroundColor Yellow
+  }
+}
+
 Ensure-NodeOnPath
 Write-Log 'Launcher started'
 Write-Host 'Trading Dashboard launcher...' -ForegroundColor Cyan
 
 Sync-FromGitHub
+Import-Mt5Reports
 
 $buildResult = Ensure-Build
 if (-not $buildResult.ok) {

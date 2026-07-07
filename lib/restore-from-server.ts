@@ -10,6 +10,7 @@ export interface RestoreTradesResult {
   restored: boolean
   tradeCount: number
   added: number
+  trades: Trade[]
 }
 
 export interface RestoreJournalResult {
@@ -37,8 +38,9 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
     return {
       ok: true,
       restored: false,
-      tradeCount: stored?.trades.length ?? 0,
+      tradeCount: localTrades.length,
       added: 0,
+      trades: localTrades,
     }
   }
 
@@ -53,6 +55,7 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
       restored: true,
       tradeCount: serverTrades.length,
       added: serverTrades.length,
+      trades: serverTrades,
     }
   }
 
@@ -81,13 +84,14 @@ export async function restoreTradesFromServerSnapshot(): Promise<RestoreTradesRe
     restored: false,
     tradeCount: localTrades.length,
     added: 0,
+    trades: localTrades,
   }
 }
 
 /** Hydrate journal localStorage cache from server JSON (notes, setup tags, ratings). */
 export async function restoreJournalCacheFromServer(): Promise<RestoreJournalResult> {
   try {
-    const res = await fetch('/api/trade-journal')
+    const res = await fetch(`/api/trade-journal?t=${Date.now()}`, { cache: 'no-store' })
     if (!res.ok) return { ok: false, entryCount: 0 }
 
     const data = await res.json()
