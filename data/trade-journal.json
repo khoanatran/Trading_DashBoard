@@ -796,9 +796,12 @@
     "updatedAt": "2026-07-07T17:21:09.675Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-07T10:26:53": {
-    "note": "- Price moved similar to how it moved at early hours",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-07T17:42:22.702Z"
+    "note": "- Price moved similar to how it moved at early hours (1) expired LVN + (2) failed long retest + (3) short retest > Run\n\n\n- Took risk as B setup due to expired LVN",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-07-07T17:43:10.487Z"
   }
 }
