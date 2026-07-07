@@ -52,7 +52,11 @@ export async function importMt5ReportsIntoSnapshot(): Promise<Mt5SnapshotImportR
     try {
       const filePath = path.join(root, fileName)
       const buffer = await fs.readFile(filePath)
-      const parsed = parseMt5ReportHistoryBuffer(buffer, fileName)
+      const arrayBuffer = buffer.buffer.slice(
+        buffer.byteOffset,
+        buffer.byteOffset + buffer.byteLength
+      )
+      const parsed = parseMt5ReportHistoryBuffer(arrayBuffer, fileName)
       incoming.push(...parsed)
     } catch (error) {
       console.warn(`Failed to parse ${fileName}:`, error)
