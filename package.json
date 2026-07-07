@@ -16,6 +16,8 @@
     "github:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-pull.ps1",
     "github:backup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-backup.ps1",
     "github:sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-sync.ps1",
+    "github:auto-sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-auto-sync.ps1",
+    "github:auto-sync:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-auto-sync-task.ps1",
     "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {

@@ -26,7 +26,7 @@ if (-not $git) {
   Write-Error 'Git not found. Install Git for Windows or set GIT_PATH.'
 }
 
-$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading.git' }
+$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading_DashBoard.git' }
 $branch = if ($env:GITHUB_BACKUP_BRANCH) { $env:GITHUB_BACKUP_BRANCH } else { 'main' }
 
 if (-not (Test-Path '.git')) {
@@ -44,12 +44,19 @@ $gitEmail = if ($env:GITHUB_BACKUP_USER_EMAIL) { $env:GITHUB_BACKUP_USER_EMAIL }
 
 & $git add -A
 $status = & $git status --porcelain
-if (-not $status) {
-  Write-Host 'Nothing to commit.'
+if ($status) {
+  $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+  & $git commit -m "Dashboard backup ($stamp)"
+}
+
+$aheadRaw = & $git rev-list --count "origin/$branch..HEAD" 2>$null
+$ahead = 0
+if ($aheadRaw) { [void][int]::TryParse($aheadRaw.Trim(), [ref]$ahead) }
+
+if (-not $status -and $ahead -eq 0) {
+  Write-Host 'Nothing to commit or push — already backed up.'
   exit 0
 }
 
-$stamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-& $git commit -m "Dashboard backup ($stamp)"
 & $git push -u origin $branch
 Write-Host 'Pushed to GitHub.'

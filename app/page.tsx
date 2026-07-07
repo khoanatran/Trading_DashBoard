@@ -104,6 +104,8 @@ export default function Home() {
         setTrades(stored.trades)
         if (stored.lastImportedFile) {
           setFileName(stored.lastImportedFile)
+        } else if (restore.trades.restored) {
+          setFileName('Synced from GitHub')
         }
         setViewMode('overview')
       }
