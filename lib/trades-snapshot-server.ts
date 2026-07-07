@@ -40,7 +40,8 @@ export async function loadTradesSnapshotData(): Promise<TradesSnapshotData> {
 }
 
 export async function saveTradesSnapshot(
-  trades: Trade[]
+  trades: Trade[],
+  options?: { skipBackup?: boolean }
 ): Promise<{ tradeCount: number; updatedAt: string }> {
   const updatedAt = new Date().toISOString()
   await fs.mkdir(DATA_DIR, { recursive: true })
@@ -49,12 +50,14 @@ export async function saveTradesSnapshot(
     JSON.stringify({ version: 1, trades, updatedAt }, null, 2),
     'utf-8'
   )
-  notifyDataChanged('trades snapshot')
+  if (!options?.skipBackup) {
+    notifyDataChanged('trades snapshot')
 
-  // Push trades to GitHub quickly — other computers depend on this file
-  void import('@/lib/github-backup-server').then(({ runGitHubBackup }) => {
-    void runGitHubBackup('trades snapshot')
-  })
+    // Push trades to GitHub quickly — other computers depend on this file
+    void import('@/lib/github-backup-server').then(({ runGitHubBackup }) => {
+      void runGitHubBackup('trades snapshot')
+    })
+  }
 
   return { tradeCount: trades.length, updatedAt }
 }

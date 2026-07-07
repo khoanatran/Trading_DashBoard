@@ -68,7 +68,7 @@ export async function runDashboardFullSync(reason?: string): Promise<DashboardSy
     const tradesAdded = (mergeResult?.tradesAdded ?? 0) + mt5Added
 
     return {
-      ok: backup.ok || pulled || mt5Added > 0,
+      ok: backup.ok,
       message: buildSyncMessage(mergeResult, mt5Result, backup),
       at,
       pulled,

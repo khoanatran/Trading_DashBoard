@@ -2,6 +2,11 @@ import fs from 'fs/promises'
 import path from 'path'
 import { mergeImportedTrades } from '@/lib/trade-storage'
 import {
+  loadTradesSnapshot,
+  saveTradesSnapshot,
+  loadTradesSnapshotData,
+} from '@/lib/trades-snapshot-server'
+import {
   listRemoteFiles,
   readRemoteBinaryFile,
   readRemoteFile,
@@ -178,14 +183,27 @@ async function readLocalJson<T>(fileName: string, fallback: T): Promise<T> {
 }
 
 async function readLocalTrades(): Promise<Trade[]> {
-  const raw = await readLocalJson<unknown>('trades-snapshot.json', [])
-  return Array.isArray(raw) ? (raw as Trade[]) : []
+  return loadTradesSnapshot()
+}
+
+function parseTradesFromSnapshotRaw(raw: string | null): Trade[] {
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (Array.isArray(parsed)) return parsed as Trade[]
+    if (parsed && typeof parsed === 'object' && 'trades' in parsed) {
+      const trades = (parsed as { trades?: unknown }).trades
+      return Array.isArray(trades) ? (trades as Trade[]) : []
+    }
+  } catch {
+    // invalid JSON
+  }
+  return []
 }
 
 async function parseRemoteTrades(git: string): Promise<Trade[]> {
   const remoteTradesRaw = await readRemoteFile(git, 'data/trades-snapshot.json')
-  const parsed = parseJson<unknown>(remoteTradesRaw, [])
-  return Array.isArray(parsed) ? (parsed as Trade[]) : []
+  return parseTradesFromSnapshotRaw(remoteTradesRaw)
 }
 
 async function writeJsonIfChanged(fileName: string, value: unknown): Promise<boolean> {
@@ -246,7 +264,13 @@ export async function mergeRemoteDashboardData(git: string): Promise<DataMergeRe
   if (remoteTrades.length > 0 || localTrades.length > 0) {
     const { merged, added } = mergeImportedTrades(localTrades, remoteTrades)
     if (added > 0 || merged.length !== localTrades.length) {
-      if (await writeJsonIfChanged('trades-snapshot.json', merged)) {
+      const before = await loadTradesSnapshotData()
+      const changed =
+        added > 0 ||
+        merged.length !== before.trades.length ||
+        JSON.stringify(merged) !== JSON.stringify(before.trades)
+      if (changed) {
+        await saveTradesSnapshot(merged, { skipBackup: true })
         changedFiles.push('data/trades-snapshot.json')
         tradesAdded = Math.max(added, merged.length - localTrades.length)
       }
