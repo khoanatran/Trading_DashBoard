@@ -156,6 +156,7 @@ export const AVAILABLE_TAGS = [
   { name: 'Thin Zone', color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
   { name: 'LVN Only', color: 'bg-sky-500/20 text-sky-300 border-sky-500/40' },
   { name: 'Stuck 2 LVN', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  { name: 'Sudden LVN', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Heatmap Only', color: 'bg-orange-500/20 text-orange-300 border-orange-500/40' },
   {
     name: 'Recent Heatmap Trigger',
