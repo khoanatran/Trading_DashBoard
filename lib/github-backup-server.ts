@@ -351,37 +351,29 @@ export async function runGitHubPull(): Promise<GitHubPullResult> {
     )
     const behind = Number.parseInt(behindStatus.stdout.trim(), 10) || 0
 
-    if (behind === 0) {
-      const result: GitHubPullResult = {
-        ok: true,
-        message: 'Already up to date',
-        at,
-        pulled: false,
-        behind: 0,
-      }
-      lastPullResult = result
-      return result
-    }
-
     const dataStatus = await runGit(
       git,
-      ['status', '--porcelain', '--', 'data/', 'ReportHistory-*.xlsx'],
+      ['status', '--porcelain', '--', 'data/'],
       { allowFailure: true }
     )
     if (dataStatus.stdout.trim()) {
       const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
-      await runGit(git, ['add', 'data/', 'ReportHistory-*.xlsx'])
-      await runGit(git, ['commit', '-m', `Dashboard data before pull (${stamp})`])
+      await runGit(git, ['add', 'data/'])
+      await runGit(git, ['commit', '-m', `Dashboard data before pull (${stamp})`], {
+        allowFailure: true,
+      })
     }
 
-    try {
-      await runGit(git, ['pull', '--rebase', 'origin', BRANCH])
-    } catch (pullError) {
-      await runGit(git, ['rebase', '--abort'], { allowFailure: true })
-      const message = pullError instanceof Error ? pullError.message : String(pullError)
+    const changedFiles = await runGit(
+      git,
+      ['diff', '--name-only', 'HEAD', `origin/${BRANCH}`, '--', 'data/'],
+      { allowFailure: true }
+    )
+
+    if (!changedFiles.stdout.trim()) {
       const result: GitHubPullResult = {
-        ok: false,
-        message: `Pull failed: ${message}`,
+        ok: true,
+        message: 'Dashboard data already up to date',
         at,
         pulled: false,
         behind,
@@ -390,9 +382,26 @@ export async function runGitHubPull(): Promise<GitHubPullResult> {
       return result
     }
 
+    try {
+      await runGit(git, ['checkout', `origin/${BRANCH}`, '--', 'data/'])
+      await runGit(git, ['add', 'data/'])
+    } catch (pullError) {
+      const message = pullError instanceof Error ? pullError.message : String(pullError)
+      const result: GitHubPullResult = {
+        ok: false,
+        message: `Data pull failed: ${message}`,
+        at,
+        pulled: false,
+        behind,
+      }
+      lastPullResult = result
+      return result
+    }
+
+    const fileCount = changedFiles.stdout.trim().split('\n').filter(Boolean).length
     const result: GitHubPullResult = {
       ok: true,
-      message: `Pulled ${behind} commit(s) from ${REMOTE_URL} (${BRANCH})`,
+      message: `Updated ${fileCount} data file(s) from ${REMOTE_URL} (${BRANCH})`,
       at,
       pulled: true,
       behind,
