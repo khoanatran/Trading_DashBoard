@@ -191,7 +191,6 @@ function Open-DashboardBrowser {
 }
 
 function Sync-FromGitHub {
-<<<<<<< Updated upstream
   $pullOnLaunch = $env:GITHUB_SYNC_PULL_ON_LAUNCH
   if ($pullOnLaunch -eq 'false') {
     Write-Log 'GitHub pull on launch disabled (GITHUB_SYNC_PULL_ON_LAUNCH=false)'
@@ -204,34 +203,16 @@ function Sync-FromGitHub {
     return
   }
 
-  Write-Host 'Syncing dashboard data from GitHub...' -ForegroundColor Cyan
+  Write-Host 'Checking GitHub for updates...' -ForegroundColor Cyan
   Write-Log 'Running github-pull.ps1'
   try {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
       Write-Log "pull: $_"
       Write-Host $_
     }
   } catch {
     Write-Log "GitHub pull failed (continuing with local data): $_"
     Write-Host 'GitHub pull failed — using local data. Check network and git auth.' -ForegroundColor Yellow
-=======
-  $pullScript = Join-Path $ProjectRoot 'scripts\github-pull.ps1'
-  if (-not (Test-Path $pullScript)) {
-    Write-Log 'GitHub pull script not found — skipping sync'
-    return
-  }
-
-  Write-Log 'Checking GitHub for new trades/media/data...'
-  Write-Host 'Checking GitHub for updates...' -ForegroundColor Cyan
-  try {
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
-      Write-Log $_
-      Write-Host $_
-    }
-  } catch {
-    Write-Log "GitHub pull warning: $_"
-    Write-Host "GitHub pull warning: $_" -ForegroundColor Yellow
->>>>>>> Stashed changes
   }
 }
 

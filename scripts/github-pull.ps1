@@ -12,6 +12,17 @@ $ErrorActionPreference = 'Continue'
 $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $ProjectRoot
 
+$envFile = Join-Path $ProjectRoot '.env.local'
+if (Test-Path $envFile) {
+  Get-Content $envFile | ForEach-Object {
+    if ($_ -match '^\s*([^#=]+)=(.*)$') {
+      $name = $matches[1].Trim()
+      $value = $matches[2].Trim()
+      if ($name) { Set-Item -Path "env:$name" -Value $value }
+    }
+  }
+}
+
 function Find-Git {
   $candidates = @(
     $env:GIT_PATH,
@@ -37,7 +48,7 @@ if (-not $git) {
   exit 0
 }
 
-$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading.git' }
+$remote = if ($env:GITHUB_BACKUP_REMOTE) { $env:GITHUB_BACKUP_REMOTE } else { 'https://github.com/khoanatran/Trading_DashBoard.git' }
 $branch = if ($env:GITHUB_BACKUP_BRANCH) { $env:GITHUB_BACKUP_BRANCH } else { 'main' }
 
 if (-not (Test-Path '.git')) {
