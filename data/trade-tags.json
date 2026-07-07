@@ -854,7 +854,8 @@
     "Mistake",
     "Stuck 2 LVN",
     "Bad Reentry",
-    "Heatmap Only"
+    "Heatmap Only",
+    "Recent Heatmap Trigger"
   ],
   "ReportHistory-600061014.xlsx::2026-07-07T09:48:08": [
     "A setup",
@@ -869,7 +870,8 @@
   ],
   "ReportHistory-600061014.xlsx::2026-07-07T10:26:53": [
     "B setup",
-    "Choppy Market"
+    "Choppy Market",
+    "Recent Heatmap Trigger"
   ],
   "ReportHistory-600061014.xlsx::2026-07-02T09:32:02": [
     "Recent Heatmap Trigger"
