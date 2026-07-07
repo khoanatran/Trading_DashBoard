@@ -99,6 +99,21 @@ export default function Home() {
         console.log('GitHub sync:', pull.message)
       }
 
+      // Merge any new trades from ReportHistory-*.xlsx (MT5 export in project folder)
+      try {
+        const mt5Res = await fetch('/api/trades-snapshot/import-mt5', { method: 'POST' })
+        if (mt5Res.ok) {
+          const mt5 = await mt5Res.json()
+          if (mt5.added > 0) {
+            console.log(`MT5 import: ${mt5.message}`)
+            clearAllCaches()
+            setMediaRefreshKey(key => key + 1)
+          }
+        }
+      } catch {
+        // MT5 auto-import is optional
+      }
+
       const restore = await restoreDashboardFromServer()
       if (cancelled) return
 
