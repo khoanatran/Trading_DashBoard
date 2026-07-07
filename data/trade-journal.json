@@ -786,13 +786,13 @@
     "updatedAt": "2026-07-07T17:20:39.798Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-07T09:48:47": {
-    "note": "- B setup due to how LVNs appear",
+    "note": "- B setup due to how LVNs evenly space out",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-07T17:20:54.372Z"
+    "updatedAt": "2026-07-07T17:21:09.675Z"
   }
 }
