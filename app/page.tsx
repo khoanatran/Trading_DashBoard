@@ -43,6 +43,7 @@ import { syncTradeExportToDisk } from '@/lib/sync-trade-export'
 import { getTradeExportFilePath } from '@/lib/trade-export-path'
 import { remigrateTradeMetadataOnServer } from '@/lib/sync-trade-metadata'
 import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
+import { restoreDashboardFromServer } from '@/lib/restore-from-server'
 import { clearAllCaches } from '@/utils/mediaCache'
 
 type DateRange = { from?: Date; to?: Date }
@@ -80,17 +81,39 @@ export default function Home() {
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
 
-  // Restore saved trades from local storage on launch
+  // Restore trades + journal from server snapshot (after GitHub pull on other machines)
   useEffect(() => {
-    const stored = loadStoredTrades()
-    if (stored && stored.trades.length > 0) {
-      setTrades(stored.trades)
-      if (stored.lastImportedFile) {
-        setFileName(stored.lastImportedFile)
+    let cancelled = false
+
+    async function initFromServer() {
+      const restore = await restoreDashboardFromServer()
+      if (cancelled) return
+
+      if (restore.trades.restored) {
+        console.log(
+          `Restored ${restore.trades.tradeCount} trade(s) from server snapshot` +
+            (restore.trades.added > 0 ? ` (+${restore.trades.added} new)` : '')
+        )
       }
-      setViewMode('overview')
+      if (restore.journal.ok && restore.journal.entryCount > 0) {
+        console.log(`Restored ${restore.journal.entryCount} journal entries from server`)
+      }
+
+      const stored = loadStoredTrades()
+      if (stored && stored.trades.length > 0) {
+        setTrades(stored.trades)
+        if (stored.lastImportedFile) {
+          setFileName(stored.lastImportedFile)
+        }
+        setViewMode('overview')
+      }
+      setPersistReady(true)
     }
-    setPersistReady(true)
+
+    void initFromServer()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   // Load saved trade tags for classification rules (e.g. Random / Bad SL Placement → Loss)

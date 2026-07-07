@@ -190,9 +190,37 @@ function Open-DashboardBrowser {
   }
 }
 
+function Sync-FromGitHub {
+  $pullOnLaunch = $env:GITHUB_SYNC_PULL_ON_LAUNCH
+  if ($pullOnLaunch -eq 'false') {
+    Write-Log 'GitHub pull on launch disabled (GITHUB_SYNC_PULL_ON_LAUNCH=false)'
+    return
+  }
+
+  $pullScript = Join-Path $ProjectRoot 'scripts\github-pull.ps1'
+  if (-not (Test-Path $pullScript)) {
+    Write-Log 'github-pull.ps1 not found — skipping pull'
+    return
+  }
+
+  Write-Host 'Syncing dashboard data from GitHub...' -ForegroundColor Cyan
+  Write-Log 'Running github-pull.ps1'
+  try {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
+      Write-Log "pull: $_"
+      Write-Host $_
+    }
+  } catch {
+    Write-Log "GitHub pull failed (continuing with local data): $_"
+    Write-Host 'GitHub pull failed — using local data. Check network and git auth.' -ForegroundColor Yellow
+  }
+}
+
 Ensure-NodeOnPath
 Write-Log 'Launcher started'
 Write-Host 'Trading Dashboard launcher...' -ForegroundColor Cyan
+
+Sync-FromGitHub
 
 $buildResult = Ensure-Build
 if (-not $buildResult.ok) {

@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { saveTradesSnapshot } from '@/lib/trades-snapshot-server'
+import { loadTradesSnapshot, saveTradesSnapshot } from '@/lib/trades-snapshot-server'
 import type { Trade } from '@/utils/logParser'
+
+/** GET /api/trades-snapshot — read server trades snapshot (for cross-machine restore) */
+export async function GET() {
+  try {
+    const trades = await loadTradesSnapshot()
+    return NextResponse.json({ trades, tradeCount: trades.length })
+  } catch (error) {
+    console.error('Failed to load trades snapshot:', error)
+    return NextResponse.json({ error: 'Failed to load trades snapshot' }, { status: 500 })
+  }
+}
 
 /** POST /api/trades-snapshot — persist current trades to data/trades-snapshot.json */
 export async function POST(request: NextRequest) {

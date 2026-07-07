@@ -20,6 +20,22 @@ const GIT_CANDIDATES = [
   'C:\\Program Files (x86)\\Git\\cmd\\git.exe',
 ].filter((value): value is string => Boolean(value))
 
+/** JSON + media paths synced to GitHub for cross-machine dashboard backup. */
+export const GITHUB_SYNC_DATA_PATHS = [
+  'data/trades-snapshot.json',
+  'data/trade-journal.json',
+  'data/trade-tags.json',
+  'data/trade-images.json',
+  'data/trade-videos.json',
+  'data/daily-summaries.json',
+  'data/daily-images.json',
+  'data/weekly-notes.json',
+  'data/flags.json',
+  'data/trade-images/',
+  'data/trade-videos/',
+  'data/daily-images/',
+] as const
+
 export interface GitHubBackupStatus {
   enabled: boolean
   gitAvailable: boolean
@@ -27,8 +43,10 @@ export interface GitHubBackupStatus {
   remoteUrl: string
   branch: string
   lastResult: GitHubBackupResult | null
+  lastPullResult: GitHubPullResult | null
   pending: boolean
   inFlight: boolean
+  pullInFlight: boolean
 }
 
 export interface GitHubBackupResult {
@@ -39,10 +57,28 @@ export interface GitHubBackupResult {
   pushed: boolean
 }
 
+export interface GitHubPullResult {
+  ok: boolean
+  message: string
+  at: string
+  pulled: boolean
+  behind: number
+}
+
+export interface GitHubSyncResult {
+  ok: boolean
+  message: string
+  at: string
+  pull: GitHubPullResult
+  push: GitHubBackupResult
+}
+
 let cachedGit: string | null | undefined
 let pendingTimer: ReturnType<typeof setTimeout> | null = null
 let backupInFlight = false
+let pullInFlight = false
 let lastResult: GitHubBackupResult | null = null
+let lastPullResult: GitHubPullResult | null = null
 let pendingReason: string | undefined
 
 function resolveGitExecutable(): string | null {
@@ -124,8 +160,10 @@ export function getGitHubBackupStatus(): GitHubBackupStatus {
     remoteUrl: REMOTE_URL,
     branch: BRANCH,
     lastResult,
+    lastPullResult,
     pending: pendingTimer !== null,
     inFlight: backupInFlight,
+    pullInFlight,
   }
 }
 
@@ -243,5 +281,148 @@ export async function runGitHubBackup(reason?: string): Promise<GitHubBackupResu
     return result
   } finally {
     backupInFlight = false
+  }
+}
+
+export async function runGitHubPull(): Promise<GitHubPullResult> {
+  if (!ENABLED) {
+    const result: GitHubPullResult = {
+      ok: false,
+      message: 'GitHub sync is disabled (GITHUB_BACKUP_ENABLED=false)',
+      at: new Date().toISOString(),
+      pulled: false,
+      behind: 0,
+    }
+    lastPullResult = result
+    return result
+  }
+
+  const git = resolveGitExecutable()
+  if (!git) {
+    const result: GitHubPullResult = {
+      ok: false,
+      message:
+        'Git executable not found. Install Git for Windows or set GIT_PATH in .env.local',
+      at: new Date().toISOString(),
+      pulled: false,
+      behind: 0,
+    }
+    lastPullResult = result
+    return result
+  }
+
+  if (pullInFlight) {
+    return (
+      lastPullResult ?? {
+        ok: true,
+        message: 'Pull already running',
+        at: new Date().toISOString(),
+        pulled: false,
+        behind: 0,
+      }
+    )
+  }
+
+  pullInFlight = true
+  const at = new Date().toISOString()
+
+  try {
+    await ensureRepository(git)
+
+    try {
+      await runGit(git, ['fetch', 'origin', BRANCH])
+    } catch (fetchError) {
+      const message = fetchError instanceof Error ? fetchError.message : String(fetchError)
+      const result: GitHubPullResult = {
+        ok: false,
+        message: `Fetch failed: ${message}`,
+        at,
+        pulled: false,
+        behind: 0,
+      }
+      lastPullResult = result
+      return result
+    }
+
+    const behindStatus = await runGit(
+      git,
+      ['rev-list', '--count', `HEAD..origin/${BRANCH}`],
+      { allowFailure: true }
+    )
+    const behind = Number.parseInt(behindStatus.stdout.trim(), 10) || 0
+
+    if (behind === 0) {
+      const result: GitHubPullResult = {
+        ok: true,
+        message: 'Already up to date',
+        at,
+        pulled: false,
+        behind: 0,
+      }
+      lastPullResult = result
+      return result
+    }
+
+    const dirtyStatus = await runGit(git, ['status', '--porcelain'], { allowFailure: true })
+    if (dirtyStatus.stdout.trim()) {
+      const stamp = new Date().toISOString().replace('T', ' ').slice(0, 19)
+      await runGit(git, ['add', '-A'])
+      await runGit(git, ['commit', '-m', `Dashboard local changes before pull (${stamp})`])
+    }
+
+    try {
+      await runGit(git, ['pull', '--rebase', 'origin', BRANCH])
+    } catch (pullError) {
+      const message = pullError instanceof Error ? pullError.message : String(pullError)
+      const result: GitHubPullResult = {
+        ok: false,
+        message: `Pull failed: ${message}`,
+        at,
+        pulled: false,
+        behind,
+      }
+      lastPullResult = result
+      return result
+    }
+
+    const result: GitHubPullResult = {
+      ok: true,
+      message: `Pulled ${behind} commit(s) from ${REMOTE_URL} (${BRANCH})`,
+      at,
+      pulled: true,
+      behind,
+    }
+    lastPullResult = result
+    return result
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    const result: GitHubPullResult = {
+      ok: false,
+      message,
+      at,
+      pulled: false,
+      behind: 0,
+    }
+    lastPullResult = result
+    return result
+  } finally {
+    pullInFlight = false
+  }
+}
+
+/** Pull latest from GitHub, then push any local changes (full round-trip sync). */
+export async function runGitHubSync(reason?: string): Promise<GitHubSyncResult> {
+  const pull = await runGitHubPull()
+  const push = await runGitHubBackup(reason ?? 'full sync')
+  const at = new Date().toISOString()
+
+  return {
+    ok: pull.ok && push.ok,
+    message: pull.ok && push.ok
+      ? 'Sync complete (pull + push)'
+      : `Sync incomplete — pull: ${pull.message}; push: ${push.message}`,
+    at,
+    pull,
+    push,
   }
 }

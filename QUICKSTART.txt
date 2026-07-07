@@ -10,12 +10,71 @@ QUICK START GUIDE
    npm run dev
 
    OR double-click START.bat (Windows)
+   OR npm run launch (production build + browser)
 
 4. Open your browser to: http://localhost:3000
 
 5. Click "Upload trade_logs.txt" and select your trade_logs.txt file
 
 6. Explore your trading performance!
+
+
+GITHUB SYNC (MULTI-COMPUTER)
+============================
+
+The dashboard auto-syncs all journal data to GitHub so you can use it on
+multiple computers. This includes:
+
+  - Trades (data/trades-snapshot.json)
+  - Trade notes, setup tags, ratings (data/trade-journal.json)
+  - Classification tags (data/trade-tags.json)
+  - Trade images + drawings + notes (data/trade-images/)
+  - Trade videos + thumbnails (data/trade-videos/)
+  - Daily summaries + images (data/daily-summaries.json, data/daily-images/)
+  - Weekly notes (data/weekly-notes.json)
+  - Day/trade flags (data/flags.json)
+
+ONE-TIME SETUP (each computer)
+--------------------------------
+1. Install Git for Windows: https://git-scm.com/download/win
+2. Clone or copy this project folder
+3. Run: npm run github:setup
+   (initializes git, commits all data, pushes to GitHub)
+4. Sign in to GitHub when prompted (Git Credential Manager)
+
+AUTOMATIC SYNC (while dashboard runs)
+--------------------------------------
+When you add or edit anything, the dashboard:
+  1. Saves to data/ folder on disk (~2s for trades, immediate for media/tags)
+  2. Commits and pushes to GitHub (~8s debounce)
+
+No action needed — changes sync automatically.
+
+OPENING ON ANOTHER COMPUTER
+----------------------------
+1. Make sure the other computer has the project (git clone or copy)
+2. Run: npm run launch
+   - Pulls latest data from GitHub automatically
+   - Restores trades + journal into the browser
+3. Your trades, media, comments, and tags appear as on the first machine
+
+MANUAL SYNC COMMANDS
+----------------------
+  npm run github:pull    Pull latest from GitHub (before opening dashboard)
+  npm run github:backup  Push local changes to GitHub now
+  npm run github:sync    Pull then push (full round-trip)
+
+API (while server is running):
+  GET  /api/github-sync       — sync status
+  POST /api/github-sync       — { "action": "pull" | "push" | "sync" }
+
+TIPS
+------
+- Close the dashboard on one machine before heavy editing on another (avoids
+  rare git merge conflicts in JSON files).
+- Large trade videos may need Git LFS if they exceed GitHub's 100 MB limit.
+- Set GITHUB_SYNC_PULL_ON_LAUNCH=false in .env.local to skip pull on launch.
+
 
 FEATURES:
 - Daily, Weekly, Monthly, Yearly breakdowns
@@ -28,4 +87,3 @@ FEATURES:
 - Detailed trade-by-trade table
 
 The app uses Next.js 15 with hot reload - any code changes will automatically refresh!
-

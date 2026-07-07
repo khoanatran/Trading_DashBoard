@@ -13,7 +13,9 @@
     "lint": "next lint",
     "remigrate-media": "npx --yes tsx scripts/remigrate-trade-media.ts",
     "github:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-github-backup.ps1",
+    "github:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-pull.ps1",
     "github:backup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-backup.ps1",
+    "github:sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-sync.ps1",
     "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {
