@@ -90,28 +90,13 @@ export default function Home() {
     async function initFromServer() {
       restoreCompleteRef.current = false
 
-      const pull = await pullFromGitHub()
-      if (!cancelled && pull.dataChanged) {
+      const sync = await pullFromGitHub()
+      if (!cancelled && (sync.dataChanged || sync.tradesAdded > 0)) {
         clearAllCaches()
         setMediaRefreshKey(key => key + 1)
-        console.log('GitHub sync: updated data files', pull.changedFiles)
-      } else if (!cancelled && pull.pulled) {
-        console.log('GitHub sync:', pull.message)
-      }
-
-      // Merge any new trades from ReportHistory-*.xlsx (MT5 export in project folder)
-      try {
-        const mt5Res = await fetch('/api/trades-snapshot/import-mt5', { method: 'POST' })
-        if (mt5Res.ok) {
-          const mt5 = await mt5Res.json()
-          if (mt5.added > 0) {
-            console.log(`MT5 import: ${mt5.message}`)
-            clearAllCaches()
-            setMediaRefreshKey(key => key + 1)
-          }
-        }
-      } catch {
-        // MT5 auto-import is optional
+        console.log('Dashboard sync:', sync.message, sync.changedFiles)
+      } else if (!cancelled && (sync.pulled || sync.pushed)) {
+        console.log('Dashboard sync:', sync.message)
       }
 
       const restore = await restoreDashboardFromServer()
@@ -132,7 +117,7 @@ export default function Home() {
         const stored = loadStoredTrades()
         if (stored?.lastImportedFile) {
           setFileName(stored.lastImportedFile)
-        } else if (restore.trades.restored || pull.pulled) {
+        } else if (restore.trades.restored || sync.tradesAdded > 0 || sync.pulled) {
           setFileName('Synced from GitHub')
         }
         setViewMode('overview')

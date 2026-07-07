@@ -1,22 +1,28 @@
 export interface GitHubPullClientResult {
   ok: boolean
   pulled: boolean
+  pushed: boolean
   dataChanged: boolean
   changedFiles: string[]
+  tradesAdded: number
+  tradeCount: number
   message: string
 }
 
-/** Pull latest dashboard data from GitHub (trades, media, tags, notes). */
+/** Full bidirectional sync with GitHub (merge pull + MT5 + push). */
 export async function pullFromGitHub(): Promise<GitHubPullClientResult> {
   try {
-    const res = await fetch('/api/github-sync', { method: 'POST' })
+    const res = await fetch('/api/dashboard-sync', { method: 'POST' })
     if (!res.ok) {
       return {
         ok: false,
         pulled: false,
+        pushed: false,
         dataChanged: false,
         changedFiles: [],
-        message: 'GitHub sync request failed',
+        tradesAdded: 0,
+        tradeCount: 0,
+        message: 'Dashboard sync request failed',
       }
     }
 
@@ -24,25 +30,35 @@ export async function pullFromGitHub(): Promise<GitHubPullClientResult> {
     const result = data.result as {
       ok?: boolean
       pulled?: boolean
-      dataChanged?: boolean
+      pushed?: boolean
       changedFiles?: string[]
+      tradesAdded?: number
+      tradeCount?: number
       message?: string
     }
+
+    const changedFiles = Array.isArray(result?.changedFiles) ? result.changedFiles : []
 
     return {
       ok: Boolean(result?.ok),
       pulled: Boolean(result?.pulled),
-      dataChanged: Boolean(result?.dataChanged),
-      changedFiles: Array.isArray(result?.changedFiles) ? result.changedFiles : [],
-      message: result?.message ?? 'GitHub sync complete',
+      pushed: Boolean(result?.pushed),
+      dataChanged: changedFiles.length > 0,
+      changedFiles,
+      tradesAdded: result?.tradesAdded ?? 0,
+      tradeCount: result?.tradeCount ?? 0,
+      message: result?.message ?? 'Dashboard sync complete',
     }
   } catch {
     return {
       ok: false,
       pulled: false,
+      pushed: false,
       dataChanged: false,
       changedFiles: [],
-      message: 'GitHub sync request failed',
+      tradesAdded: 0,
+      tradeCount: 0,
+      message: 'Dashboard sync request failed',
     }
   }
 }

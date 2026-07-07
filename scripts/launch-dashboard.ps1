@@ -190,49 +190,29 @@ function Open-DashboardBrowser {
   }
 }
 
-function Sync-FromGitHub {
-  $pullOnLaunch = $env:GITHUB_SYNC_PULL_ON_LAUNCH
-  if ($pullOnLaunch -eq 'false') {
-    Write-Log 'GitHub pull on launch disabled (GITHUB_SYNC_PULL_ON_LAUNCH=false)'
+function Sync-DashboardWithGitHub {
+  $syncOnLaunch = $env:GITHUB_SYNC_PULL_ON_LAUNCH
+  if ($syncOnLaunch -eq 'false') {
+    Write-Log 'Dashboard sync on launch disabled (GITHUB_SYNC_PULL_ON_LAUNCH=false)'
     return
   }
 
-  $pullScript = Join-Path $ProjectRoot 'scripts\github-pull.ps1'
-  if (-not (Test-Path $pullScript)) {
-    Write-Log 'github-pull.ps1 not found — skipping pull'
+  $syncScript = Join-Path $ProjectRoot 'scripts\github-full-sync.ps1'
+  if (-not (Test-Path $syncScript)) {
+    Write-Log 'github-full-sync.ps1 not found — skipping sync'
     return
   }
 
-  Write-Host 'Checking GitHub for updates...' -ForegroundColor Cyan
-  Write-Log 'Running github-pull.ps1'
+  Write-Host 'Syncing trades, media, tags, and notes with GitHub...' -ForegroundColor Cyan
+  Write-Log 'Running github-full-sync.ps1'
   try {
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $pullScript 2>&1 | ForEach-Object {
-      Write-Log "pull: $_"
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $syncScript 2>&1 | ForEach-Object {
+      Write-Log "sync: $_"
       Write-Host $_
     }
   } catch {
-    Write-Log "GitHub pull failed (continuing with local data): $_"
-    Write-Host 'GitHub pull failed — using local data. Check network and git auth.' -ForegroundColor Yellow
-  }
-}
-
-function Import-Mt5Reports {
-  $importScript = Join-Path $ProjectRoot 'scripts\import-mt5-reports.ps1'
-  if (-not (Test-Path $importScript)) {
-    Write-Log 'import-mt5-reports.ps1 not found — skipping MT5 import'
-    return
-  }
-
-  Write-Host 'Checking MT5 ReportHistory for new trades...' -ForegroundColor Cyan
-  Write-Log 'Running import-mt5-reports.ps1'
-  try {
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $importScript 2>&1 | ForEach-Object {
-      Write-Log "mt5: $_"
-      Write-Host $_
-    }
-  } catch {
-    Write-Log "MT5 import warning: $_"
-    Write-Host "MT5 import warning: $_" -ForegroundColor Yellow
+    Write-Log "Dashboard sync failed (continuing with local data): $_"
+    Write-Host 'Dashboard sync failed — using local data.' -ForegroundColor Yellow
   }
 }
 
@@ -240,8 +220,7 @@ Ensure-NodeOnPath
 Write-Log 'Launcher started'
 Write-Host 'Trading Dashboard launcher...' -ForegroundColor Cyan
 
-Sync-FromGitHub
-Import-Mt5Reports
+Sync-DashboardWithGitHub
 
 $buildResult = Ensure-Build
 if (-not $buildResult.ok) {

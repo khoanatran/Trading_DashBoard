@@ -14,7 +14,7 @@ $ErrorActionPreference = 'Continue'
 
 $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $DataDir = Join-Path $ProjectRoot 'data'
-$BackupScript = Join-Path $ProjectRoot 'scripts\github-backup.ps1'
+$BackupScript = Join-Path $ProjectRoot 'scripts\github-full-sync.ps1'
 $LogFile = Join-Path $ProjectRoot 'github-auto-sync.log'
 $PollSeconds = 5
 $DebounceMs = 8000
@@ -36,7 +36,7 @@ function Get-DataFingerprint {
 
 function Invoke-Backup {
   param([string]$Reason)
-  Write-Log ('Change detected (' + $Reason + ') - running backup...')
+  Write-Log ('Change detected (' + $Reason + ') - running full sync...')
   try {
     $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $BackupScript 2>&1
     foreach ($line in $output) { Write-Log ($line.ToString()) }

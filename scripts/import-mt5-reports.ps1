@@ -15,7 +15,7 @@ try {
   npx --yes tsx scripts/import-mt5-reports.ts
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-  $backup = Join-Path $ProjectRoot 'scripts\github-backup.ps1'
+  $backup = Join-Path $ProjectRoot 'scripts\github-full-sync.ps1'
   if (Test-Path $backup) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $backup
   }
