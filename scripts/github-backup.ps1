@@ -4,7 +4,7 @@
   Usage: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-backup.ps1
 #>
 Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 
 $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $ProjectRoot
