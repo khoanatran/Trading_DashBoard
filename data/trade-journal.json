@@ -834,13 +834,13 @@
     "updatedAt": "2026-07-07T20:37:45.708Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-08T09:30:44": {
-    "note": "",
+    "note": "- Trade is within 34s of heatmap trigger",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-08T21:56:13.211Z"
+    "updatedAt": "2026-07-08T21:57:53.893Z"
   }
 }
