@@ -837,11 +837,11 @@
     "note": "- Trade is within 34s of heatmap trigger",
     "setupTags": [
       "LVN",
-      "Heatmap Limit Order",
-      "Heatmap Traps"
+      "Heatmap Traps",
+      "Heatmap Limit Order"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-08T21:57:53.893Z"
+    "updatedAt": "2026-07-08T22:30:46.281Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-08T09:31:20": {
     "note": "- B setup due to price has not determinedly create a downtrend (5s breaking down with wicks) ",
