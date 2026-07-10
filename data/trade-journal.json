@@ -875,7 +875,7 @@
     "updatedAt": "2026-07-08T22:41:12.092Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-10T09:43:53": {
-    "note": "",
+    "note": "- Have all element to be an A setup except PA\n\n- Price moved sluggishly after retest (not determinedly through a LVN that a normal winning trade would)",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
@@ -883,6 +883,6 @@
     ],
     "rating": 2.5,
     "ratingManual": true,
-    "updatedAt": "2026-07-10T20:50:15.812Z"
+    "updatedAt": "2026-07-10T20:52:22.686Z"
   }
 }
