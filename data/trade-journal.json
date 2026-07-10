@@ -894,5 +894,15 @@
     ],
     "rating": 3,
     "updatedAt": "2026-07-10T20:56:20.943Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-10T09:49:35": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-10T21:06:37.641Z"
   }
 }
