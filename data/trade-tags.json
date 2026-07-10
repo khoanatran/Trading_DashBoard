@@ -914,7 +914,8 @@
   "ReportHistory-600061014.xlsx::2026-07-10T09:43:53": [
     "B setup",
     "Stat Loss",
-    "Recent Heatmap Trigger"
+    "Recent Heatmap Trigger",
+    "Sudden LVN"
   ],
   "ReportHistory-600061014.xlsx::2026-07-10T09:44:41": [
     "A setup",
@@ -923,6 +924,7 @@
   ],
   "ReportHistory-600061014.xlsx::2026-07-10T09:49:35": [
     "A setup",
-    "Recent Heatmap Trigger"
+    "Recent Heatmap Trigger",
+    "Sudden LVN"
   ]
 }
