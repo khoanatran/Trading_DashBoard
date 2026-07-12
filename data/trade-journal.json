@@ -776,14 +776,14 @@
     "updatedAt": "2026-06-30T20:20:48.634Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-07T09:48:08": {
-    "note": "- Stat loss, good sizing",
+    "note": "- Entry too early for sudden LVN (30s)\n\n- Stat loss, good sizing",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-07T17:20:39.798Z"
+    "updatedAt": "2026-07-12T03:23:56.588Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-07T09:48:47": {
     "note": "- Upon careful review, this is considered forced trade\n\n- Previous case of price breaking multiple LVN upon entry is different from slow grinding above like this case\n\n- B setup due to how LVNs evenly space out",
