@@ -951,5 +951,11 @@
     ],
     "rating": 2,
     "updatedAt": "2026-07-14T21:30:33.685Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-14T09:41:13": {
+    "note": "- Weak OHLC level",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-14T21:37:05.748Z"
   }
 }
