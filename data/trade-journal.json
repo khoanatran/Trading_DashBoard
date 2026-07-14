@@ -912,13 +912,13 @@
     "updatedAt": "2026-07-14T18:30:12.391Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:50:53": {
-    "note": "",
+    "note": "- Very choppy",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-14T18:34:52.889Z"
+    "updatedAt": "2026-07-14T18:35:18.509Z"
   }
 }
