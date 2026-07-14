@@ -939,5 +939,11 @@
     ],
     "rating": 2,
     "updatedAt": "2026-07-14T21:25:04.355Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-14T09:38:09": {
+    "note": "- Weak break, ambiguous OHLC level",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-14T21:28:24.813Z"
   }
 }
