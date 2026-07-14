@@ -932,12 +932,12 @@
     "updatedAt": "2026-07-14T18:40:51.860Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:30:41": {
-    "note": "- Worst case is BE. Exited while trade is still working\n\n",
+    "note": "- Worst case is BE. Exited while trade is still working\n\n- Weak OHLC level",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-14T21:22:45.391Z"
+    "updatedAt": "2026-07-14T21:25:04.355Z"
   }
 }
