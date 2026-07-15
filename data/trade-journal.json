@@ -969,13 +969,13 @@
     "updatedAt": "2026-07-15T23:18:17.586Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-15T09:46:29": {
-    "note": "",
+    "note": "- Trigger highlighted in HTF but not LTF (missing 60m block)\n\n- OK setup, not the best. Sizing accordingly",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-15T23:18:21.499Z"
+    "updatedAt": "2026-07-15T23:22:36.899Z"
   }
 }
