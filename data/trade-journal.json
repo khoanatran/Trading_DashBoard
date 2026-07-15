@@ -925,14 +925,14 @@
     "updatedAt": "2026-07-14T18:37:12.815Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:52:45": {
-    "note": "- Avoidable due to subpar price action",
+    "note": "- Avoidable due to subpar price action\n\n- Passed the daily loss limit. Right thing to do was avoid this trade",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-14T21:48:17.652Z"
+    "updatedAt": "2026-07-15T03:05:23.334Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:30:41": {
     "note": "- Weak OHLC level\n\n- Worst case is BE. Exited while trade is still working\n\n",
