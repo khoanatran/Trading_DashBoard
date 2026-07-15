@@ -906,13 +906,13 @@
     "updatedAt": "2026-07-10T21:06:37.641Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:40:03": {
-    "note": "- Must have moved BE in this case. Worst case was BE",
+    "note": "- Weak OHLC level\n\n- Must have moved BE in this case. Worst case was BE",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-14T21:34:23.168Z"
+    "updatedAt": "2026-07-15T02:47:12.441Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:50:53": {
     "note": "- Very choppy\n\n- Break is a little weak",
@@ -935,22 +935,22 @@
     "updatedAt": "2026-07-14T21:48:17.652Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:30:41": {
-    "note": "- Worst case is BE. Exited while trade is still working\n\n- Weak OHLC level",
+    "note": "- Weak OHLC level\n\n- Worst case is BE. Exited while trade is still working\n\n",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-14T21:25:04.355Z"
+    "updatedAt": "2026-07-15T02:46:57.209Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:38:09": {
-    "note": "- Weak break, ambiguous OHLC level",
+    "note": "- Weak OHLC level\n\n- Weak break",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-14T21:30:33.685Z"
+    "updatedAt": "2026-07-15T02:47:07.303Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-14T09:41:13": {
     "note": "- Weak OHLC level\n\n- Not random, but not good setup either",
