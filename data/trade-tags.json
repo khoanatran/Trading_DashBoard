@@ -954,13 +954,13 @@
   "ReportHistory-600061014.xlsx::2026-07-14T09:52:45": [
     "Revenge Trading"
   ],
-  "ReportHistory-600061014.xlsx::2026-07-15T09:43:38": [
-    "B setup",
-    "Stat Loss",
-    "Recent Heatmap Trigger"
-  ],
   "ReportHistory-600061014.xlsx::2026-07-15T09:46:29": [
     "A setup",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-07-15T09:43:38": [
+    "A setup",
+    "Stat Loss",
     "Recent Heatmap Trigger"
   ]
 }

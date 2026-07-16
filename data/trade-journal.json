@@ -965,8 +965,9 @@
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-15T23:18:17.586Z"
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-16T03:58:33.400Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-15T09:46:29": {
     "note": "- Trigger highlighted in HTF but not LTF (missing 60m block)\n\n- OK setup, not the best. Sizing accordingly",
@@ -975,7 +976,8 @@
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-15T23:22:36.899Z"
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-16T03:58:36.023Z"
   }
 }
