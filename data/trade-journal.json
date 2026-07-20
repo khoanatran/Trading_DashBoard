@@ -1002,13 +1002,13 @@
     "updatedAt": "2026-07-20T20:43:54.166Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-20T10:15:22": {
-    "note": "- Rushed entry, forced trade",
+    "note": "- Rushed entry, forced trade\n\n- LVN appeared less than 1m",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-20T20:49:24.693Z"
+    "updatedAt": "2026-07-20T20:51:10.211Z"
   }
 }
