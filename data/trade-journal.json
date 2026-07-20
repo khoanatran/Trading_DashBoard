@@ -991,9 +991,14 @@
     "updatedAt": "2026-07-16T15:23:39.924Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-20T10:13:52": {
-    "note": "- Subconsciously forcing trade ",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-20T20:43:30.666Z"
+    "note": "- Subconsciously forcing trade and subconsciously rationalizing the trade",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-20T20:43:54.166Z"
   }
 }
