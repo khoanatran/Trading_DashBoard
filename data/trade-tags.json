@@ -976,6 +976,11 @@
   "ReportHistory-600061014.xlsx::2026-07-20T10:15:22": [
     "B setup",
     "Sudden LVN",
-    "Mistake"
+    "Mistake",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600061014.xlsx::2026-07-20T10:16:29": [
+    "B setup",
+    "Stat Loss"
   ]
 }

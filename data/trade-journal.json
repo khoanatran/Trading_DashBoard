@@ -1011,5 +1011,16 @@
     "rating": 2.5,
     "ratingManual": true,
     "updatedAt": "2026-07-20T20:52:23.101Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-20T10:16:29": {
+    "note": "- Trigger not recent (5:45am)",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-20T20:55:41.345Z"
   }
 }
