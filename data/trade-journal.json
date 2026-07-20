@@ -1000,5 +1000,11 @@
     "rating": 2.5,
     "ratingManual": true,
     "updatedAt": "2026-07-20T20:43:54.166Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-20T10:15:22": {
+    "note": "- Rushed entry",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-20T20:49:01.463Z"
   }
 }
