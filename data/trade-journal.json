@@ -1008,7 +1008,8 @@
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-20T20:51:10.211Z"
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-20T20:52:23.101Z"
   }
 }
