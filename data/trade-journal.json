@@ -1029,5 +1029,15 @@
     "rating": 2.5,
     "ratingManual": true,
     "updatedAt": "2026-07-20T20:57:27.002Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-20T10:59:08": {
+    "note": "- Setup qualified itself\n\n- Long got trapped",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-20T21:20:31.889Z"
   }
 }
