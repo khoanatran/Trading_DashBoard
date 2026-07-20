@@ -40,16 +40,16 @@ function buildKpis(stats: TradeStats, aRate: number): KpiItem[] {
     {
       id: 'trades',
       label: 'Total Trades',
-      target: '≤ 15',
+      target: '≤ 20',
       value: String(stats.totalTrades),
-      pass: stats.totalTrades <= 15,
+      pass: stats.totalTrades <= 20,
     },
     {
       id: 'aRate',
       label: 'A Rate',
-      target: '≥ 75%',
-      value: `${aRate.toFixed(0)}%`,
-      pass: aRate >= 75,
+      target: '≥ 66.7%',
+      value: `${aRate.toFixed(1)}%`,
+      pass: aRate >= 66.7,
     },
     {
       id: 'avgRR',
@@ -61,9 +61,9 @@ function buildKpis(stats: TradeStats, aRate: number): KpiItem[] {
     {
       id: 'winDayRR',
       label: 'Win Day R:R',
-      target: '≥ 1.75',
+      target: '≥ 1.5',
       value: formatRatio(stats.winDayRR),
-      pass: stats.winningDays + stats.losingDays > 0 && stats.winDayRR >= 1.75,
+      pass: stats.winningDays + stats.losingDays > 0 && stats.winDayRR >= 1.5,
     },
     {
       id: 'profitFactor',
