@@ -4,7 +4,8 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Trade, PartialExit, parseLocalTimestamp, getTradeId, getTradeRMultiple, getPartialExitRMultiple, getTradeDollarRisk, getTradeResult, buildDailyEquityCurve, getTradeCloseAt } from '@/utils/logParser'
 import { findMissingTradingDays, formatDateKey, dateKeyToLabel, isWeekend, getTradingDaysBetween, DateRange as MissingDateRange } from '@/utils/tradingDays'
 import { formatUsd, formatUsdPnl, formatUsdPnlOrNa } from '@/lib/format'
-import { ImagePlus, X, Trash2, ZoomIn, ZoomOut, RotateCcw, Pen, Eraser, Undo2, Trash, Circle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, StickyNote, ArrowUp, ArrowDown, ArrowUpDown, Tag, Plus, Video, Play, Pause, Scissors, Save, Film, BookOpen, Edit3, Star, Flag } from 'lucide-react'
+import { ImagePlus, X, Trash2, ZoomIn, ZoomOut, RotateCcw, Pen, Eraser, Undo2, Trash, Circle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, StickyNote, ArrowUp, ArrowDown, ArrowUpDown, Tag, Plus, Video, Play, Pause, Scissors, Save, Film, BookOpen, Edit3, Star, Flag, Download } from 'lucide-react'
+import { downloadJournalExcel, journalContextFromMaps } from '@/lib/export-journal-xlsx'
 import WeeklyNoteModal from './WeeklyNoteModal'
 import DailyEquityCurveChart from './DailyEquityCurveChart'
 import { FitImageViewer, FitVideoViewer } from '@/components/FitImage'
@@ -913,6 +914,38 @@ export default function JournalTable({
     
     return sorted
   }, [tradesForTable, sortColumn, sortDirection, preserveTradeOrder])
+
+  const handleExportJournalExcel = useCallback(() => {
+    // Export every trade in the journal view (not just the active tag/flag filter).
+    const ratingsForExport: Record<string, number> = {}
+    for (const trade of trades) {
+      const tradeId = getTradeId(trade)
+      ratingsForExport[tradeId] = getTradeRating(tradeId)
+    }
+    // Include any journal-only IDs that might not be in the current trade list.
+    for (const tradeId of Object.keys(tradeNotes)) {
+      if (ratingsForExport[tradeId] === undefined) {
+        ratingsForExport[tradeId] = getTradeRating(tradeId)
+      }
+    }
+    const ctx = journalContextFromMaps({
+      notes: tradeNotes,
+      setupTags: tradeSetupTags,
+      ratings: ratingsForExport,
+      ratingManual: tradeRatingManual,
+      tradeTags,
+      flaggedTrades,
+    })
+    downloadJournalExcel(trades, ctx)
+  }, [
+    trades,
+    tradeNotes,
+    tradeSetupTags,
+    tradeRatingManual,
+    tradeTags,
+    flaggedTrades,
+    getTradeRating,
+  ])
 
   const showEquityIndexCol = Boolean(
     equityIndexByTradeId && Object.keys(equityIndexByTradeId).length > 0
@@ -3041,14 +3074,26 @@ export default function JournalTable({
   return (
     <div className={embedded ? 'mb-0' : 'mb-8'}>
       {!embedded && (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 gap-4">
           <div>
             <h2 className="text-2xl font-bold">Trade Journal</h2>
             <p className="text-xs text-muted-foreground mt-1">
               Equity curve shows all trades by default. Click a trade for that day&apos;s session curve, or use tag filters to narrow the curve. Click a day badge to collapse or expand grouped trades.
             </p>
           </div>
-          <span className="text-sm text-muted-foreground">{sortedTrades.length} trades</span>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={handleExportJournalExcel}
+              disabled={trades.length === 0}
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-50 disabled:pointer-events-none"
+              title="Download all journal notes, tags, and ratings as Excel"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export Excel
+            </button>
+            <span className="text-sm text-muted-foreground">{sortedTrades.length} trades</span>
+          </div>
         </div>
       )}
 
