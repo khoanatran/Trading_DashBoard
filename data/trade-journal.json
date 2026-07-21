@@ -1058,8 +1058,9 @@
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-21T18:14:50.575Z"
+    "rating": 2,
+    "ratingManual": true,
+    "updatedAt": "2026-07-21T18:35:26.442Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-21T09:42:12": {
     "note": "",
@@ -1068,8 +1069,9 @@
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-21T18:17:30.370Z"
+    "rating": 2,
+    "ratingManual": true,
+    "updatedAt": "2026-07-21T18:35:25.663Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-21T09:43:08": {
     "note": "",
