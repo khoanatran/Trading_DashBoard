@@ -23,6 +23,7 @@ export interface JournalExportRow {
   Symbol: string
   Direction: string
   Result: string
+  'Date (ET)': string
   'Entry Time (ET)': string
   'Exit Time (ET)': string
   Quantity: number | string
@@ -40,11 +41,21 @@ export interface JournalExportRow {
   'Source File': string
 }
 
-function formatNycDatetime(ts: string | null | undefined): string {
+function formatNycDate(ts: string | null | undefined): string {
   if (!ts) return ''
   try {
     const instant = parseLocalTimestamp(ts)
-    return formatInTimeZone(instant, DISPLAY_TIMEZONE, 'yyyy-MM-dd HH:mm:ss')
+    return formatInTimeZone(instant, DISPLAY_TIMEZONE, 'yyyy-MM-dd')
+  } catch {
+    return ts
+  }
+}
+
+function formatNycTime(ts: string | null | undefined): string {
+  if (!ts) return ''
+  try {
+    const instant = parseLocalTimestamp(ts)
+    return formatInTimeZone(instant, DISPLAY_TIMEZONE, 'HH:mm:ss')
   } catch {
     return ts
   }
@@ -119,14 +130,18 @@ export function buildJournalExportRows(
     const result = getTradeResult(trade, ctx.tradeTags)
     const rating = journal?.rating ?? 0
 
+    const entryTs = trade.entryTime ?? trade.timestamp
+    const exitTs = trade.exitTime ?? trade.timestamp
+
     return {
       'Trade #': index + 1,
       'Trade ID': tradeId,
       Symbol: trade.symbol ?? '',
       Direction: trade.direction ?? '',
       Result: result,
-      'Entry Time (ET)': formatNycDatetime(trade.entryTime ?? trade.timestamp),
-      'Exit Time (ET)': formatNycDatetime(trade.exitTime ?? trade.timestamp),
+      'Date (ET)': formatNycDate(entryTs),
+      'Entry Time (ET)': formatNycTime(entryTs),
+      'Exit Time (ET)': formatNycTime(exitTs),
       Quantity: trade.orderQty ?? '',
       'Entry Price': trade.entryPrice ?? '',
       'Exit Price': trade.exitPrice ?? '',
@@ -158,8 +173,9 @@ export function buildJournalWorkbook(
     { wch: 18 },
     { wch: 10 },
     { wch: 8 },
-    { wch: 20 },
-    { wch: 20 },
+    { wch: 12 },
+    { wch: 14 },
+    { wch: 14 },
     { wch: 10 },
     { wch: 12 },
     { wch: 12 },
