@@ -1092,13 +1092,13 @@
     "updatedAt": "2026-07-21T18:23:28.366Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-21T10:01:39": {
-    "note": "",
+    "note": "- Stat loss",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-21T18:33:58.358Z"
+    "updatedAt": "2026-07-21T18:35:13.754Z"
   }
 }
