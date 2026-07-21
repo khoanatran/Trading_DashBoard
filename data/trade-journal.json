@@ -1041,13 +1041,14 @@
     "updatedAt": "2026-07-20T21:20:31.889Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-21T09:37:52": {
-    "note": "- Stuck between Triggers, which is a new scenario",
+    "note": "- Stuck between Triggers, which is a new scenario\n\n- Multiple Triggers, was not sure how to properly trade in this scenario",
     "setupTags": [
       "LVN",
       "Heatmap Traps",
       "Heatmap Limit Order"
     ],
-    "rating": 3,
-    "updatedAt": "2026-07-21T18:10:44.446Z"
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-07-21T18:11:48.651Z"
   }
 }
