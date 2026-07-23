@@ -1144,9 +1144,12 @@
   },
   "ReportHistory-600061014.xlsx::2026-07-23T11:22:47": {
     "note": "- BE trade that slipped into loss\n\n- Couple points away from TP",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-23T22:50:36.917Z"
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-07-23T23:07:59.105Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-23T11:25:19": {
     "note": "",
