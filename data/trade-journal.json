@@ -1114,13 +1114,13 @@
     "updatedAt": "2026-07-21T18:50:58.427Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-22T10:26:20": {
-    "note": "",
+    "note": "- Seem like price is doing \"hitting opposite trigger\" loss a lot lately",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-23T01:28:59.580Z"
+    "updatedAt": "2026-07-23T01:29:49.034Z"
   }
 }
