@@ -140,6 +140,7 @@ export const AVAILABLE_TAGS = [
   
   // Negative outcomes
   { name: 'Mistake', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  { name: 'Half Trigger Trade', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Bad Reentry', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Bad SL Placement', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Revenge Trading', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
