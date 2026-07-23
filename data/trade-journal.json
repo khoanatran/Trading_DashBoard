@@ -1020,7 +1020,7 @@
     "updatedAt": "2026-07-20T20:56:19.648Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-20T10:17:31": {
-    "note": "- Trigger not recent (5:45am)\n\n- Level later became choppy level, which I decided to stop trading",
+    "note": "- Trigger not recent (5:45am). No trigger in LTF\n\n- Level later became choppy level, which I decided to stop trading",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
@@ -1028,7 +1028,7 @@
     ],
     "rating": 2.5,
     "ratingManual": true,
-    "updatedAt": "2026-07-20T20:57:27.002Z"
+    "updatedAt": "2026-07-23T23:00:38.431Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-20T10:59:08": {
     "note": "- Setup qualified itself\n\n- Long got trapped",
