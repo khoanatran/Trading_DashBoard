@@ -1134,12 +1134,12 @@
     "updatedAt": "2026-07-23T01:33:22.959Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-23T10:23:16": {
-    "note": "",
+    "note": "- Imitate a break out setup but the legit on earlier today was breaking up BELOW a Trigger.\n\n- This one is breaking out up above nothing?\n\n- No LVN.",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-23T21:59:30.654Z"
+    "updatedAt": "2026-07-23T22:01:17.079Z"
   }
 }
