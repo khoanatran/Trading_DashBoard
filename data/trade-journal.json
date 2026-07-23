@@ -1134,12 +1134,18 @@
     "updatedAt": "2026-07-23T01:33:22.959Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-23T10:23:16": {
-    "note": "- Imitate a break out setup but the legit on earlier today was breaking up BELOW a Trigger.\n\n- This one is breaking out up above nothing?\n\n- No LVN.",
+    "note": "- Imitate a break out setup but the legit on earlier today was breaking up BELOW a Trigger.\n\n- This one is breaking out up above nothing?\n\n- No LVN. Was too quick to push the button",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-23T22:01:17.079Z"
+    "updatedAt": "2026-07-23T22:01:44.245Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-23T11:22:47": {
+    "note": "- BE trade that slipped",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-23T22:01:50.371Z"
   }
 }
