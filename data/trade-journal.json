@@ -1122,5 +1122,15 @@
     ],
     "rating": 3,
     "updatedAt": "2026-07-23T01:29:49.034Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-22T10:29:14": {
+    "note": "- Got a trap seller right after entering",
+    "setupTags": [
+      "Heatmap Traps",
+      "Heatmap Limit Order",
+      "LVN"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-23T01:33:22.959Z"
   }
 }
