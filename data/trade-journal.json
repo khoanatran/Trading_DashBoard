@@ -1168,13 +1168,13 @@
     "updatedAt": "2026-07-23T22:53:18.129Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-27T10:32:19": {
-    "note": "- Subpar setups ",
+    "note": "- Subpar setups with sudden LVN < 1 minute worked for the whole day\n\n- Was patient for the whole session and decided to take a smaller size bet. Didnt work out",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-27T22:40:31.028Z"
+    "updatedAt": "2026-07-27T22:41:06.006Z"
   }
 }
