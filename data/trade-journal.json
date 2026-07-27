@@ -1166,5 +1166,15 @@
     "setupTags": [],
     "rating": 0,
     "updatedAt": "2026-07-23T22:53:18.129Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-27T10:32:19": {
+    "note": "- Subpar setups ",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-27T22:40:31.028Z"
   }
 }

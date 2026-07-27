@@ -1040,5 +1040,10 @@
   "ReportHistory-600061014.xlsx::2026-07-20T10:17:31": [
     "Mistake",
     "Half Trigger Trade"
+  ],
+  "ReportHistory-600061014.xlsx::2026-07-27T10:32:19": [
+    "B setup",
+    "Stat Loss",
+    "Sudden LVN"
   ]
 }
