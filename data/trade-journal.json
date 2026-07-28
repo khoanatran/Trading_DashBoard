@@ -1239,8 +1239,12 @@
   },
   "ReportHistory-600061014.xlsx::2026-07-28T09:53:34": {
     "note": "- Sudden LVN but market showed it worked regardless",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-07-28T17:20:50.919Z"
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-28T17:21:13.697Z"
   }
 }
