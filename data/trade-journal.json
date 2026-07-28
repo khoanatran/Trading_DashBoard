@@ -1263,12 +1263,12 @@
     "updatedAt": "2026-07-28T17:29:41.683Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-28T10:00:35": {
-    "note": "- Forcing trades with rushed entry at this point",
+    "note": "- Forcing trades with rushed entry at this point\n\n- Must have stopped right here per MDL",
     "setupTags": [
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 2,
-    "updatedAt": "2026-07-28T17:33:13.776Z"
+    "updatedAt": "2026-07-28T17:33:41.252Z"
   }
 }
