@@ -1211,13 +1211,13 @@
     "updatedAt": "2026-07-27T23:10:20.975Z"
   },
   "ReportHistory-600061014.xlsx::2026-07-28T09:48:07": {
-    "note": "Clean setup",
+    "note": "- Clean setup, didnt deliver ",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-07-28T17:11:06.274Z"
+    "updatedAt": "2026-07-28T17:13:13.781Z"
   }
 }
