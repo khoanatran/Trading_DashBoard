@@ -1229,5 +1229,18 @@
     ],
     "rating": 2,
     "updatedAt": "2026-07-28T17:17:27.619Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-28T09:51:51": {
+    "note": "",
+    "setupTags": [],
+    "rating": 0,
+    "ratingManual": false,
+    "updatedAt": "2026-07-28T17:20:49.808Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-28T09:53:34": {
+    "note": "- Sudden LVN but market showed it worked regardless",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-07-28T17:20:50.919Z"
   }
 }
