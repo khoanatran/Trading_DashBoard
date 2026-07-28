@@ -1290,5 +1290,15 @@
     ],
     "rating": 3,
     "updatedAt": "2026-07-28T21:52:04.611Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-28T10:05:02": {
+    "note": "- Random SL, trade still working",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-28T21:55:37.197Z"
   }
 }
