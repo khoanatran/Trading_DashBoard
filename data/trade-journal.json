@@ -1252,5 +1252,14 @@
     "setupTags": [],
     "rating": 0,
     "updatedAt": "2026-07-28T17:25:35.016Z"
+  },
+  "ReportHistory-600061014.xlsx::2026-07-28T09:57:40": {
+    "note": "",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-07-28T17:28:48.750Z"
   }
 }
