@@ -29,7 +29,7 @@ import WeeklyNotesTimeline from '@/components/WeeklyNotesTimeline'
 import { CustomDateRangePicker } from '@/components/CustomDateRangePicker'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Calendar, BarChart3, FileUp, FileDown, Moon, Sun, FileText, BookOpen, CalendarDays, CalendarRange, LayoutDashboard, PanelLeftClose, PanelLeft, Filter, FlaskConical } from 'lucide-react'
+import { Calendar, BarChart3, FileUp, FileDown, Moon, Sun, FileText, BookOpen, CalendarDays, CalendarRange, LayoutDashboard, PanelLeftClose, PanelLeft, Filter, FlaskConical, Archive } from 'lucide-react'
 import SimulatedOverview from '@/components/SimulatedOverview'
 import { format, isWithinInterval, endOfDay, startOfWeek, endOfWeek, subWeeks, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear } from 'date-fns'
 import {
@@ -45,7 +45,13 @@ import { remigrateTradeMetadataOnServer } from '@/lib/sync-trade-metadata'
 import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
 import { pullFromGitHub } from '@/lib/sync-from-github'
 import { restoreDashboardFromServer } from '@/lib/restore-from-server'
-import { clearAllCaches } from '@/utils/mediaCache'
+import { clearAllCaches, setActiveArchiveSlug } from '@/utils/mediaCache'
+import {
+  fetchDashboardArchives,
+  hydrateJournalCacheFromArchive,
+  loadDashboardArchiveClient,
+  type DashboardArchiveSummary,
+} from '@/lib/archive-client'
 
 type DateRange = { from?: Date; to?: Date }
 
@@ -79,6 +85,21 @@ export default function Home() {
   const [flaggedTrades, setFlaggedTrades] = useState<Record<string, boolean>>({})
   const [persistReady, setPersistReady] = useState(false)
   const [mediaRefreshKey, setMediaRefreshKey] = useState(0)
+  const [dashboardArchives, setDashboardArchives] = useState<DashboardArchiveSummary[]>([])
+  const [activeArchive, setActiveArchive] = useState<string | null>(null)
+  const liveSessionRef = useRef<{
+    trades: Trade[]
+    fileName: string
+    tradeTags: Record<string, string[]>
+    flaggedDays: Record<string, boolean>
+    flaggedTrades: Record<string, boolean>
+    journalStorage: {
+      tradeNotes: string | null
+      tradeSetupTags: string | null
+      tradeRatings: string | null
+      tradeRatingManual: string | null
+    }
+  } | null>(null)
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
   const restoreCompleteRef = useRef(false)
@@ -284,22 +305,22 @@ export default function Home() {
 
   // Persist trades whenever they change (after initial load)
   useEffect(() => {
-    if (!persistReady) return
+    if (!persistReady || activeArchive) return
     saveStoredTrades(trades, fileName || null)
-  }, [trades, fileName, persistReady])
+  }, [trades, fileName, persistReady, activeArchive])
 
   // Persist trades to server snapshot + GitHub backup (debounced; skip until restore finishes)
   useEffect(() => {
-    if (!persistReady || trades.length === 0 || !restoreCompleteRef.current) return
+    if (!persistReady || trades.length === 0 || !restoreCompleteRef.current || activeArchive) return
     const timer = setTimeout(() => {
       void syncTradesSnapshotToServer(trades)
     }, 500)
     return () => clearTimeout(timer)
-  }, [trades, persistReady])
+  }, [trades, persistReady, activeArchive])
 
   // Flush trades to server snapshot when closing the browser tab
   useEffect(() => {
-    if (!persistReady || trades.length === 0) return
+    if (!persistReady || trades.length === 0 || activeArchive) return
 
     const flushSnapshot = () => {
       void fetch('/api/trades-snapshot', {
@@ -312,7 +333,75 @@ export default function Home() {
 
     window.addEventListener('beforeunload', flushSnapshot)
     return () => window.removeEventListener('beforeunload', flushSnapshot)
-  }, [trades, persistReady])
+  }, [trades, persistReady, activeArchive])
+
+  useEffect(() => {
+    void fetchDashboardArchives().then(setDashboardArchives)
+  }, [])
+
+  const handleArchiveSelect = useCallback(async (value: string) => {
+    if (value === '__live__') {
+      setActiveArchiveSlug(null)
+      setActiveArchive(null)
+      const saved = liveSessionRef.current
+      if (saved) {
+        setTrades(saved.trades)
+        setFileName(saved.fileName)
+        setTradeTagsFromJournal(saved.tradeTags)
+        setFlaggedDays(saved.flaggedDays)
+        setFlaggedTrades(saved.flaggedTrades)
+        if (saved.journalStorage.tradeNotes != null) {
+          localStorage.setItem('tradeNotes', saved.journalStorage.tradeNotes)
+        }
+        if (saved.journalStorage.tradeSetupTags != null) {
+          localStorage.setItem('tradeSetupTags', saved.journalStorage.tradeSetupTags)
+        }
+        if (saved.journalStorage.tradeRatings != null) {
+          localStorage.setItem('tradeRatings', saved.journalStorage.tradeRatings)
+        }
+        if (saved.journalStorage.tradeRatingManual != null) {
+          localStorage.setItem('tradeRatingManual', saved.journalStorage.tradeRatingManual)
+        }
+        liveSessionRef.current = null
+      }
+      clearAllCaches()
+      setMediaRefreshKey(key => key + 1)
+      return
+    }
+
+    if (!liveSessionRef.current) {
+      liveSessionRef.current = {
+        trades,
+        fileName,
+        tradeTags: tradeTagsFromJournal,
+        flaggedDays,
+        flaggedTrades,
+        journalStorage: {
+          tradeNotes: localStorage.getItem('tradeNotes'),
+          tradeSetupTags: localStorage.getItem('tradeSetupTags'),
+          tradeRatings: localStorage.getItem('tradeRatings'),
+          tradeRatingManual: localStorage.getItem('tradeRatingManual'),
+        },
+      }
+    }
+
+    const bundle = await loadDashboardArchiveClient(value)
+    if (!bundle) {
+      alert(`Could not load archive "${value}".`)
+      return
+    }
+
+    setActiveArchiveSlug(value)
+    setActiveArchive(value)
+    setTrades(bundle.trades)
+    setFileName(value)
+    setTradeTagsFromJournal(bundle.tradeTags)
+    setFlaggedDays(bundle.flags.days ?? {})
+    setFlaggedTrades(bundle.flags.trades ?? {})
+    hydrateJournalCacheFromArchive(bundle.tradeJournal)
+    clearAllCaches()
+    setMediaRefreshKey(key => key + 1)
+  }, [trades, fileName, tradeTagsFromJournal, flaggedDays, flaggedTrades])
 
   // Dynamic greeting based on time of day (client-side only to avoid hydration mismatch)
   useEffect(() => {
@@ -669,7 +758,9 @@ export default function Home() {
             size={sidebarCollapsed ? 'icon' : 'default'}
             className={sidebarCollapsed ? 'h-10 w-10' : 'w-full justify-start'}
             type="button" 
+            disabled={!!activeArchive}
             onClick={() => {
+              if (activeArchive) return
               const input = document.getElementById('file-upload') as HTMLInputElement
               if (input) {
                 input.click()
@@ -682,12 +773,34 @@ export default function Home() {
           </Button>
           {!sidebarCollapsed && (
             <p className="text-xs text-muted-foreground mt-1 truncate" title={fileName || undefined}>
-              {trades.length > 0
-                ? `${trades.length} trade${trades.length === 1 ? '' : 's'} saved locally`
-                : fileName
-                  ? fileName
-                  : 'No trades saved'}
+              {activeArchive
+                ? `Archive · ${trades.length} trade${trades.length === 1 ? '' : 's'}`
+                : trades.length > 0
+                  ? `${trades.length} trade${trades.length === 1 ? '' : 's'} saved locally`
+                  : fileName
+                    ? fileName
+                    : 'No trades saved'}
             </p>
+          )}
+          {!sidebarCollapsed && dashboardArchives.length > 0 && (
+            <div className="mt-3">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide flex items-center gap-1.5 mb-1.5">
+                <Archive className="h-3.5 w-3.5" />
+                Data source
+              </label>
+              <select
+                value={activeArchive ?? '__live__'}
+                onChange={e => void handleArchiveSelect(e.target.value)}
+                className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-sm"
+              >
+                <option value="__live__">Live Dashboard</option>
+                {dashboardArchives.map(archive => (
+                  <option key={archive.title} value={archive.title}>
+                    {archive.title}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
           <Button
             variant="outline"
@@ -695,7 +808,7 @@ export default function Home() {
             className={`${sidebarCollapsed ? 'h-10 w-10' : 'w-full justify-start'} mt-2`}
             type="button"
             onClick={() => void handleExportTrades()}
-            disabled={trades.length === 0}
+            disabled={trades.length === 0 || !!activeArchive}
             title={sidebarCollapsed ? 'Export to Trade History for SC' : undefined}
           >
             <FileDown className={sidebarCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'} />
@@ -764,6 +877,11 @@ export default function Home() {
         <header className="border-b bg-card sticky top-0 z-30">
           <div className="px-6 py-4">
             <h1 className="text-[2rem] font-bold">{greeting}</h1>
+            {activeArchive && (
+              <p className="text-sm text-amber-500 mt-1">
+                Viewing archive: <span className="font-semibold">{activeArchive}</span> (read-only)
+              </p>
+            )}
             <p className="text-sm text-muted-foreground mt-1 italic">{'"You take random setups, you get random results"'}</p>
           </div>
         </header>
@@ -1018,12 +1136,13 @@ export default function Home() {
                   darkMode={darkMode} 
                   onTradeTagsChange={setTradeTagsFromJournal}
                   flaggedTrades={flaggedTrades}
-                  onToggleTradeFlag={handleToggleTradeFlag}
+                  onToggleTradeFlag={activeArchive ? undefined : handleToggleTradeFlag}
                   tagFilterMode={tagFilterMode}
                   setTagFilterMode={setTagFilterMode}
                   tagFilterTags={tagFilterTags}
                   setTagFilterTags={setTagFilterTags}
                   focusDayKey={journalDayKey}
+                  readOnly={!!activeArchive}
                 />
               )}
 

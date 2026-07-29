@@ -382,6 +382,8 @@ interface JournalTableProps {
   focusDayKey?: string | null
   /** Timeline daily recap: notify parent when a trade row is selected. */
   onHighlightedTradeChange?: (tradeId: string | null) => void
+  /** Read-only archive view — disables uploads and server saves. */
+  readOnly?: boolean
 }
 
 interface TradeImage {
@@ -446,6 +448,7 @@ export default function JournalTable({
   equityIndexByTradeId,
   focusDayKey,
   onHighlightedTradeChange,
+  readOnly = false,
 }: JournalTableProps) {
   // Sort state
   const [sortColumn, setSortColumn] = useState<SortColumn>('date')
@@ -777,6 +780,7 @@ export default function JournalTable({
       tradeId: string,
       patch: { note?: string; setupTags?: string[]; rating?: number; ratingManual?: boolean }
     ) => {
+      if (readOnly) return
       setJournalSaveStatus(prev => ({ ...prev, [tradeId]: 'saving' }))
       const result = await patchTradeJournal(tradeId, patch)
       setJournalSaveStatus(prev => ({
@@ -792,7 +796,7 @@ export default function JournalTable({
         }, 2000)
       }
     },
-    []
+    [readOnly]
   )
 
   const scheduleTradeNoteSave = useCallback(
@@ -1206,6 +1210,7 @@ export default function JournalTable({
 
   // Add tag to trade (auto-saved to server)
   const addTag = useCallback(async (tradeId: string, tag: string) => {
+    if (readOnly) return
     try {
       const res = await fetch('/api/trade-tags', {
         method: 'POST',
@@ -1221,10 +1226,11 @@ export default function JournalTable({
     } catch (err) {
       console.error('Failed to add tag:', err)
     }
-  }, [updateCachedTags])
+  }, [readOnly, updateCachedTags])
   
   // Remove tag from trade (auto-saved to server)
   const removeTag = useCallback(async (tradeId: string, tag: string) => {
+    if (readOnly) return
     try {
       const res = await fetch(`/api/trade-tags?tradeId=${encodeURIComponent(tradeId)}&tag=${encodeURIComponent(tag)}`, {
         method: 'DELETE'
@@ -1238,7 +1244,7 @@ export default function JournalTable({
     } catch (err) {
       console.error('Failed to remove tag:', err)
     }
-  }, [updateCachedTags])
+  }, [readOnly, updateCachedTags])
 
   const toggleTradeTag = useCallback(
     (tradeId: string, tagName: string, isSelected: boolean) => {
@@ -1533,6 +1539,7 @@ export default function JournalTable({
   
   // Upload trimmed video clip
   const uploadTrimmedClip = useCallback(async () => {
+    if (readOnly) return
     if (!videoPreviewState) return
     
     const { tradeId, file } = videoPreviewState
@@ -1761,6 +1768,7 @@ export default function JournalTable({
     files: FileList,
     section: TradeImageSection = 'before'
   ) => {
+    if (readOnly) return
     setUploadingTrades(prev => new Set(prev).add(tradeId))
     
     try {
@@ -1794,10 +1802,11 @@ export default function JournalTable({
         return next
       })
     }
-  }, [updateCachedImages])
+  }, [readOnly, updateCachedImages])
   
   // Delete an image
   const deleteImage = useCallback(async (tradeId: string, imageName: string) => {
+    if (readOnly) return
     try {
       const res = await fetch(`/api/trade-images?tradeId=${encodeURIComponent(tradeId)}&name=${encodeURIComponent(imageName)}`, {
         method: 'DELETE'
