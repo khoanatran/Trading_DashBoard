@@ -45,7 +45,7 @@ export async function GET(
     const ext = path.extname(normalized).toLowerCase()
     const contentType = MIME_TYPES[ext] || 'application/octet-stream'
 
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         'Content-Type': contentType,
         'Content-Length': buffer.length.toString(),
