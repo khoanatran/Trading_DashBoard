@@ -46,12 +46,14 @@ import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
 import { pullFromGitHub } from '@/lib/sync-from-github'
 import { restoreDashboardFromServer } from '@/lib/restore-from-server'
 import { clearAllCaches, setActiveArchiveSlug } from '@/utils/mediaCache'
+import SessionManager from '@/components/SessionManager'
 import {
   fetchDashboardArchives,
   hydrateJournalCacheFromArchive,
   loadDashboardArchiveClient,
   type DashboardArchiveSummary,
 } from '@/lib/archive-client'
+import { updateLiveSessionImport } from '@/lib/session-client'
 
 type DateRange = { from?: Date; to?: Date }
 
@@ -335,9 +337,14 @@ export default function Home() {
     return () => window.removeEventListener('beforeunload', flushSnapshot)
   }, [trades, persistReady, activeArchive])
 
-  useEffect(() => {
-    void fetchDashboardArchives().then(setDashboardArchives)
+  const refreshDashboardArchives = useCallback(async () => {
+    const archives = await fetchDashboardArchives()
+    setDashboardArchives(archives)
   }, [])
+
+  useEffect(() => {
+    void refreshDashboardArchives()
+  }, [refreshDashboardArchives])
 
   const handleArchiveSelect = useCallback(async (value: string) => {
     if (value === '__live__') {
@@ -498,6 +505,49 @@ export default function Home() {
 
     setFileName(fileLabel)
     setViewMode('overview')
+    void updateLiveSessionImport(fileLabel)
+  }
+
+  const handleLiveSessionReset = useCallback(() => {
+    liveSessionRef.current = null
+    setActiveArchive(null)
+    setActiveArchiveSlug(null)
+    setTrades([])
+    setFileName('')
+    setTradeTagsFromJournal({})
+    setFlaggedDays({})
+    setFlaggedTrades({})
+    clearAllCaches()
+    setMediaRefreshKey(key => key + 1)
+    startupMetadataSyncDoneRef.current = false
+    restoreCompleteRef.current = true
+    setPersistReady(true)
+  }, [])
+
+  const triggerSpreadsheetImport = useCallback(() => {
+    if (activeArchive) return
+    const input = document.getElementById('spreadsheet-upload') as HTMLInputElement | null
+    input?.click()
+  }, [activeArchive])
+
+  const handleSpreadsheetUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    event.target.value = ''
+
+    setFileName(file.name)
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
+        const buffer = e.target?.result as ArrayBuffer
+        const parsedTrades = parseMt5ReportHistoryBuffer(buffer, file.name)
+        applyParsedTrades(parsedTrades, file.name)
+      } catch (error) {
+        console.error('Error parsing spreadsheet:', error)
+        alert(`Error parsing spreadsheet: ${error}`)
+      }
+    }
+    reader.readAsArrayBuffer(file)
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -815,6 +865,23 @@ export default function Home() {
             {!sidebarCollapsed && 'Export to SC folder'}
           </Button>
         </div>
+
+        <SessionManager
+          sidebarCollapsed={sidebarCollapsed}
+          activeArchive={activeArchive}
+          tradeCount={trades.length}
+          onLiveSessionReset={handleLiveSessionReset}
+          onArchivesRefresh={() => void refreshDashboardArchives()}
+          onImportSpreadsheet={triggerSpreadsheetImport}
+        />
+
+        <input
+          id="spreadsheet-upload"
+          type="file"
+          accept=".xlsx,.xls"
+          onChange={handleSpreadsheetUpload}
+          className="hidden"
+        />
 
         {/* Navigation Items */}
         <nav className="flex-1 py-4">

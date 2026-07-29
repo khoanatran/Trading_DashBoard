@@ -7,7 +7,10 @@ import {
   DASHBOARD_ARCHIVE_ROOT,
   archiveTitleFromFileName,
   getArchiveFilePath,
+  getArchiveFolderPath,
+  getRepoArchiveFilePath,
 } from '@/lib/archive-constants'
+import { writeArchiveArtifacts } from '@/lib/dashboard-archive-export'
 import { DISPLAY_TIMEZONE } from '@/lib/timezone'
 import { formatDateKey } from '@/utils/tradingDays'
 import { getTradeCloseAt, getTradeId, type Trade } from '@/utils/logParser'
@@ -21,6 +24,7 @@ export interface ArchiveManifest {
   createdAt: string
   tradeCount: number
   mediaFileCount: number
+  kind?: 'date-range' | 'live-export'
 }
 
 export interface ArchiveListItem {
@@ -161,59 +165,84 @@ export async function buildDashboardArchive(options: {
     createdAt: new Date().toISOString(),
     tradeCount: filteredTrades.length,
     mediaFileCount: mediaPaths.size,
+    kind: 'date-range',
   }
 
-  const zip = new AdmZip()
-  zip.addFile('manifest.json', Buffer.from(JSON.stringify(manifest, null, 2), 'utf-8'))
-  zip.addFile(
-    'trades-snapshot.json',
-    Buffer.from(JSON.stringify({ version: 1, trades: filteredTrades, updatedAt: manifest.createdAt }, null, 2), 'utf-8')
-  )
-  zip.addFile('trade-journal.json', Buffer.from(JSON.stringify(filteredJournal, null, 2), 'utf-8'))
-  zip.addFile('trade-tags.json', Buffer.from(JSON.stringify(filteredTags, null, 2), 'utf-8'))
-  zip.addFile('trade-images.json', Buffer.from(JSON.stringify(filteredImages, null, 2), 'utf-8'))
-  zip.addFile('trade-videos.json', Buffer.from(JSON.stringify(filteredVideos, null, 2), 'utf-8'))
-  zip.addFile('flags.json', Buffer.from(JSON.stringify(filteredFlags, null, 2), 'utf-8'))
-  zip.addFile('daily-summaries.json', Buffer.from(JSON.stringify(filteredDailySummaries, null, 2), 'utf-8'))
-  zip.addFile('weekly-notes.json', Buffer.from(JSON.stringify(weeklyNotes, null, 2), 'utf-8'))
+  const folderPath = getArchiveFolderPath(title)
+  const zipPath = getArchiveFilePath(title)
 
-  for (const relPath of mediaPaths) {
-    const diskPath = path.join(DATA_DIR, relPath.replace(/\//g, path.sep))
-    try {
-      const buffer = await fs.readFile(diskPath)
-      zip.addFile(relPath.replace(/\\/g, '/'), buffer)
-    } catch (error) {
-      console.warn(`Archive: missing media file ${relPath}`, error)
-    }
-  }
+  await writeArchiveArtifacts({
+    manifest,
+    trades: filteredTrades,
+    tradeJournal: filteredJournal,
+    tradeTags: filteredTags,
+    tradeImages: filteredImages,
+    tradeVideos: filteredVideos,
+    flags: filteredFlags,
+    dailySummaries: filteredDailySummaries,
+    weeklyNotes,
+    mediaPaths,
+    folderPath,
+    zipPath,
+    dataDir: DATA_DIR,
+  })
 
-  const filePath = getArchiveFilePath(title)
-  zip.writeZip(filePath)
-  return { filePath, manifest }
+  return { filePath: zipPath, manifest }
 }
 
 export async function listDashboardArchives(): Promise<ArchiveListItem[]> {
   await ensureArchiveRoot()
-  const entries = await fs.readdir(DASHBOARD_ARCHIVE_ROOT)
-  const archives: ArchiveListItem[] = []
+  const seen = new Map<string, ArchiveListItem>()
 
-  for (const entry of entries) {
-    if (!entry.endsWith(DASHBOARD_ARCHIVE_EXTENSION)) continue
-    const filePath = path.join(DASHBOARD_ARCHIVE_ROOT, entry)
+  const addArchive = async (filePath: string) => {
     try {
       const manifest = await readArchiveManifest(filePath)
-      archives.push({ title: manifest.title, filePath, manifest })
+      if (!seen.has(manifest.title)) {
+        seen.set(manifest.title, { title: manifest.title, filePath, manifest })
+      }
     } catch (error) {
-      console.warn(`Skipping invalid archive ${entry}:`, error)
+      console.warn(`Skipping invalid archive ${filePath}:`, error)
     }
   }
 
-  return archives.sort((a, b) => b.manifest.createdAt.localeCompare(a.manifest.createdAt))
+  try {
+    const entries = await fs.readdir(DASHBOARD_ARCHIVE_ROOT)
+    for (const entry of entries) {
+      if (entry.endsWith(DASHBOARD_ARCHIVE_EXTENSION)) {
+        await addArchive(path.join(DASHBOARD_ARCHIVE_ROOT, entry))
+      }
+    }
+  } catch {
+    // Road to $50M may not exist yet
+  }
+
+  const repoArchives = path.join(process.cwd(), 'archives')
+  try {
+    const repoEntries = await fs.readdir(repoArchives)
+    for (const entry of repoEntries) {
+      if (entry.endsWith(DASHBOARD_ARCHIVE_EXTENSION)) {
+        await addArchive(path.join(repoArchives, entry))
+      }
+    }
+  } catch {
+    // repo archives/ optional
+  }
+
+  return Array.from(seen.values()).sort((a, b) =>
+    b.manifest.createdAt.localeCompare(a.manifest.createdAt)
+  )
+}
+
+function resolveArchiveZipPath(title: string): string {
+  const primary = getArchiveFilePath(title)
+  if (fsSync.existsSync(primary)) return primary
+  const repo = getRepoArchiveFilePath(title)
+  if (fsSync.existsSync(repo)) return repo
+  throw new Error(`Archive not found: ${title}`)
 }
 
 function openArchiveZip(title: string): AdmZip {
-  const filePath = getArchiveFilePath(title)
-  return new AdmZip(filePath)
+  return new AdmZip(resolveArchiveZipPath(title))
 }
 
 function readZipJson<T>(zip: AdmZip, entryName: string, fallback: T): T {
@@ -228,9 +257,8 @@ export async function readArchiveManifest(filePath: string): Promise<ArchiveMani
 }
 
 export async function loadDashboardArchive(title: string): Promise<ArchiveBundle> {
-  const filePath = getArchiveFilePath(title)
-  await fs.access(filePath)
-  const zip = openArchiveZip(title)
+  const filePath = resolveArchiveZipPath(title)
+  const zip = new AdmZip(filePath)
 
   const manifest = readZipJson<ArchiveManifest>(zip, 'manifest.json', null as unknown as ArchiveManifest)
   const snapshot = readZipJson<{ trades: Trade[] }>(zip, 'trades-snapshot.json', { trades: [] })
@@ -257,7 +285,7 @@ export function readArchiveMediaFile(title: string, relPath: string): Buffer | n
 }
 
 export function archiveExists(title: string): boolean {
-  return fsSync.existsSync(getArchiveFilePath(title))
+  return fsSync.existsSync(getArchiveFilePath(title)) || fsSync.existsSync(getRepoArchiveFilePath(title))
 }
 
 export { archiveTitleFromFileName, getArchiveFilePath }
