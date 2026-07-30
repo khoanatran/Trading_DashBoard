@@ -19,8 +19,4 @@ if not "%ERR%"=="0" (
   exit /b %ERR%
 )
 
-echo.
-echo  Opening http://localhost:3000/ in your browser...
-start "" "http://localhost:3000/"
-timeout /t 3 /nobreak >nul
 exit /b 0

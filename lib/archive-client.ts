@@ -33,6 +33,16 @@ export async function loadDashboardArchiveClient(title: string): Promise<LoadedD
   return res.json()
 }
 
+export async function deleteDashboardArchiveClient(title: string): Promise<void> {
+  const res = await fetch(`/api/dashboard-archives/${encodeURIComponent(title)}`, {
+    method: 'DELETE',
+  })
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    throw new Error(String(data.error ?? 'Failed to delete archive'))
+  }
+}
+
 /** Hydrate journal localStorage from an archive bundle (notes, setup tags, ratings). */
 export function hydrateJournalCacheFromArchive(
   tradeJournal: LoadedDashboardArchive['tradeJournal']

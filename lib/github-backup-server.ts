@@ -35,10 +35,7 @@ export const GITHUB_SYNC_DATA_PATHS = [
   'data/trade-images/',
   'data/trade-videos/',
   'data/daily-images/',
-  'archives/',
 ] as const
-
-export interface GitHubBackupStatus {
   enabled: boolean
   gitAvailable: boolean
   gitPath: string | null

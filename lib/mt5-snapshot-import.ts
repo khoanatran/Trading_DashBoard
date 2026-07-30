@@ -2,6 +2,8 @@ import fs from 'fs/promises'
 import path from 'path'
 import { mergeImportedTrades } from '@/lib/trade-storage'
 import { loadTradesSnapshot, saveTradesSnapshot } from '@/lib/trades-snapshot-server'
+import { readLiveSessionManifest } from '@/lib/live-session-server'
+import { shouldBlockRemoteLiveDataMerge } from '@/lib/live-session-utils'
 import {
   isMt5ReportHistoryFileName,
   parseMt5ReportHistoryBuffer,
@@ -19,6 +21,23 @@ export interface Mt5SnapshotImportResult {
 
 /** Merge trades from ReportHistory-*.xlsx in the project root into trades-snapshot.json */
 export async function importMt5ReportsIntoSnapshot(): Promise<Mt5SnapshotImportResult> {
+  const [liveSession, existing] = await Promise.all([
+    readLiveSessionManifest(),
+    loadTradesSnapshot(),
+  ])
+
+  if (shouldBlockRemoteLiveDataMerge(liveSession)) {
+    return {
+      ok: true,
+      files: [],
+      added: 0,
+      skipped: 0,
+      total: 0,
+      message:
+        'Skipped MT5 auto-import — reset live session uses Import Spreadsheet only',
+    }
+  }
+
   const root = process.cwd()
   let entries: string[]
   try {
@@ -36,7 +55,6 @@ export async function importMt5ReportsIntoSnapshot(): Promise<Mt5SnapshotImportR
 
   const xlsxFiles = entries.filter(name => isMt5ReportHistoryFileName(name))
   if (xlsxFiles.length === 0) {
-    const existing = await loadTradesSnapshot()
     return {
       ok: true,
       files: [],
@@ -64,7 +82,6 @@ export async function importMt5ReportsIntoSnapshot(): Promise<Mt5SnapshotImportR
   }
 
   if (incoming.length === 0) {
-    const existing = await loadTradesSnapshot()
     return {
       ok: true,
       files: xlsxFiles,
@@ -75,7 +92,6 @@ export async function importMt5ReportsIntoSnapshot(): Promise<Mt5SnapshotImportR
     }
   }
 
-  const existing = await loadTradesSnapshot()
   const { merged, added, skipped } = mergeImportedTrades(existing, incoming)
 
   if (added > 0 || merged.length !== existing.length) {

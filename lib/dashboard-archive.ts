@@ -288,4 +288,19 @@ export function archiveExists(title: string): boolean {
   return fsSync.existsSync(getArchiveFilePath(title)) || fsSync.existsSync(getRepoArchiveFilePath(title))
 }
 
+/** Remove archive zip, folder, and repo copy. */
+export async function deleteDashboardArchive(title: string): Promise<void> {
+  const trimmed = title.trim()
+  if (!trimmed) throw new Error('Archive title is required')
+
+  const paths = [
+    getArchiveFilePath(trimmed),
+    getRepoArchiveFilePath(trimmed),
+  ]
+  for (const filePath of paths) {
+    await fs.rm(filePath, { force: true })
+  }
+  await fs.rm(getArchiveFolderPath(trimmed), { recursive: true, force: true })
+}
+
 export { archiveTitleFromFileName, getArchiveFilePath }

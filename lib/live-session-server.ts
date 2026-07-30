@@ -1,17 +1,17 @@
 import fs from 'fs/promises'
 import path from 'path'
+import type { LiveSessionManifest } from '@/lib/live-session-utils'
+
+export type { LiveSessionManifest } from '@/lib/live-session-utils'
+export {
+  isIntentionalLiveSessionReset,
+  isFirstImportAfterReset,
+  isStaleLiveDataAfterReset,
+  shouldBlockRemoteLiveDataMerge,
+} from '@/lib/live-session-utils'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
 const LIVE_SESSION_FILE = path.join(DATA_DIR, 'live-session.json')
-
-export interface LiveSessionManifest {
-  version: 1
-  sessionId: string
-  startedAt: string
-  label?: string
-  lastImportFile?: string | null
-  previousArchiveTitle?: string | null
-}
 
 export async function readLiveSessionManifest(): Promise<LiveSessionManifest | null> {
   try {

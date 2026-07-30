@@ -9,9 +9,10 @@ import {
   getRepoArchiveFilePath,
 } from '@/lib/archive-constants'
 import type { ArchiveManifest } from '@/lib/dashboard-archive'
-import { writeArchiveArtifacts } from '@/lib/dashboard-archive-export'
+import { extractArchiveZipToFolder, writeArchiveArtifacts } from '@/lib/dashboard-archive-export'
 import { setNotifySuppressed } from '@/lib/notify-data-changed'
 import { runGitHubBackup } from '@/lib/github-backup-server'
+import { clearLiveDashboardData } from '@/lib/live-dashboard-clear'
 import { writeLiveSessionManifest } from '@/lib/live-session-server'
 import { loadTradesSnapshot } from '@/lib/trades-snapshot-server'
 import { DISPLAY_TIMEZONE } from '@/lib/timezone'
@@ -20,20 +21,6 @@ import { getTradeCloseAt, getTradeId, type Trade } from '@/utils/logParser'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
 const REPO_ARCHIVES_DIR = path.join(process.cwd(), 'archives')
-
-const LIVE_JSON_DEFAULTS: Record<string, unknown> = {
-  'trades-snapshot.json': { version: 1, trades: [], updatedAt: null },
-  'trade-journal.json': {},
-  'trade-tags.json': {},
-  'trade-images.json': {},
-  'trade-videos.json': {},
-  'daily-summaries.json': {},
-  'daily-images.json': {},
-  'weekly-notes.json': {},
-  'flags.json': { _v: 1, days: {}, trades: {} },
-}
-
-const LIVE_MEDIA_DIRS = ['trade-images', 'trade-videos', 'daily-images'] as const
 
 export interface SessionExportResult {
   title: string
@@ -45,7 +32,7 @@ export interface SessionExportResult {
 
 export interface NewLiveSessionResult extends SessionExportResult {
   cleared: true
-  github: Awaited<ReturnType<typeof runGitHubBackup>>
+  github: { ok: boolean; message: string; background: boolean }
   liveSession: Awaited<ReturnType<typeof writeLiveSessionManifest>>
 }
 
@@ -137,6 +124,29 @@ async function copyFileToRepoArchive(zipPath: string, title: string): Promise<st
   return repoZipPath
 }
 
+export function scheduleSessionBackgroundTasks(
+  exported: SessionExportResult,
+  githubReason: string,
+  extractFolder: boolean,
+  skipGitHub = false
+): void {
+  void (async () => {
+    try {
+      if (extractFolder) {
+        console.log(`[session] Extracting archive folder: ${exported.folderPath}`)
+        await extractArchiveZipToFolder(exported.zipPath, exported.folderPath)
+      }
+      if (!skipGitHub) {
+        console.log(`[session] GitHub backup: ${githubReason}`)
+        const github = await runGitHubBackup(githubReason)
+        console.log(`[session] GitHub backup finished: ${github.message}`)
+      }
+    } catch (error) {
+      console.error('[session] Background finalize failed:', error)
+    }
+  })()
+}
+
 /** Export ALL current live dashboard data to Road to $50M folder + zip + repo archives/. */
 export async function exportLiveDashboardSession(title: string): Promise<SessionExportResult> {
   const trimmed = title.trim()
@@ -175,35 +185,12 @@ export async function exportLiveDashboardSession(title: string): Promise<Session
     folderPath,
     zipPath,
     dataDir: DATA_DIR,
+    mode: 'zip-only',
   })
 
   const repoZipPath = await copyFileToRepoArchive(zipPath, trimmed)
 
   return { title: trimmed, folderPath, zipPath, repoZipPath, manifest }
-}
-
-/** Wipe live dashboard JSON + media (does not touch Road to $50M archives). */
-export async function clearLiveDashboardData(): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true })
-  const now = new Date().toISOString()
-
-  for (const [fileName, fallback] of Object.entries(LIVE_JSON_DEFAULTS)) {
-    const payload =
-      fileName === 'trades-snapshot.json'
-        ? { version: 1, trades: [], updatedAt: now }
-        : fallback
-    await fs.writeFile(
-      path.join(DATA_DIR, fileName),
-      JSON.stringify(payload, null, 2),
-      'utf-8'
-    )
-  }
-
-  for (const dirName of LIVE_MEDIA_DIRS) {
-    const dirPath = path.join(DATA_DIR, dirName)
-    await fs.rm(dirPath, { recursive: true, force: true })
-    await fs.mkdir(dirPath, { recursive: true })
-  }
 }
 
 /**
@@ -247,12 +234,35 @@ export async function startNewLiveSession(archiveTitle: string): Promise<NewLive
       previousArchiveTitle: trades.length > 0 ? exported.title : null,
     })
     setNotifySuppressed(false)
-    const github = await runGitHubBackup(
+
+    const clearedGithub = await runGitHubBackup(
       trades.length > 0
-        ? `archived live session: ${exported.title}`
+        ? `new live session - cleared (archived: ${exported.title})`
         : 'new empty live session'
     )
-    return { ...exported, cleared: true, github, liveSession }
+
+    if (trades.length > 0) {
+      scheduleSessionBackgroundTasks(
+        exported,
+        `archived live session: ${exported.title}`,
+        true
+      )
+    }
+
+    return {
+      ...exported,
+      cleared: true,
+      github: {
+        ok: clearedGithub.ok,
+        message: clearedGithub.ok
+          ? trades.length > 0
+            ? 'Live data cleared and synced. Archive folder sync continues in background.'
+            : clearedGithub.message
+          : clearedGithub.message,
+        background: trades.length > 0,
+      },
+      liveSession,
+    }
   } catch (error) {
     setNotifySuppressed(false)
     throw error

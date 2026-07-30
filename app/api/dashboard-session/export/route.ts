@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { exportLiveDashboardSession } from '@/lib/dashboard-session'
-import { runGitHubBackup } from '@/lib/github-backup-server'
+import { exportLiveDashboardSession, scheduleSessionBackgroundTasks } from '@/lib/dashboard-session'
+
+export const maxDuration = 600
+export const dynamic = 'force-dynamic'
 
 /** POST /api/dashboard-session/export — export live data to Road to $50M + GitHub archives/ */
 export async function POST(request: NextRequest) {
@@ -12,12 +14,16 @@ export async function POST(request: NextRequest) {
     }
 
     const exported = await exportLiveDashboardSession(title)
-    const github = await runGitHubBackup(`exported live session: ${title}`)
+    scheduleSessionBackgroundTasks(exported, `exported live session: ${title}`, true)
 
     return NextResponse.json({
       ok: true,
       ...exported,
-      github,
+      github: {
+        ok: true,
+        message: 'Archive saved. Folder extract and GitHub sync running in background.',
+        background: true,
+      },
     })
   } catch (error) {
     console.error('Live session export failed:', error)
