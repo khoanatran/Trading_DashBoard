@@ -31,9 +31,13 @@
   },
   "ReportHistory-600086230.xlsx::2026-08-03T09:39:29": {
     "note": "- Exited right after entry as candle wicked straight down after entry\n\n- Ended up missing a winning trade due to zone not reliable and showing that price did not respect it",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-08-04T01:49:25.614Z"
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps",
+      "Heatmap Limit Order"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-04T01:56:50.135Z"
   },
   "ReportHistory-600086230.xlsx::2026-07-31T09:33:13": {
     "note": "- SL more than 30 points so TP 2R",
