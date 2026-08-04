@@ -231,7 +231,49 @@
       "sourceFile": "ReportHistory-600086230.xlsx",
       "symbol": "US100.sim",
       "commission": 0
+    },
+    {
+      "timestamp": "2026-07-31T09:33:13",
+      "direction": "long",
+      "riskAmount": 500,
+      "estDollarRisked": 500,
+      "slPoints": 0.2999999999992724,
+      "tpPoints": null,
+      "orderQty": 25,
+      "entryPrice": 28507,
+      "exitPrice": 28576,
+      "reward": 69,
+      "rrRatio": 3.5,
+      "pnl": 1725,
+      "isClosed": true,
+      "entryTime": "2026-07-31T09:31:39",
+      "exitTime": "2026-07-31T09:33:13",
+      "partialExits": [],
+      "sourceFile": "ReportHistory-600086230.xlsx",
+      "symbol": "US100.sim",
+      "commission": 0
+    },
+    {
+      "timestamp": "2026-08-03T09:39:29",
+      "direction": "long",
+      "riskAmount": 500,
+      "estDollarRisked": 500,
+      "slPoints": null,
+      "tpPoints": null,
+      "orderQty": 25,
+      "entryPrice": 28386.5,
+      "exitPrice": 28380.9,
+      "reward": -5.599999999998545,
+      "rrRatio": -0.3,
+      "pnl": -140,
+      "isClosed": true,
+      "entryTime": "2026-08-03T09:39:26",
+      "exitTime": "2026-08-03T09:39:29",
+      "partialExits": [],
+      "sourceFile": "ReportHistory-600086230.xlsx",
+      "symbol": "US100.sim",
+      "commission": 0
     }
   ],
-  "updatedAt": "2026-08-04T01:05:36.024Z"
+  "updatedAt": "2026-08-04T01:07:17.614Z"
 }
