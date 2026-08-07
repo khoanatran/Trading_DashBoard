@@ -78,5 +78,14 @@
     ],
     "rating": 3,
     "updatedAt": "2026-08-07T04:05:17.617Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-06T10:07:16": {
+    "note": "- Clean setup\n\n(1) Consolidate below Trigger\n(2) BO above Trigger\n(3) Retest at Trigger\n(4) PA 1m (2x engulf creating trendline) making a confluence BO\n\n",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-08-07T04:17:50.583Z"
   }
 }
