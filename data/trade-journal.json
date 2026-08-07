@@ -68,5 +68,15 @@
     ],
     "rating": 3,
     "updatedAt": "2026-08-04T19:15:55.588Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-06T09:40:11": {
+    "note": "- Didnt work. Buying was abnormally strong",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-07T04:05:17.617Z"
   }
 }
