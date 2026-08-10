@@ -100,8 +100,12 @@
   },
   "ReportHistory-600086230.xlsx::2026-08-10T09:42:36": {
     "note": "Rushed entry",
-    "setupTags": [],
-    "rating": 0,
-    "updatedAt": "2026-08-10T19:35:18.085Z"
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-10T19:35:36.142Z"
   }
 }
