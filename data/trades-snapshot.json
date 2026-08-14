@@ -569,6 +569,27 @@
       "commission": 0
     },
     {
+      "timestamp": "2026-08-12T09:30:01",
+      "direction": "long",
+      "riskAmount": 500,
+      "estDollarRisked": 500,
+      "slPoints": 9.600000000002183,
+      "tpPoints": null,
+      "orderQty": 25,
+      "entryPrice": 29901.4,
+      "exitPrice": 29897,
+      "reward": -4.400000000001455,
+      "rrRatio": -0.2,
+      "pnl": -110,
+      "isClosed": true,
+      "entryTime": "2026-08-12T09:29:57",
+      "exitTime": "2026-08-12T09:30:01",
+      "partialExits": [],
+      "sourceFile": "ReportHistory-600086230.xlsx",
+      "symbol": "US100.sim",
+      "commission": 0
+    },
+    {
       "timestamp": "2026-08-14T09:49:32",
       "direction": "long",
       "riskAmount": 500,
@@ -653,5 +674,5 @@
       "commission": 0
     }
   ],
-  "updatedAt": "2026-08-14T14:26:45.194Z"
+  "updatedAt": "2026-08-14T14:27:22.274Z"
 }
