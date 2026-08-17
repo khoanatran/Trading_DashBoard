@@ -150,7 +150,7 @@
     "updatedAt": "2026-08-17T21:29:51.422Z"
   },
   "ReportHistory-600086230.xlsx::2026-08-14T09:51:14": {
-    "note": "",
+    "note": "- Was not willing to give up the trade as price came back to entry level\n\n- Re-entry has not been working well so far in this month",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
@@ -158,6 +158,6 @@
     ],
     "rating": 2.5,
     "ratingManual": true,
-    "updatedAt": "2026-08-17T22:05:26.566Z"
+    "updatedAt": "2026-08-17T22:10:55.198Z"
   }
 }
