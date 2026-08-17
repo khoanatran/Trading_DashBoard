@@ -44,9 +44,6 @@
     "A setup",
     "Stat Loss"
   ],
-  "ReportHistory-600086230.xlsx::2026-08-10T09:42:36": [
-    "Mistake"
-  ],
   "ReportHistory-600086230.xlsx::2026-08-11T09:30:01": [
     "A setup",
     "Stat Loss"
@@ -67,5 +64,8 @@
     "B setup",
     "Bad Reentry",
     "Sudden LVN"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-10T09:42:36": [
+    "B setup"
   ]
 }
