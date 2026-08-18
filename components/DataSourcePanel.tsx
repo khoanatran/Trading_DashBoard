@@ -339,6 +339,14 @@ export default function DataSourcePanel({
               </p>
             </div>
           </div>
+          <div className="rounded-md border border-border/40 bg-background/50 divide-y divide-border/40">
+            <WorkspaceAction
+              icon={FileDown}
+              label="Export to Sierra Chart"
+              disabled={!!busy || tradeCount === 0}
+              onClick={onExportSc}
+            />
+          </div>
           <Button
             variant="outline"
             size="sm"

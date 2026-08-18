@@ -257,15 +257,20 @@ export default function Home() {
       return
     }
 
-    const result = await syncTradeExportToDisk(trades)
+    const result = await syncTradeExportToDisk(trades, { archiveTitle: activeArchive })
     if (result.ok) {
+      const extra = result.syncedToGitHub
+        ? '\n\nAlso synced to GitHub for your other computers.'
+        : activeArchive
+          ? `\n\nExported archive "${activeArchive}" for Sierra Chart. Live dashboard data was not changed.`
+          : ''
       alert(
-        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}\n\nAlso synced to GitHub for your other computers.`
+        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}${extra}`
       )
     } else {
       alert('Failed to write trade export file. Check the server console for details.')
     }
-  }, [trades])
+  }, [trades, activeArchive])
 
   const handleToggleDayFlag = useCallback(async (dateKey: string) => {
     const nextFlagged = !flaggedDays[dateKey]
