@@ -1,6 +1,8 @@
 {
   "_v": 1,
-  "days": {},
+  "days": {
+    "2026-08-19": true
+  },
   "trades": {
     "ReportHistory-600086230.xlsx::2026-08-06T10:07:16": true
   }
