@@ -167,13 +167,13 @@
     "updatedAt": "2026-08-18T14:53:20.028Z"
   },
   "ReportHistory-600086230.xlsx::2026-08-25T09:55:35": {
-    "note": "",
+    "note": "- Failed BO setup 5s, very clean\n\n- TP conservatively. Could have targeted ",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-08-25T19:02:09.075Z"
+    "updatedAt": "2026-08-25T19:06:08.155Z"
   }
 }
