@@ -175,5 +175,15 @@
     ],
     "rating": 3,
     "updatedAt": "2026-08-25T19:06:27.398Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-28T10:13:25": {
+    "note": "- custom LVN due to ISB day",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-28T21:38:24.661Z"
   }
 }
