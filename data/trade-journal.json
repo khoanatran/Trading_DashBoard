@@ -177,13 +177,13 @@
     "updatedAt": "2026-08-28T21:51:31.897Z"
   },
   "ReportHistory-600086230.xlsx::2026-08-28T10:13:25": {
-    "note": "- custom LVN due to ISB day",
+    "note": "- 5s failed BO retest,  custom LVN due to ISB day\n\n- only 3 triggers (2 before setups)",
     "setupTags": [
       "LVN",
       "Heatmap Limit Order",
       "Heatmap Traps"
     ],
     "rating": 3,
-    "updatedAt": "2026-08-28T21:38:24.661Z"
+    "updatedAt": "2026-08-28T21:54:38.420Z"
   }
 }
