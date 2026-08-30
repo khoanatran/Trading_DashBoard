@@ -864,5 +864,84 @@
     "Recent Heatmap Trigger",
     "Stuck 2 LVN",
     "Choppy Market"
+  ],
+  "ReportHistory-600086230.xlsx::2026-07-30T10:10:17": [
+    "A setup",
+    "Bad SL Placement",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-07-30T10:10:33": [
+    "A setup",
+    "Bad Reentry",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-07-30T11:25:08": [
+    "B setup",
+    "Half Trigger Trade",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-03T09:39:29": [
+    "A setup",
+    "Mistake",
+    "Bad SL Placement",
+    "Recent Heatmap Trigger"
+  ],
+  "ReportHistory-600086230.xlsx::2026-07-31T09:33:13": [
+    "A setup"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-04T10:22:56": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-04T10:24:29": [
+    "Mistake",
+    "Bad Reentry"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-06T09:40:11": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-06T10:07:16": [
+    "B setup",
+    "Recent Heatmap Trigger",
+    "Heatmap Only"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-10T09:41:50": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-11T09:30:01": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-11T09:35:16": [
+    "A setup",
+    "Early Exit"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-17T09:43:43": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-17T09:43:10": [
+    "A setup",
+    "Stat Loss"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-14T09:51:14": [
+    "B setup",
+    "Bad Reentry",
+    "Sudden LVN"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-10T09:42:36": [
+    "B setup"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-18T09:50:37": [
+    "Random",
+    "Avoidable"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-25T09:55:35": [
+    "A setup"
+  ],
+  "ReportHistory-600086230.xlsx::2026-08-28T10:13:25": [
+    "A setup"
   ]
 }

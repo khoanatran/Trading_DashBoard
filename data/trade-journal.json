@@ -803,5 +803,192 @@
     ],
     "rating": 2,
     "updatedAt": "2026-07-07T17:43:10.487Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-07-30T10:10:17": {
+    "note": "- Placed SL in MT5 right at entry but ended up down -$183",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-30T17:05:58.016Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-07-30T10:10:33": {
+    "note": "- Reentry for better price but didnt work",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-30T17:07:15.471Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-07-30T11:25:08": {
+    "note": "- Trigger in HTF but not in LTF\n\n- Avoidable after having 5 BE in the book and price break out at beginning of session",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps",
+      "Heatmap Limit Order"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-07-30T17:14:36.029Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-03T09:39:29": {
+    "note": "- Exited right after entry as candle wicked straight down after entry\n\n- Ended up missing a winning trade due to zone not reliable and showing that price did not respect it",
+    "setupTags": [
+      "LVN",
+      "Heatmap Traps",
+      "Heatmap Limit Order"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-04T01:56:50.135Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-07-31T09:33:13": {
+    "note": "- SL more than 30 points so TP 2R",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-04T01:56:33.249Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-04T10:22:56": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-04T19:11:24.736Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-04T10:24:29": {
+    "note": "- Rushed entry, price has not confirmed uptrend yet\n\n- Avoidable if more patient",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-04T19:15:55.588Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-06T09:40:11": {
+    "note": "- Didnt work. Buying was abnormally strong",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-07T04:05:17.617Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-06T10:07:16": {
+    "note": "- Clean setup\n\n(1) Consolidate below Trigger\n(2) BO above Trigger\n(3) Retest at Trigger\n(4) PA 1m (2x engulf creating trendline) making a confluence BO\n\n",
+    "setupTags": [
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2,
+    "updatedAt": "2026-08-07T04:17:50.583Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-10T09:41:50": {
+    "note": "Stat Loss",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-10T19:33:03.482Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-10T09:42:36": {
+    "note": "- Rushed entry. Trigger is within 30s",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-08-17T22:09:49.556Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-11T09:30:01": {
+    "note": "- Didn't work\n\n- Upon review, break out is not decisive",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-11T13:59:40.410Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-11T09:35:16": {
+    "note": "- Premature exit at ~3.5R due to strong wick up\n\n- SC was lagging at open, but entry was still good\n\n- Trade ran 4R+",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-11T14:02:22.084Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-17T09:43:43": {
+    "note": "- Didn't work",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-17T21:31:51.112Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-17T09:43:10": {
+    "note": "",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-17T21:29:51.422Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-14T09:51:14": {
+    "note": "- Was not willing to give up the trade as price came back to entry level\n\n- Re-entry has not been working well so far in this month",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 2.5,
+    "ratingManual": true,
+    "updatedAt": "2026-08-17T22:10:55.198Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-18T09:50:37": {
+    "note": "- Got emotional after taking 1L and price did not retest that level ",
+    "setupTags": [],
+    "rating": 0,
+    "updatedAt": "2026-08-18T14:53:20.028Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-25T09:55:35": {
+    "note": "- Failed BO setup 5s, very clean\n\n- Only 3 triggers (2 before setup)\n\n- TP conservatively. Could have targeted 15p more but satisfied w result",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-28T21:51:31.897Z"
+  },
+  "ReportHistory-600086230.xlsx::2026-08-28T10:13:25": {
+    "note": "- 5s failed BO retest,  custom LVN due to ISB day\n\n- only 3 triggers (2 before setups)",
+    "setupTags": [
+      "LVN",
+      "Heatmap Limit Order",
+      "Heatmap Traps"
+    ],
+    "rating": 3,
+    "updatedAt": "2026-08-28T21:54:38.420Z"
   }
 }
