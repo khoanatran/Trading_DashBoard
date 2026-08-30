@@ -19,12 +19,14 @@
     "github:sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-sync.ps1",
     "sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-full-sync.ps1",
     "sync:report-history": "npx --yes tsx scripts/sync-report-history-to-snapshot.ts",
+    "archive:create": "npx --yes tsx scripts/create-dashboard-archive.ts",
     "github:auto-sync": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/github-auto-sync.ps1",
     "github:auto-sync:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-auto-sync-task.ps1",
     "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.2",
+    "adm-zip": "^0.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

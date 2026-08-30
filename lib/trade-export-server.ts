@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 import path from 'path'
+import { loadDashboardArchive } from '@/lib/dashboard-archive'
 import { buildTradesExportTxt, type TradeExportContext } from '@/lib/export-trades-txt'
 import { getTradeExportDir, getTradeExportFilePath } from '@/lib/trade-export-path'
 import type { TradeJournalEntry } from '@/lib/trade-journal'
@@ -33,11 +34,25 @@ export async function loadTradeExportContext(): Promise<TradeExportContext> {
   }
 }
 
-export async function writeTradeExportFile(trades: Trade[]): Promise<{
+export async function loadTradeExportContextFromArchive(title: string): Promise<TradeExportContext> {
+  const bundle = await loadDashboardArchive(title)
+  const flags = bundle.flags as { trades?: Record<string, boolean> }
+  return {
+    journal: bundle.tradeJournal as Record<string, TradeJournalEntry>,
+    tradeTags: bundle.tradeTags,
+    flaggedTrades: flags.trades ?? {},
+  }
+}
+
+export async function writeTradeExportFile(
+  trades: Trade[],
+  options?: { context?: TradeExportContext }
+): Promise<{
   filePath: string
   tradeCount: number
 }> {
-  const content = buildTradesExportTxt(trades, await loadTradeExportContext())
+  const context = options?.context ?? (await loadTradeExportContext())
+  const content = buildTradesExportTxt(trades, context)
   const filePath = getTradeExportFilePath()
   await fs.mkdir(getTradeExportDir(), { recursive: true })
   await fs.writeFile(filePath, content, 'utf-8')

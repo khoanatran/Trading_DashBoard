@@ -4,7 +4,8 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Trade, PartialExit, parseLocalTimestamp, getTradeId, getTradeRMultiple, getPartialExitRMultiple, getTradeDollarRisk, getTradeResult, buildDailyEquityCurve, getTradeCloseAt } from '@/utils/logParser'
 import { findMissingTradingDays, formatDateKey, dateKeyToLabel, isWeekend, getTradingDaysBetween, DateRange as MissingDateRange } from '@/utils/tradingDays'
 import { formatUsd, formatUsdPnl, formatUsdPnlOrNa } from '@/lib/format'
-import { ImagePlus, X, Trash2, ZoomIn, ZoomOut, RotateCcw, Pen, Eraser, Undo2, Trash, Circle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, StickyNote, ArrowUp, ArrowDown, ArrowUpDown, Tag, Plus, Video, Play, Pause, Scissors, Save, Film, BookOpen, Edit3, Star, Flag } from 'lucide-react'
+import { ImagePlus, X, Trash2, ZoomIn, ZoomOut, RotateCcw, Pen, Eraser, Undo2, Trash, Circle, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, StickyNote, ArrowUp, ArrowDown, ArrowUpDown, Tag, Plus, Video, Play, Pause, Scissors, Save, Film, BookOpen, Edit3, Star, Flag, Download } from 'lucide-react'
+import { downloadJournalExcel, journalContextFromMaps } from '@/lib/export-journal-xlsx'
 import WeeklyNoteModal from './WeeklyNoteModal'
 import DailyEquityCurveChart from './DailyEquityCurveChart'
 import { FitImageViewer, FitVideoViewer } from '@/components/FitImage'
@@ -139,6 +140,8 @@ export const AVAILABLE_TAGS = [
   
   // Negative outcomes
   { name: 'Mistake', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  { name: 'Avoidable', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  { name: 'Half Trigger Trade', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Bad Reentry', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Bad SL Placement', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Revenge Trading', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
@@ -156,6 +159,7 @@ export const AVAILABLE_TAGS = [
   { name: 'Thin Zone', color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
   { name: 'LVN Only', color: 'bg-sky-500/20 text-sky-300 border-sky-500/40' },
   { name: 'Stuck 2 LVN', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
+  { name: 'Sudden LVN', color: 'bg-red-500/20 text-red-400 border-red-500/30' },
   { name: 'Heatmap Only', color: 'bg-orange-500/20 text-orange-300 border-orange-500/40' },
   {
     name: 'Recent Heatmap Trigger',
@@ -379,6 +383,8 @@ interface JournalTableProps {
   focusDayKey?: string | null
   /** Timeline daily recap: notify parent when a trade row is selected. */
   onHighlightedTradeChange?: (tradeId: string | null) => void
+  /** Read-only archive view — disables uploads and server saves. */
+  readOnly?: boolean
 }
 
 interface TradeImage {
@@ -443,6 +449,7 @@ export default function JournalTable({
   equityIndexByTradeId,
   focusDayKey,
   onHighlightedTradeChange,
+  readOnly = false,
 }: JournalTableProps) {
   // Sort state
   const [sortColumn, setSortColumn] = useState<SortColumn>('date')
@@ -774,6 +781,7 @@ export default function JournalTable({
       tradeId: string,
       patch: { note?: string; setupTags?: string[]; rating?: number; ratingManual?: boolean }
     ) => {
+      if (readOnly) return
       setJournalSaveStatus(prev => ({ ...prev, [tradeId]: 'saving' }))
       const result = await patchTradeJournal(tradeId, patch)
       setJournalSaveStatus(prev => ({
@@ -789,7 +797,7 @@ export default function JournalTable({
         }, 2000)
       }
     },
-    []
+    [readOnly]
   )
 
   const scheduleTradeNoteSave = useCallback(
@@ -912,6 +920,38 @@ export default function JournalTable({
     
     return sorted
   }, [tradesForTable, sortColumn, sortDirection, preserveTradeOrder])
+
+  const handleExportJournalExcel = useCallback(() => {
+    // Export every trade in the journal view (not just the active tag/flag filter).
+    const ratingsForExport: Record<string, number> = {}
+    for (const trade of trades) {
+      const tradeId = getTradeId(trade)
+      ratingsForExport[tradeId] = getTradeRating(tradeId)
+    }
+    // Include any journal-only IDs that might not be in the current trade list.
+    for (const tradeId of Object.keys(tradeNotes)) {
+      if (ratingsForExport[tradeId] === undefined) {
+        ratingsForExport[tradeId] = getTradeRating(tradeId)
+      }
+    }
+    const ctx = journalContextFromMaps({
+      notes: tradeNotes,
+      setupTags: tradeSetupTags,
+      ratings: ratingsForExport,
+      ratingManual: tradeRatingManual,
+      tradeTags,
+      flaggedTrades,
+    })
+    downloadJournalExcel(trades, ctx)
+  }, [
+    trades,
+    tradeNotes,
+    tradeSetupTags,
+    tradeRatingManual,
+    tradeTags,
+    flaggedTrades,
+    getTradeRating,
+  ])
 
   const showEquityIndexCol = Boolean(
     equityIndexByTradeId && Object.keys(equityIndexByTradeId).length > 0
@@ -1171,6 +1211,7 @@ export default function JournalTable({
 
   // Add tag to trade (auto-saved to server)
   const addTag = useCallback(async (tradeId: string, tag: string) => {
+    if (readOnly) return
     try {
       const res = await fetch('/api/trade-tags', {
         method: 'POST',
@@ -1186,10 +1227,11 @@ export default function JournalTable({
     } catch (err) {
       console.error('Failed to add tag:', err)
     }
-  }, [updateCachedTags])
+  }, [readOnly, updateCachedTags])
   
   // Remove tag from trade (auto-saved to server)
   const removeTag = useCallback(async (tradeId: string, tag: string) => {
+    if (readOnly) return
     try {
       const res = await fetch(`/api/trade-tags?tradeId=${encodeURIComponent(tradeId)}&tag=${encodeURIComponent(tag)}`, {
         method: 'DELETE'
@@ -1203,7 +1245,7 @@ export default function JournalTable({
     } catch (err) {
       console.error('Failed to remove tag:', err)
     }
-  }, [updateCachedTags])
+  }, [readOnly, updateCachedTags])
 
   const toggleTradeTag = useCallback(
     (tradeId: string, tagName: string, isSelected: boolean) => {
@@ -1498,6 +1540,7 @@ export default function JournalTable({
   
   // Upload trimmed video clip
   const uploadTrimmedClip = useCallback(async () => {
+    if (readOnly) return
     if (!videoPreviewState) return
     
     const { tradeId, file } = videoPreviewState
@@ -1726,6 +1769,7 @@ export default function JournalTable({
     files: FileList,
     section: TradeImageSection = 'before'
   ) => {
+    if (readOnly) return
     setUploadingTrades(prev => new Set(prev).add(tradeId))
     
     try {
@@ -1759,10 +1803,11 @@ export default function JournalTable({
         return next
       })
     }
-  }, [updateCachedImages])
+  }, [readOnly, updateCachedImages])
   
   // Delete an image
   const deleteImage = useCallback(async (tradeId: string, imageName: string) => {
+    if (readOnly) return
     try {
       const res = await fetch(`/api/trade-images?tradeId=${encodeURIComponent(tradeId)}&name=${encodeURIComponent(imageName)}`, {
         method: 'DELETE'
@@ -3040,14 +3085,26 @@ export default function JournalTable({
   return (
     <div className={embedded ? 'mb-0' : 'mb-8'}>
       {!embedded && (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 gap-4">
           <div>
             <h2 className="text-2xl font-bold">Trade Journal</h2>
             <p className="text-xs text-muted-foreground mt-1">
               Equity curve shows all trades by default. Click a trade for that day&apos;s session curve, or use tag filters to narrow the curve. Click a day badge to collapse or expand grouped trades.
             </p>
           </div>
-          <span className="text-sm text-muted-foreground">{sortedTrades.length} trades</span>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={handleExportJournalExcel}
+              disabled={trades.length === 0}
+              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted disabled:opacity-50 disabled:pointer-events-none"
+              title="Download all journal notes, tags, and ratings as Excel"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export Excel
+            </button>
+            <span className="text-sm text-muted-foreground">{sortedTrades.length} trades</span>
+          </div>
         </div>
       )}
 

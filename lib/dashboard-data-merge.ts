@@ -7,6 +7,12 @@ import {
   loadTradesSnapshotData,
 } from '@/lib/trades-snapshot-server'
 import {
+  readLiveSessionManifest,
+  shouldBlockRemoteLiveDataMerge,
+} from '@/lib/live-session-server'
+import { isStaleLiveDataAfterReset } from '@/lib/live-session-utils'
+import { clearLiveDashboardData } from '@/lib/live-dashboard-clear'
+import {
   listRemoteFiles,
   readRemoteBinaryFile,
   readRemoteFile,
@@ -259,7 +265,38 @@ export async function mergeRemoteDashboardData(git: string): Promise<DataMergeRe
   const changedFiles: string[] = []
   let tradesAdded = 0
 
+  const liveSession = await readLiveSessionManifest()
   const localTrades = await readLocalTrades()
+
+  if (shouldBlockRemoteLiveDataMerge(liveSession)) {
+    if (isStaleLiveDataAfterReset(liveSession, localTrades.length)) {
+      console.log(
+        `[sync] Repairing stale live data after session reset (archive: ${liveSession?.previousArchiveTitle})`
+      )
+      await clearLiveDashboardData()
+      changedFiles.push(
+        'data/trades-snapshot.json',
+        'data/trade-journal.json',
+        'data/trade-tags.json',
+        'data/trade-images.json',
+        'data/trade-videos.json',
+        'data/daily-summaries.json',
+        'data/daily-images.json',
+        'data/weekly-notes.json',
+        'data/flags.json'
+      )
+    }
+    const tradeCount = isStaleLiveDataAfterReset(liveSession, localTrades.length)
+      ? 0
+      : localTrades.length
+    return {
+      changedFiles,
+      tradesAdded: 0,
+      tradeCount,
+      mediaCopied: [],
+    }
+  }
+
   const remoteTrades = await parseRemoteTrades(git)
   if (remoteTrades.length > 0 || localTrades.length > 0) {
     const { merged, added } = mergeImportedTrades(localTrades, remoteTrades)

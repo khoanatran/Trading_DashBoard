@@ -40,3 +40,7 @@ dashboard-server.log
 
 # auto-sync log
 github-auto-sync.log
+
+# dashboard archives (stored locally in Road to $50M — zips exceed GitHub size limits)
+archives/*.omen-archive.zip
+archives/**/*.omen-archive.zip

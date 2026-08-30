@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  LineChart, Line, BarChart, Bar, ComposedChart, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area,
   ScatterChart, Scatter, ReferenceLine, ReferenceDot, Customized, Sector, LabelList
 } from 'recharts'
@@ -86,6 +86,8 @@ interface ChartsProps {
 }
 
 const COLORS = ['#21C55E', '#EF4444', '#3b82f6', '#8b5cf6', '#f59e0b']
+const A_RATE_COLOR = '#14b8a6'
+const TRADES_BAR_COLOR = '#f59e0b'
 
 /** Entry time scatter chart Y-axis: 9:15 AM – 12:00 PM ET (afternoon 12:00–17:00 expandable). */
 const ENTRY_TIME_Y_START = 9 + 15 / 60 // 9:15
@@ -366,10 +368,16 @@ export default function Charts({ trades, stats, allTrades, groupedData, period, 
         aRate,
         aCount,
         decisiveTrades,
+        tradeCount: periodTrades.length,
         isCurrent: periodKey === currentPeriodKey
       }
     })
   }, [allTradesGrouped, period, currentPeriodKey, showAllPeriods, tradeTags])
+
+  const aRateTradeDomain = useMemo(() => {
+    const maxTrades = Math.max(...aRateData.map(d => d.tradeCount), 0)
+    return [0, Math.ceil(maxTrades * 1.15) || 1] as [number, number]
+  }, [aRateData])
   
   // Helper function to parse time from various formats
   const parseTimeToMinutes = (timeStr: string | null | undefined): number | null => {
@@ -977,32 +985,84 @@ export default function Charts({ trades, stats, allTrades, groupedData, period, 
               ? `A Rate by ${formatPeriodTitle(period)}`
               : `A Rate (Last 6 ${formatPeriodTitle(period)}s)`}
             help={showAllPeriods
-              ? "A Rate = (A setup + A+ Setup trades) ÷ (wins + losses) × 100. Break-even trades are excluded from the denominator unless tagged Random or Bad SL Placement (counted as a loss)."
-              : "A Rate for the last 6 periods. Current period is highlighted. Formula: (A + A+ setups) ÷ (wins + losses) × 100; BE trades excluded unless classified as losses."} 
+              ? "A Rate = (A setup + A+ Setup trades) ÷ (wins + losses) × 100. Break-even trades are excluded from the denominator unless tagged Random or Bad SL Placement (counted as a loss). Orange bars show total trades in each period."
+              : "A Rate for the last 6 periods. Current period is highlighted. Formula: (A + A+ setups) ÷ (wins + losses) × 100; BE trades excluded unless classified as losses. Orange bars show total trades per period."} 
             darkMode={darkMode}
           />
+          <div className="flex flex-wrap items-center gap-4 text-xs mb-3 -mt-2">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: TRADES_BAR_COLOR }} />
+              <span className="text-muted-foreground">Number of Trades</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-0.5 w-5 rounded-full" style={{ backgroundColor: A_RATE_COLOR }} />
+              <span className="text-muted-foreground">A Rate</span>
+            </div>
+          </div>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={aRateData} margin={{ top: 24, right: 12, left: 0, bottom: 0 }}>
+            <ComposedChart data={aRateData} margin={{ top: 24, right: 8, left: 0, bottom: 0 }} barCategoryGap="22%">
               <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? '#374151' : '#e5e7eb'} />
               <XAxis dataKey="period" stroke={chartText} angle={-45} textAnchor="end" height={80} />
-              <YAxis stroke={chartText} domain={[0, 100]} tickFormatter={(value) => `${Number(value).toFixed(0)}%`} />
+              <YAxis
+                yAxisId="aRate"
+                stroke={A_RATE_COLOR}
+                domain={[0, 100]}
+                tick={{ fill: A_RATE_COLOR, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(value) => `${Number(value).toFixed(0)}%`}
+                width={44}
+              />
+              <YAxis
+                yAxisId="trades"
+                orientation="right"
+                stroke={TRADES_BAR_COLOR}
+                domain={aRateTradeDomain}
+                tick={{ fill: TRADES_BAR_COLOR, fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                allowDecimals={false}
+                width={36}
+              />
               <Tooltip 
                 contentStyle={tooltipStyle} 
                 labelStyle={tooltipLabelStyle} 
                 itemStyle={tooltipItemStyle}
-                formatter={(value: number, _name, props) => {
-                  const payload = props?.payload as { aCount?: number; decisiveTrades?: number } | undefined
-                  const countLabel = payload?.decisiveTrades
-                    ? ` (${payload.aCount ?? 0}/${payload.decisiveTrades})`
-                    : ''
-                  return [`${Number(value).toFixed(1)}%${countLabel}`, 'A Rate']
+                formatter={(value: number, name: string, props) => {
+                  if (name === 'A Rate %') {
+                    const payload = props?.payload as { aCount?: number; decisiveTrades?: number } | undefined
+                    const countLabel = payload?.decisiveTrades
+                      ? ` (${payload.aCount ?? 0}/${payload.decisiveTrades})`
+                      : ''
+                    return [`${Number(value).toFixed(1)}%${countLabel}`, 'A Rate']
+                  }
+                  if (name === 'Trades') {
+                    return [value, 'Trades']
+                  }
+                  return [value, name]
                 }}
               />
+              <Bar
+                yAxisId="trades"
+                dataKey="tradeCount"
+                name="Trades"
+                radius={[4, 4, 0, 0]}
+                maxBarSize={40}
+              >
+                {aRateData.map((entry, index) => (
+                  <Cell
+                    key={`a-rate-trades-${index}`}
+                    fill={TRADES_BAR_COLOR}
+                    fillOpacity={entry.isCurrent ? 0.9 : 0.45}
+                  />
+                ))}
+              </Bar>
               <Line
+                yAxisId="aRate"
                 type="monotone"
                 dataKey="aRate"
                 name="A Rate %"
-                stroke="#14b8a6"
+                stroke={A_RATE_COLOR}
                 strokeWidth={2}
                 dot={(props) => {
                   const { cx, cy, payload } = props
@@ -1012,23 +1072,24 @@ export default function Charts({ trades, stats, allTrades, groupedData, period, 
                       cx={cx}
                       cy={cy}
                       r={payload.isCurrent ? 5 : 4}
-                      fill={payload.isCurrent ? '#14b8a6' : '#14b8a699'}
+                      fill={payload.isCurrent ? A_RATE_COLOR : `${A_RATE_COLOR}99`}
                       stroke={payload.isCurrent ? '#fff' : 'none'}
                       strokeWidth={payload.isCurrent ? 1 : 0}
                     />
                   )
                 }}
-                activeDot={{ r: 6, fill: '#14b8a6' }}
+                activeDot={{ r: 6, fill: A_RATE_COLOR }}
               >
                 <LabelList
                   dataKey="aRate"
                   position="top"
+                  offset={10}
                   formatter={(value: number) => `${Number(value).toFixed(1)}%`}
-                  fill={chartText}
+                  fill={A_RATE_COLOR}
                   fontSize={11}
                 />
               </Line>
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
         

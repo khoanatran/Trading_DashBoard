@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeTradeExportFile } from '@/lib/trade-export-server'
+import { archiveExists } from '@/lib/dashboard-archive'
+import {
+  loadTradeExportContextFromArchive,
+  writeTradeExportFile,
+} from '@/lib/trade-export-server'
 import { saveTradesSnapshot } from '@/lib/trades-snapshot-server'
 import type { Trade } from '@/utils/logParser'
 
@@ -7,10 +11,29 @@ import type { Trade } from '@/utils/logParser'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { trades } = body as { trades?: Trade[] }
+    const { trades, archiveTitle } = body as { trades?: Trade[]; archiveTitle?: string }
 
     if (!Array.isArray(trades)) {
       return NextResponse.json({ error: 'trades array is required' }, { status: 400 })
+    }
+
+    const archive = typeof archiveTitle === 'string' ? archiveTitle.trim() : ''
+    if (archive) {
+      if (!archiveExists(archive)) {
+        return NextResponse.json({ error: 'Archive not found' }, { status: 404 })
+      }
+
+      const { filePath, tradeCount } = await writeTradeExportFile(trades, {
+        context: await loadTradeExportContextFromArchive(archive),
+      })
+
+      return NextResponse.json({
+        success: true,
+        path: filePath,
+        tradeCount,
+        syncedToGitHub: false,
+        archiveTitle: archive,
+      })
     }
 
     const { filePath, tradeCount } = await writeTradeExportFile(trades)

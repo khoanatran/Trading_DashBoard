@@ -31,6 +31,7 @@ export const GITHUB_SYNC_DATA_PATHS = [
   'data/daily-images.json',
   'data/weekly-notes.json',
   'data/flags.json',
+  'data/live-session.json',
   'data/trade-images/',
   'data/trade-videos/',
   'data/daily-images/',

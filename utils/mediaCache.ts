@@ -4,6 +4,22 @@
  * with TTL-based expiration and batch loading support
  */
 
+let activeArchiveSlug: string | null = null
+
+/** When set, media fetches read from a dashboard archive instead of live data/. */
+export function setActiveArchiveSlug(slug: string | null): void {
+  activeArchiveSlug = slug
+}
+
+export function getActiveArchiveSlug(): string | null {
+  return activeArchiveSlug
+}
+
+function archiveBatchUrl(): string | null {
+  if (!activeArchiveSlug) return null
+  return `/api/dashboard-archives/${encodeURIComponent(activeArchiveSlug)}/media/batch`
+}
+
 export interface CacheEntry<T> {
   data: T
   timestamp: number
@@ -87,6 +103,22 @@ export async function fetchImagesWithCache(tradeId: string): Promise<TradeImage[
   // Make new request
   const fetchPromise = (async () => {
     try {
+      const batchUrl = archiveBatchUrl()
+      if (batchUrl) {
+        const res = await fetch(batchUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tradeIds: [tradeId] }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          const images = data.images?.[tradeId] || []
+          setCachedImages(tradeId, images)
+          return images
+        }
+        return []
+      }
+
       const res = await fetch(`/api/trade-images?tradeId=${encodeURIComponent(tradeId)}`)
       if (res.ok) {
         const data = await res.json()
@@ -138,6 +170,22 @@ export async function fetchVideosWithCache(tradeId: string): Promise<TradeVideo[
   // Make new request
   const fetchPromise = (async () => {
     try {
+      const batchUrl = archiveBatchUrl()
+      if (batchUrl) {
+        const res = await fetch(batchUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tradeIds: [tradeId] }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          const videos = data.videos?.[tradeId] || []
+          setCachedVideos(tradeId, videos)
+          return videos
+        }
+        return []
+      }
+
       const res = await fetch(`/api/trade-videos?tradeId=${encodeURIComponent(tradeId)}`)
       if (res.ok) {
         const data = await res.json()
@@ -189,6 +237,22 @@ export async function fetchTagsWithCache(tradeId: string): Promise<string[]> {
   // Make new request
   const fetchPromise = (async () => {
     try {
+      const batchUrl = archiveBatchUrl()
+      if (batchUrl) {
+        const res = await fetch(batchUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tradeIds: [tradeId] }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          const tags = data.tags?.[tradeId] || []
+          setCachedTags(tradeId, tags)
+          return tags
+        }
+        return []
+      }
+
       const res = await fetch(`/api/trade-tags?tradeId=${encodeURIComponent(tradeId)}`)
       if (res.ok) {
         const data = await res.json()
@@ -253,7 +317,8 @@ export async function fetchBatchMedia(tradeIds: string[]): Promise<BatchMediaRes
   }
 
   try {
-    const res = await fetch('/api/trade-media/batch', {
+    const batchUrl = archiveBatchUrl()
+    const res = await fetch(batchUrl ?? '/api/trade-media/batch', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tradeIds: uncachedIds })

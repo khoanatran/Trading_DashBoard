@@ -1,0 +1,285 @@
+MISTAKE & REVENGE TRADING ANALYSIS
+Omen Trading Dashboard
+Generated: July 29, 2026
+Source: trades-snapshot.json, trade-tags.json, trade-journal.json (344 trades)
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+These two tags represent your largest controllable leak. They are not normal
+variance — they are 100% losing trades with no winners in the dataset.
+
+Category              Trades    Total P&L      Win Rate    Avg Loss
+------------------------------------------------------------------------
+All trades              344      -$3,339         20.3%       -$10
+Mistake                  29     -$11,769           0%       -$406
+Revenge Trading          23      -$5,592           0%       -$243
+Either tag (combined)    50     -$16,664           0%         —
+
+If you had taken zero Mistake or Revenge trades, your account would be at
++$13,326 instead of -$3,339.
+
+Your gross wins ($48,773) and gross losses (-$52,580) show the system can work.
+Mistake + Revenge trades account for roughly 32% of all dollar losses while
+being only 14.5% of trade count — high-impact, low-frequency behavior errors.
+
+
+================================================================================
+PART 1: MISTAKE TRADES (29 trades, -$11,769)
+================================================================================
+
+WHAT THEY LOOK LIKE
+-------------------
+Duration:  Median hold time is 12 seconds. Average is 30 seconds. All 29 trades
+           closed in under 5 minutes. These are rushed entries and rushed exits.
+
+Time:      28 of 29 occurred between 9:00–10:00 AM ET (open session). One at
+           3:15 PM.
+
+Ratings:   Heavily skewed low — 6 trades rated 0, 10 rated 2, 7 rated 2.5.
+           You knew they were bad before or during the trade.
+
+CO-OCCURRING TAGS
+-----------------
+Co-Tag                    Count      P&L        Pattern
+Recent Heatmap Trigger       10    -$4,979     Forcing trades off stale/weak triggers
+Stuck 2 LVN                   9    -$4,016     Price trapped between two LVNs
+B setup                       6    -$2,356     Lower-grade setups taken anyway
+Heatmap Only                  6    -$2,718     No LVN confirmation
+Bad Reentry                   6    -$2,637     Re-entering after stop without fresh setup
+Sudden LVN                    3    -$1,508     LVN formed <1 min before entry
+
+RECURRING THEMES FROM JOURNAL NOTES
+-----------------------------------
+1. "Worst case was BE" — mentioned in 11 mistake notes. You held losers when
+   breakeven was available, then took full stop.
+
+2. Forced / rushed entries — "subconsciously forcing trade," "rushed entry,
+   forced trade," "LVN appeared less than 1m."
+
+3. Trading without confirmation — "No LVN at entry," "Heatmap Only,"
+   "No final retest," "No trigger in LTF."
+
+4. Wrong context — "Price was in a downtrend and I took a long,"
+   "Stuck between Triggers," "Choppy Market."
+
+5. Ignoring daily loss limit (MDL) — Jul 28 note: "Must have stopped right
+   here per MDL."
+
+WORST MISTAKE CLUSTERS (SAME-DAY CHAINS)
+----------------------------------------
+Date        Mistakes    Combined P&L    What happened
+Jun 12      5 in 24 min    -$2,142      Forced entries, no retest, stuck in FS LVNs
+Jun 30      3 in 3 min     -$1,581      Long in downtrend, sudden heatmap/LVN surprise
+Jul 20      3 in 4 min     -$1,204      Half-trigger trades, rushed sudden LVN
+Jul 28      3 in 10 min    -$1,017      Bad reentries after MDL should have stopped you
+
+
+================================================================================
+PART 2: REVENGE TRADING (23 trades, -$5,592)
+================================================================================
+
+WHAT THEY LOOK LIKE
+-------------------
+Duration:  Even faster than mistakes — median 12 seconds, average 24 seconds.
+
+Co-tag:    17 of 23 also tagged Random. Revenge trades are almost always
+           impulsive, unplanned entries.
+
+Time:      Spread across 9–11 AM and 2–3 PM — revenge happens both at open
+           frustration and afternoon "trying to get a win."
+
+THE REVENGE CASCADE PATTERN
+---------------------------
+22 of 23 revenge trades came within 15 minutes of a same-day loss. This is the
+clearest behavioral signature in your data.
+
+Date        Sequence                              Combined P&L
+Jun 23      4 revenge trades in 4 minutes         -$738
+Jun 26      5 revenge trades in 7 minutes         -$1,016
+May 11      3 revenge trades in 26 minutes        -$938
+Jun 22      3 revenge trades in 30 minutes        -$1,130
+
+EMOTIONAL TRIGGERS (FROM YOUR NOTES)
+------------------------------------
+1. Bad SL on a big winner — Jun 5: "Very emotional due to losing on a 4R+ trade
+   for bad SL → Random dip buy" (2 revenge trades).
+
+2. Missed opportunity — Jun 22: "1x 4R already delivered. Missed due to overslept"
+   → revenge chain.
+
+3. Already past daily limit — Jul 14: "Passed the daily loss limit. Right thing
+   to do was avoid this trade."
+
+4. Dead market frustration — Jul 23: "Trying too hard to get a win in a day that
+   has nothing to give."
+
+
+================================================================================
+PART 3: ROOT CAUSE DIAGNOSIS
+================================================================================
+
+These are not separate problems — they share the same root causes:
+
+  Trigger Event → Emotional State → Rule Bypass → Mistake / Revenge Trade
+                                                      ↓
+                                              Cascade: more revenge
+
+Trigger events:
+  - Bad SL on winner
+  - Missed 4R trade
+  - Loss streak / MDL hit
+  - Choppy / no setup day
+
+THE 5 CORE FAILURES
+-------------------
+1. No hard stop after emotional trigger — You journal the emotion but still
+   click buy/sell.
+
+2. Setup degradation under pressure — A+ setups become B setups become
+   "Heatmap Only" become Random.
+
+3. Breakeven discipline collapse — 11 mistake notes say worst case was BE; you
+   didn't move to BE.
+
+4. MDL not enforced in real time — You tag trades as past MDL after taking them.
+
+5. Overtrading on bad days — On 19 days with mistake/revenge trades, you averaged
+   11.2 trades/day (max: 39 on Jun 12). Normal days should be 2–4 quality setups.
+
+
+================================================================================
+PART 4: RECOMMENDATIONS TO ELIMINATE THESE TRADES
+================================================================================
+
+TIER 1 — HARD RULES (non-negotiable, starting tomorrow)
+---------------------------------------------------------
+
+Rule 1: 15-Minute Cooldown After Any Loss
+  - After any losing trade: no new entry for 15 minutes.
+  - Your data shows 22/23 revenge trades violate this. This single rule would
+    have prevented ~$5,346 in revenge losses.
+  - Put a physical timer on your desk. Close the order panel.
+
+Rule 2: MDL = Hard Shutdown
+  - When daily loss limit is hit: close platform, walk away.
+  - Jul 14 and Jul 28 both had trades after you knew you were past MDL.
+
+Rule 3: 3-Strike Day Rule
+  - 3 losses in one session → done for the day. No exceptions.
+  - Jun 12 (5 mistakes), Jun 23 (4 revenge), Jun 26 (5 revenge) would all have
+    been cut off early.
+
+Rule 4: No "Random" Entries — Ever
+  - If you cannot articulate the setup grade (A, B) and all three confirmations
+    (LVN + Heatmap + Trigger), do not trade.
+  - 17/23 revenge trades were Random. Zero of them won.
+
+
+TIER 2 — PRE-TRADE CHECKLIST (print and tape to monitor)
+---------------------------------------------------------
+Before every entry, all must be YES:
+
+  #  Check                                              Blocks
+  1  LVN present and confirmed (not sudden <1 min,       12+ mistake trades
+     not "stuck 2 LVN")
+  2  Heatmap aligns with LVN (not Heatmap Only)           6 mistake trades
+  3  Trigger is recent and on LTF (not half-trigger,     4 mistake trades
+     not stale)
+  4  Final retest occurred                                6 Bad Reentry mistakes
+  5  Setup grade is A or B (not forced B)                 All B-setup mistakes
+  6  Not in choppy / stuck-between-triggers context       3+ mistakes
+  7  At least 15 min since last loss                      22 revenge trades
+  8  Under daily loss limit and under 3 daily losses      5+ trades
+
+If any answer is NO → no trade. Period.
+
+
+TIER 3 — EXIT MANAGEMENT (fixes "worst case was BE")
+----------------------------------------------------
+Your #1 mistake keyword is BE (11 mentions). You are leaving money on the table
+by not managing exits:
+
+  - Rule: Once price reaches +1R or breaks structure in your favor → move SL to
+    breakeven immediately.
+  - On Jul 14, Jul 20, Jun 30: multiple notes say "worst case was BE." That is
+    $3,000+ in avoidable full losses.
+  - Add a dashboard reminder: if rating ≤ 2 at entry, BE rule activates at +0.5R
+    instead of +1R.
+
+
+TIER 4 — POST-LOSS PROTOCOL (replaces revenge impulse)
+------------------------------------------------------
+When you take a loss, run this before looking at charts again:
+
+  1. Stand up — physically leave the chair for 15 minutes.
+  2. Journal the loss in the dashboard — tag it, rate it, write 1 sentence.
+  3. Ask: "Is there a fresh A/B setup with full confirmation?" If no → done.
+  4. Ask: "Am I trying to get back what I lost?" If yes → done.
+  5. Only then → back to checklist.
+
+This directly counters the Jun 5 pattern (bad SL → emotional → 2 random dip buys
+within 8 minutes).
+
+
+TIER 5 — USE YOUR DASHBOARD TOOLS
+----------------------------------
+Your dashboard already has simulation logic for this. The "Skip Mistake & Random"
+scenario exists precisely because these tags predict -EV:
+
+  - Weekly review ritual: Filter Journal by Mistake + Revenge tags. Read every
+    note. Look for the one rule you broke most that week.
+  - Tag at entry, not exit: If you feel rushed or emotional before clicking, tag
+    it pre-trade. That moment of honesty prevents the trade.
+  - Track the 15-min rule: Add a "Cooldown Active" note in daily-summaries when
+    you take a loss.
+
+
+TIER 6 — STRUCTURAL CHANGES FOR SPECIFIC PATTERNS
+-------------------------------------------------
+Pattern                  Specific Fix
+Stuck 2 LVN              Hard rule: if price is between 2 LVNs with no clear
+                         break, no trade. Wait for resolution.
+Sudden LVN               LVN must exist for ≥3 minutes before entry is allowed.
+Bad Reentry              After stop-out, require a new LVN + fresh retest.
+                         Same-level reentry is banned.
+Recent Heatmap Trigger   Trigger must be on current session LTF, not premarket
+                         or stale.
+Half Trigger             Incomplete trigger = no trade. Wait for full ISB
+                         confirmation.
+Afternoon revenge        No trades after 12:00 PM unless A+ setup with full
+                         journal pre-approval.
+
+
+================================================================================
+30-DAY ACTION PLAN
+================================================================================
+
+Week    Focus                                    Success Metric
+------------------------------------------------------------------------
+Week 1  Implement 15-min cooldown + MDL hard stop   Zero revenge tags
+Week 2  Pre-trade checklist on every entry          Zero "Random" tags
+Week 3  BE management discipline                    Zero "worst case was BE" in notes
+Week 4  3-strike day rule + afternoon trading ban   Max 4 trades/day, zero mistake chains
+
+Target: Reduce mistake + revenge trades from 50 → 0 over 30 days. Based on your
+data, that alone moves P&L from -$3,339 → +$13,326.
+
+
+================================================================================
+BOTTOM LINE
+================================================================================
+
+You already know these are mistakes — your journal proves it. Every revenge note
+contains the word "random" or "emotional." Every mistake cluster happens on days
+you overtrade (11+ trades). The edge is not the problem; discipline after
+friction is.
+
+The highest-ROI change is not a new setup — it is one rule enforced
+mechanically:
+
+  After any loss → 15-minute timer → no exceptions → if 3 losses today → done.
+
+Your dashboard's Simulated Overview already shows what happens when you remove
+these tags. The next step is making that simulation match reality.

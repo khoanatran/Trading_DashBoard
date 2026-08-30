@@ -29,7 +29,7 @@ import WeeklyNotesTimeline from '@/components/WeeklyNotesTimeline'
 import { CustomDateRangePicker } from '@/components/CustomDateRangePicker'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Calendar, BarChart3, FileUp, FileDown, Moon, Sun, FileText, BookOpen, CalendarDays, CalendarRange, LayoutDashboard, PanelLeftClose, PanelLeft, Filter, FlaskConical } from 'lucide-react'
+import { Calendar, BarChart3, Moon, Sun, FileText, BookOpen, CalendarDays, CalendarRange, LayoutDashboard, PanelLeftClose, PanelLeft, Filter, FlaskConical } from 'lucide-react'
 import SimulatedOverview from '@/components/SimulatedOverview'
 import { format, isWithinInterval, endOfDay, startOfWeek, endOfWeek, subWeeks, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear } from 'date-fns'
 import {
@@ -45,7 +45,15 @@ import { remigrateTradeMetadataOnServer } from '@/lib/sync-trade-metadata'
 import { syncTradesSnapshotToServer } from '@/lib/sync-trades-snapshot'
 import { pullFromGitHub } from '@/lib/sync-from-github'
 import { restoreDashboardFromServer } from '@/lib/restore-from-server'
-import { clearAllCaches } from '@/utils/mediaCache'
+import { clearAllCaches, setActiveArchiveSlug } from '@/utils/mediaCache'
+import DataSourcePanel from '@/components/DataSourcePanel'
+import {
+  fetchDashboardArchives,
+  hydrateJournalCacheFromArchive,
+  loadDashboardArchiveClient,
+  type DashboardArchiveSummary,
+} from '@/lib/archive-client'
+import { fetchLiveSessionInfo, updateLiveSessionImport } from '@/lib/session-client'
 
 type DateRange = { from?: Date; to?: Date }
 
@@ -79,6 +87,21 @@ export default function Home() {
   const [flaggedTrades, setFlaggedTrades] = useState<Record<string, boolean>>({})
   const [persistReady, setPersistReady] = useState(false)
   const [mediaRefreshKey, setMediaRefreshKey] = useState(0)
+  const [dashboardArchives, setDashboardArchives] = useState<DashboardArchiveSummary[]>([])
+  const [activeArchive, setActiveArchive] = useState<string | null>(null)
+  const liveSessionRef = useRef<{
+    trades: Trade[]
+    fileName: string
+    tradeTags: Record<string, string[]>
+    flaggedDays: Record<string, boolean>
+    flaggedTrades: Record<string, boolean>
+    journalStorage: {
+      tradeNotes: string | null
+      tradeSetupTags: string | null
+      tradeRatings: string | null
+      tradeRatingManual: string | null
+    }
+  } | null>(null)
   const lastImportAlertKeyRef = useRef<string | null>(null)
   const startupMetadataSyncDoneRef = useRef(false)
   const restoreCompleteRef = useRef(false)
@@ -234,15 +257,20 @@ export default function Home() {
       return
     }
 
-    const result = await syncTradeExportToDisk(trades)
+    const result = await syncTradeExportToDisk(trades, { archiveTitle: activeArchive })
     if (result.ok) {
+      const extra = result.syncedToGitHub
+        ? '\n\nAlso synced to GitHub for your other computers.'
+        : activeArchive
+          ? `\n\nExported archive "${activeArchive}" for Sierra Chart. Live dashboard data was not changed.`
+          : ''
       alert(
-        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}\n\nAlso synced to GitHub for your other computers.`
+        `Exported ${result.tradeCount ?? trades.length} trade(s) to:\n${getTradeExportFilePath()}${extra}`
       )
     } else {
       alert('Failed to write trade export file. Check the server console for details.')
     }
-  }, [trades])
+  }, [trades, activeArchive])
 
   const handleToggleDayFlag = useCallback(async (dateKey: string) => {
     const nextFlagged = !flaggedDays[dateKey]
@@ -284,22 +312,22 @@ export default function Home() {
 
   // Persist trades whenever they change (after initial load)
   useEffect(() => {
-    if (!persistReady) return
+    if (!persistReady || activeArchive) return
     saveStoredTrades(trades, fileName || null)
-  }, [trades, fileName, persistReady])
+  }, [trades, fileName, persistReady, activeArchive])
 
   // Persist trades to server snapshot + GitHub backup (debounced; skip until restore finishes)
   useEffect(() => {
-    if (!persistReady || trades.length === 0 || !restoreCompleteRef.current) return
+    if (!persistReady || trades.length === 0 || !restoreCompleteRef.current || activeArchive) return
     const timer = setTimeout(() => {
       void syncTradesSnapshotToServer(trades)
     }, 500)
     return () => clearTimeout(timer)
-  }, [trades, persistReady])
+  }, [trades, persistReady, activeArchive])
 
   // Flush trades to server snapshot when closing the browser tab
   useEffect(() => {
-    if (!persistReady || trades.length === 0) return
+    if (!persistReady || trades.length === 0 || activeArchive) return
 
     const flushSnapshot = () => {
       void fetch('/api/trades-snapshot', {
@@ -312,7 +340,80 @@ export default function Home() {
 
     window.addEventListener('beforeunload', flushSnapshot)
     return () => window.removeEventListener('beforeunload', flushSnapshot)
-  }, [trades, persistReady])
+  }, [trades, persistReady, activeArchive])
+
+  const refreshDashboardArchives = useCallback(async () => {
+    const archives = await fetchDashboardArchives()
+    setDashboardArchives(archives)
+  }, [])
+
+  useEffect(() => {
+    void refreshDashboardArchives()
+  }, [refreshDashboardArchives])
+
+  const handleArchiveSelect = useCallback(async (value: string) => {
+    if (value === '__live__') {
+      setActiveArchiveSlug(null)
+      setActiveArchive(null)
+      const saved = liveSessionRef.current
+      if (saved) {
+        setTrades(saved.trades)
+        setFileName(saved.fileName)
+        setTradeTagsFromJournal(saved.tradeTags)
+        setFlaggedDays(saved.flaggedDays)
+        setFlaggedTrades(saved.flaggedTrades)
+        if (saved.journalStorage.tradeNotes != null) {
+          localStorage.setItem('tradeNotes', saved.journalStorage.tradeNotes)
+        }
+        if (saved.journalStorage.tradeSetupTags != null) {
+          localStorage.setItem('tradeSetupTags', saved.journalStorage.tradeSetupTags)
+        }
+        if (saved.journalStorage.tradeRatings != null) {
+          localStorage.setItem('tradeRatings', saved.journalStorage.tradeRatings)
+        }
+        if (saved.journalStorage.tradeRatingManual != null) {
+          localStorage.setItem('tradeRatingManual', saved.journalStorage.tradeRatingManual)
+        }
+        liveSessionRef.current = null
+      }
+      clearAllCaches()
+      setMediaRefreshKey(key => key + 1)
+      return
+    }
+
+    if (!liveSessionRef.current) {
+      liveSessionRef.current = {
+        trades,
+        fileName,
+        tradeTags: tradeTagsFromJournal,
+        flaggedDays,
+        flaggedTrades,
+        journalStorage: {
+          tradeNotes: localStorage.getItem('tradeNotes'),
+          tradeSetupTags: localStorage.getItem('tradeSetupTags'),
+          tradeRatings: localStorage.getItem('tradeRatings'),
+          tradeRatingManual: localStorage.getItem('tradeRatingManual'),
+        },
+      }
+    }
+
+    const bundle = await loadDashboardArchiveClient(value)
+    if (!bundle) {
+      alert(`Could not load archive "${value}".`)
+      return
+    }
+
+    setActiveArchiveSlug(value)
+    setActiveArchive(value)
+    setTrades(bundle.trades)
+    setFileName(value)
+    setTradeTagsFromJournal(bundle.tradeTags)
+    setFlaggedDays(bundle.flags.days ?? {})
+    setFlaggedTrades(bundle.flags.trades ?? {})
+    hydrateJournalCacheFromArchive(bundle.tradeJournal)
+    clearAllCaches()
+    setMediaRefreshKey(key => key + 1)
+  }, [trades, fileName, tradeTagsFromJournal, flaggedDays, flaggedTrades])
 
   // Dynamic greeting based on time of day (client-side only to avoid hydration mismatch)
   useEffect(() => {
@@ -359,19 +460,26 @@ export default function Home() {
     }
   }, [])
 
-  const applyParsedTrades = (parsedTrades: Trade[], fileLabel: string) => {
+  const applyParsedTrades = async (parsedTrades: Trade[], fileLabel: string) => {
     if (parsedTrades.length === 0) {
       alert('No completed trades found in the file. Please check the file format.')
       return
     }
 
+    const liveInfo = await fetchLiveSessionInfo()
+    const replaceStaleSessionData = Boolean(
+      liveInfo?.liveSession?.previousArchiveTitle && !liveInfo.liveSession.lastImportFile
+    )
+
     setTrades(prev => {
-      const { merged, added, skipped } = mergeImportedTrades(prev, parsedTrades)
+      const baseTrades = replaceStaleSessionData ? [] : prev
+      const { merged, added, skipped } = mergeImportedTrades(baseTrades, parsedTrades)
       const tradesWithRR = merged.filter(t => getTradeRMultiple(t) !== null)
       const totalPnl = merged.reduce((sum, t) => sum + (t.pnl ?? 0), 0)
       console.log(
         `Import "${fileLabel}": parsed ${parsedTrades.length}, added ${added}, skipped ${skipped} duplicate(s). ` +
-          `Total ${merged.length} trades (${tradesWithRR.length} with R:R, P&L ${formatUsdPnl(totalPnl)})`
+          `Total ${merged.length} trades (${tradesWithRR.length} with R:R, P&L ${formatUsdPnl(totalPnl)})` +
+          (replaceStaleSessionData ? ' [new session — replaced stale data]' : '')
       )
 
       void syncTradeMetadata(merged)
@@ -386,10 +494,14 @@ export default function Home() {
         }
       })
 
-      const alertKey = `${fileLabel}:${added}:${skipped}:${merged.length}`
+      const alertKey = `${fileLabel}:${added}:${skipped}:${merged.length}:${replaceStaleSessionData}`
       if (lastImportAlertKeyRef.current !== alertKey) {
         lastImportAlertKeyRef.current = alertKey
-        if (added === 0 && skipped > 0) {
+        if (replaceStaleSessionData) {
+          alert(
+            `Imported ${merged.length} trade(s) into your new live session.\n\nPrevious archived data was not merged in.`
+          )
+        } else if (added === 0 && skipped > 0) {
           alert(
             `All ${skipped} trade(s) in this file are already saved. No new trades were added.\n\nTrade export refreshed in ${getTradeExportFilePath()}.`
           )
@@ -409,6 +521,49 @@ export default function Home() {
 
     setFileName(fileLabel)
     setViewMode('overview')
+    void updateLiveSessionImport(fileLabel)
+  }
+
+  const handleLiveSessionReset = useCallback(() => {
+    liveSessionRef.current = null
+    setActiveArchive(null)
+    setActiveArchiveSlug(null)
+    setTrades([])
+    setFileName('')
+    setTradeTagsFromJournal({})
+    setFlaggedDays({})
+    setFlaggedTrades({})
+    clearAllCaches()
+    setMediaRefreshKey(key => key + 1)
+    startupMetadataSyncDoneRef.current = false
+    restoreCompleteRef.current = true
+    setPersistReady(true)
+  }, [])
+
+  const triggerSpreadsheetImport = useCallback(() => {
+    if (activeArchive) return
+    const input = document.getElementById('spreadsheet-upload') as HTMLInputElement | null
+    input?.click()
+  }, [activeArchive])
+
+  const handleSpreadsheetUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    event.target.value = ''
+
+    setFileName(file.name)
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
+        const buffer = e.target?.result as ArrayBuffer
+        const parsedTrades = parseMt5ReportHistoryBuffer(buffer, file.name)
+        void applyParsedTrades(parsedTrades, file.name)
+      } catch (error) {
+        console.error('Error parsing spreadsheet:', error)
+        alert(`Error parsing spreadsheet: ${error}`)
+      }
+    }
+    reader.readAsArrayBuffer(file)
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -427,12 +582,12 @@ export default function Home() {
         if (isExcel) {
           const buffer = e.target?.result as ArrayBuffer
           const parsedTrades = parseMt5ReportHistoryBuffer(buffer, file.name)
-          applyParsedTrades(parsedTrades, file.name)
+          void applyParsedTrades(parsedTrades, file.name)
         } else {
           const content = e.target?.result as string
           console.log(`File loaded, size: ${content.length} characters`)
           const parsedTrades = parseTradeFile(content, file.name)
-          applyParsedTrades(parsedTrades, file.name)
+          void applyParsedTrades(parsedTrades, file.name)
         }
       } catch (error) {
         console.error('Error parsing file:', error)
@@ -637,7 +792,7 @@ export default function Home() {
       {/* Left Sidebar */}
       <aside 
         className={`fixed left-0 top-0 h-full bg-card border-r flex flex-col transition-all duration-300 z-40 ${
-          sidebarCollapsed ? 'w-16' : 'w-56'
+          sidebarCollapsed ? 'w-16' : 'w-60'
         }`}
       >
         {/* Sidebar Header */}
@@ -655,53 +810,38 @@ export default function Home() {
           </Button>
         </div>
 
-        {/* Upload Section */}
-        <div className={`p-3 border-b ${sidebarCollapsed ? 'flex justify-center' : ''}`}>
-          <input
-            id="file-upload"
-            type="file"
-            accept=".txt,.xlsx,.xls"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
-          <Button 
-            variant="outline" 
-            size={sidebarCollapsed ? 'icon' : 'default'}
-            className={sidebarCollapsed ? 'h-10 w-10' : 'w-full justify-start'}
-            type="button" 
-            onClick={() => {
-              const input = document.getElementById('file-upload') as HTMLInputElement
-              if (input) {
-                input.click()
-              }
-            }}
-            title={sidebarCollapsed ? (fileName || 'Upload') : undefined}
-          >
-            <FileUp className={sidebarCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'} />
-            {!sidebarCollapsed && (fileName ? fileName.slice(0, 15) + (fileName.length > 15 ? '...' : '') : 'Upload')}
-          </Button>
-          {!sidebarCollapsed && (
-            <p className="text-xs text-muted-foreground mt-1 truncate" title={fileName || undefined}>
-              {trades.length > 0
-                ? `${trades.length} trade${trades.length === 1 ? '' : 's'} saved locally`
-                : fileName
-                  ? fileName
-                  : 'No trades saved'}
-            </p>
-          )}
-          <Button
-            variant="outline"
-            size={sidebarCollapsed ? 'icon' : 'default'}
-            className={`${sidebarCollapsed ? 'h-10 w-10' : 'w-full justify-start'} mt-2`}
-            type="button"
-            onClick={() => void handleExportTrades()}
-            disabled={trades.length === 0}
-            title={sidebarCollapsed ? 'Export to Trade History for SC' : undefined}
-          >
-            <FileDown className={sidebarCollapsed ? 'h-4 w-4' : 'mr-2 h-4 w-4'} />
-            {!sidebarCollapsed && 'Export to SC folder'}
-          </Button>
-        </div>
+        {/* Hidden file inputs */}
+        <input
+          id="file-upload"
+          type="file"
+          accept=".txt,.xlsx,.xls"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
+        <input
+          id="spreadsheet-upload"
+          type="file"
+          accept=".xlsx,.xls"
+          onChange={handleSpreadsheetUpload}
+          className="hidden"
+        />
+
+        <DataSourcePanel
+          sidebarCollapsed={sidebarCollapsed}
+          activeArchive={activeArchive}
+          archives={dashboardArchives}
+          tradeCount={trades.length}
+          onSelectSource={handleArchiveSelect}
+          onArchivesRefresh={() => void refreshDashboardArchives()}
+          onLiveSessionReset={handleLiveSessionReset}
+          onImportSpreadsheet={triggerSpreadsheetImport}
+          onImportTradeFile={() => {
+            if (activeArchive) return
+            const input = document.getElementById('file-upload') as HTMLInputElement | null
+            input?.click()
+          }}
+          onExportSc={() => void handleExportTrades()}
+        />
 
         {/* Navigation Items */}
         <nav className="flex-1 py-4">
@@ -757,13 +897,18 @@ export default function Home() {
       {/* Main Content Area */}
       <main 
         className={`flex-1 min-h-screen transition-all duration-300 ${
-          sidebarCollapsed ? 'ml-16' : 'ml-56'
+          sidebarCollapsed ? 'ml-16' : 'ml-60'
         }`}
       >
         {/* Header */}
         <header className="border-b bg-card sticky top-0 z-30">
           <div className="px-6 py-4">
             <h1 className="text-[2rem] font-bold">{greeting}</h1>
+            {activeArchive && (
+              <p className="text-sm text-amber-500 mt-1">
+                Viewing archive: <span className="font-semibold">{activeArchive}</span> (read-only)
+              </p>
+            )}
             <p className="text-sm text-muted-foreground mt-1 italic">{'"You take random setups, you get random results"'}</p>
           </div>
         </header>
@@ -1018,12 +1163,13 @@ export default function Home() {
                   darkMode={darkMode} 
                   onTradeTagsChange={setTradeTagsFromJournal}
                   flaggedTrades={flaggedTrades}
-                  onToggleTradeFlag={handleToggleTradeFlag}
+                  onToggleTradeFlag={activeArchive ? undefined : handleToggleTradeFlag}
                   tagFilterMode={tagFilterMode}
                   setTagFilterMode={setTagFilterMode}
                   tagFilterTags={tagFilterTags}
                   setTagFilterTags={setTagFilterTags}
                   focusDayKey={journalDayKey}
+                  readOnly={!!activeArchive}
                 />
               )}
 
