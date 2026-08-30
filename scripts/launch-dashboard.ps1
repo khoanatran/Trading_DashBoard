@@ -97,6 +97,55 @@ function Stop-DashboardServer {
   Start-Sleep -Seconds 1
 }
 
+function Ensure-Dependencies {
+  if (-not (Test-Path $NpmCmd)) {
+    Write-Log "ERROR: npm.cmd not found at $NpmCmd"
+    return $false
+  }
+
+  $nodeModules = Join-Path $ProjectRoot 'node_modules'
+  $lockFile = Join-Path $ProjectRoot 'package-lock.json'
+  $needsInstall = -not (Test-Path $nodeModules)
+
+  if (-not $needsInstall) {
+    foreach ($pkg in @('adm-zip', 'next', 'react')) {
+      if (-not (Test-Path (Join-Path $nodeModules $pkg))) {
+        $needsInstall = $true
+        break
+      }
+    }
+  }
+
+  if (-not $needsInstall -and (Test-Path $lockFile)) {
+    $lockStamp = (Get-Item $lockFile).LastWriteTimeUtc
+    $modulesStamp = (Get-Item $nodeModules).LastWriteTimeUtc
+    if ($lockStamp -gt $modulesStamp) {
+      $needsInstall = $true
+    }
+  }
+
+  if (-not $needsInstall) { return $true }
+
+  Write-Host 'Installing dependencies (required after git pull)...' -ForegroundColor Yellow
+  Write-Log 'Running npm install'
+  Push-Location $ProjectRoot
+  try {
+    & $NpmCmd install --no-audit --no-fund 2>&1 | ForEach-Object {
+      Write-Log "npm: $_"
+    }
+    if ($LASTEXITCODE -ne 0) {
+      Write-Log "ERROR: npm install failed (exit $LASTEXITCODE)"
+      return $false
+    }
+    return $true
+  } catch {
+    Write-Log "ERROR: npm install exception: $_"
+    return $false
+  } finally {
+    Pop-Location
+  }
+}
+
 function Ensure-Build {
   if ((Test-BuildValid) -and -not (Test-BuildStale)) {
     Write-Log 'Using existing production build (.next)'
@@ -219,6 +268,11 @@ function Sync-DashboardWithGitHub {
 Ensure-NodeOnPath
 Write-Log 'Launcher started'
 Write-Host 'Trading Dashboard launcher...' -ForegroundColor Cyan
+
+if (-not (Ensure-Dependencies)) {
+  Show-Error 'Could not install npm dependencies. Run npm install from the project folder, then try again.'
+  exit 1
+}
 
 Sync-DashboardWithGitHub
 
